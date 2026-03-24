@@ -25,7 +25,7 @@ export default function Home() {
         </p>
       </div>
       <footer className="pb-4">
-        <p className="text-[#5c3317] text-xs font-mono">support@fazendacompany.com</p>
+        <p className="text-[#5c3317] text-xs" style={{ fontFamily: "Arial, sans-serif" }}>support@fazendacompany.com</p>
       </footer>
     </main>
   )
