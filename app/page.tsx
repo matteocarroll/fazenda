@@ -12,8 +12,8 @@ export default function Home() {
           className="w-auto h-auto max-w-[30vw]"
           priority
         />
-        <p className="text-[#5c3317] text-xs font-mono">
-          For any requests/help, please{" "}
+        <p className="text-[#5c3317] text-xs" style={{ fontFamily: "Arial, sans-serif" }}>
+          For product requests/help, please{" "}
           <a
             href="https://wa.me/19298408626"
             target="_blank"
