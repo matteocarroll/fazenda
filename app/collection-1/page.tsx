@@ -21,7 +21,7 @@ export default function Collection1() {
             ← Back
           </Link>
           <h1 className="text-[#5c3317] text-xs tracking-widest" style={{ fontFamily: "Arial, sans-serif" }}>
-            COLLECTION 1
+            COLLECTION PRIMEIRA
           </h1>
           <div className="w-10" />
         </div>
