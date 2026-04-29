@@ -17,7 +17,7 @@ export default function Home() {
           alt="FAZENDA"
           width={400}
           height={83}
-          className="w-auto h-auto max-w-[30vw]"
+          className="w-auto h-auto max-w-[180px]"
           priority
         />
         <p className="text-[#5c3317] text-xs" style={{ fontFamily: "Arial, sans-serif" }}>
