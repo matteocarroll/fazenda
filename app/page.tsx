@@ -13,6 +13,14 @@ export default function Home() {
       </Link>
       <div className="flex-1 flex flex-col items-center justify-center gap-6">
         <Image
+          src="/fazenda_logo_w2.png"
+          alt="FAZENDA W2"
+          width={400}
+          height={83}
+          className="w-auto h-auto max-w-[180px]"
+          priority
+        />
+        <Image
           src="/fazenda_logo_v2.png"
           alt="FAZENDA"
           width={400}
