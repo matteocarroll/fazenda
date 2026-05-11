@@ -14,7 +14,6 @@ const brands = [
   "Cale",
   "Kota Gushiken",
   "Kuro",
-  "Edwin",
   "Wax London",
   "Deadwood",
   "Purple Mountain Observatory",
