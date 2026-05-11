@@ -1,7 +1,4 @@
-"use client"
-
 import Link from "next/link"
-import { ComposableMap, Geographies, Geography, Marker } from "react-simple-maps"
 
 const brands = [
   "MASSIMO ALBA",
@@ -23,16 +20,6 @@ const brands = [
   "PURPLE MOUNTAIN OBSERVATORY",
 ]
 
-const markers = [
-  { name: "Italy",   coordinates: [12.57,  41.87] },
-  { name: "France",  coordinates: [2.21,   46.23] },
-  { name: "England", coordinates: [-1.5,   52.5]  },
-  { name: "Japan",   coordinates: [138.25, 36.20] },
-  { name: "Brazil",  coordinates: [-51.93, -14.24]},
-]
-
-const GEO_URL = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json"
-
 export default function Brands() {
   return (
     <main className="min-h-screen bg-white py-12 px-6">
@@ -47,8 +34,7 @@ export default function Brands() {
           <div className="w-10" />
         </div>
 
-        {/* Brand list */}
-        <div className="flex flex-col items-center gap-3 mb-16">
+        <div className="flex flex-col items-center gap-4">
           {brands.map((brand) => (
             <p
               key={brand}
@@ -58,38 +44,6 @@ export default function Brands() {
               {brand}
             </p>
           ))}
-        </div>
-
-        {/* World map */}
-        <div className="w-full">
-          <ComposableMap
-            projectionConfig={{ scale: 140 }}
-            style={{ width: "100%", height: "auto" }}
-          >
-            <Geographies geography={GEO_URL}>
-              {({ geographies }: { geographies: any[] }) =>
-                geographies.map((geo: any) => (
-                  <Geography
-                    key={geo.rsmKey}
-                    geography={geo}
-                    fill="#e8e0d5"
-                    stroke="#ffffff"
-                    strokeWidth={0.5}
-                    style={{
-                      default: { outline: "none" },
-                      hover:   { outline: "none" },
-                      pressed: { outline: "none" },
-                    }}
-                  />
-                ))
-              }
-            </Geographies>
-            {markers.map(({ name, coordinates }) => (
-              <Marker key={name} coordinates={coordinates as [number, number]}>
-                <circle r={5} fill="#4a90d9" stroke="#ffffff" strokeWidth={1.5} />
-              </Marker>
-            ))}
-          </ComposableMap>
         </div>
       </div>
     </main>
