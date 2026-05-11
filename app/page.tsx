@@ -4,13 +4,22 @@ import Link from "next/link"
 export default function Home() {
   return (
     <main className="min-h-screen bg-white flex flex-col items-center justify-between py-8 relative">
-      <Link
-        href="/collection-1"
-        className="absolute top-6 right-8 text-[#5c3317] text-xs hover:opacity-70 transition-opacity"
-        style={{ fontFamily: "Arial, sans-serif" }}
-      >
-        Collection Primeira
-      </Link>
+      <div className="absolute top-6 right-8 flex gap-6">
+        <Link
+          href="/brands"
+          className="text-[#5c3317] text-xs hover:opacity-70 transition-opacity"
+          style={{ fontFamily: "Arial, sans-serif" }}
+        >
+          Brands
+        </Link>
+        <Link
+          href="/collection-1"
+          className="text-[#5c3317] text-xs hover:opacity-70 transition-opacity"
+          style={{ fontFamily: "Arial, sans-serif" }}
+        >
+          Collection Primeira
+        </Link>
+      </div>
       <div className="flex-1 flex flex-col items-center justify-center gap-6">
         <Image
           src="/fazenda_logo_w2.png"
