@@ -34,7 +34,7 @@ export default function Brands() {
           <div className="w-10" />
         </div>
 
-        <div className="flex flex-col items-center gap-4">
+        <div className="flex flex-col items-center gap-1">
           {brands.map((brand) => (
             <p key={brand} className="text-[#5c3317] text-xs">
               {brand}
