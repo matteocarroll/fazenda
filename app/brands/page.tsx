@@ -1,22 +1,22 @@
 import Link from "next/link"
 
 const brands = [
-  "Massimo Alba",
-  "Barena",
   "Altea",
-  "Valstar",
-  "Erevan",
-  "Labo Art",
-  "Husbands Paris",
-  "Handred",
-  "Misci",
-  "Ciota",
+  "Barena",
   "Cale",
+  "Ciota",
+  "Deadwood",
+  "Erevan",
+  "Handred",
+  "Husbands Paris",
   "Kota Gushiken",
   "Kuro",
-  "Wax London",
-  "Deadwood",
+  "Labo Art",
+  "Massimo Alba",
+  "Misci",
   "Purple Mountain Observatory",
+  "Valstar",
+  "Wax London",
 ]
 
 export default function Brands() {
