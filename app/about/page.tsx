@@ -40,7 +40,23 @@ export default function About() {
           </p>
 
           {submitted ? (
-            <p className="text-[#5c3317] text-xs">You're on the list. We'll be in touch.</p>
+            <div className="flex flex-col items-center gap-3 text-center max-w-sm">
+              <p className="text-[#5c3317] text-xs leading-relaxed">
+                Obrigado and hope to see you soon.
+              </p>
+              <p className="text-[#5c3317] text-xs leading-relaxed">
+                For product requests/help or to learn more, feel free to{" "}
+                <a
+                  href="https://wa.me/19298408626"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="underline hover:opacity-70 transition-opacity"
+                >
+                  send us a WhatsApp
+                </a>
+                .
+              </p>
+            </div>
           ) : (
             <form onSubmit={handleSubmit} className="flex flex-col items-center gap-3 w-full max-w-xs">
               <input
