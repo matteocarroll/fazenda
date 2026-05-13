@@ -6,6 +6,13 @@ export default function Home() {
     <main className="min-h-screen bg-white flex flex-col items-center justify-between py-8 relative">
       <div className="absolute top-6 right-8 flex gap-6">
         <Link
+          href="/about"
+          className="text-[#5c3317] text-xs hover:opacity-70 transition-opacity"
+          style={{ fontFamily: "Arial, sans-serif" }}
+        >
+          About
+        </Link>
+        <Link
           href="/brands"
           className="text-[#5c3317] text-xs hover:opacity-70 transition-opacity"
           style={{ fontFamily: "Arial, sans-serif" }}
