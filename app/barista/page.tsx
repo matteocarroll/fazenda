@@ -26,7 +26,7 @@ export default function Barista() {
 
           <div>
             <p className="font-semibold mb-1">What we're looking for</p>
-            <p>At least one year of barista experience, ideally on a La Marzocco or comparable machine. Familiarity with manual brew methods is a plus - we'll train you on the coado if you haven't done it before. Comfort with beer service (draft pours, basic knowledge of styles). A clean, calm presence behind the counter - someone who takes pride in how the bar looks and runs. Reliability and punctuality matter a lot to us. NYC Food Handler's certification is a plus (we'll help you get one if needed).</p>
+            <p>At least one year of barista experience, ideally on a La Marzocco or comparable machine. Familiarity with manual brew methods is a plus - we'll train you on the coado if you haven't done it before. Comfort with beer service (draft pours, basic knowledge of styles). A clean, calm presence behind the counter - someone who takes pride in how the bar looks and runs. Reliability and punctuality matter a lot to us.</p>
           </div>
 
           <div>
@@ -68,7 +68,7 @@ export default function Barista() {
 
           <div>
             <p className="font-semibold mb-1">O que buscamos</p>
-            <p>Pelo menos um ano de experiência como barista, de preferência em máquina La Marzocco ou similar. Familiaridade com métodos manuais de preparo é um diferencial - se você ainda não fez coado no coador de pano, a gente ensina. Conforto com serviço de cerveja (chope, conhecimento básico de estilos). Uma presença tranquila e caprichosa atrás do balcão - alguém que se orgulha de como o bar funciona e aparece. Pontualidade e comprometimento importam muito pra gente. Certificação NYC Food Handler's é um plus (ajudamos a tirar, se necessário).</p>
+            <p>Pelo menos um ano de experiência como barista, de preferência em máquina La Marzocco ou similar. Familiaridade com métodos manuais de preparo é um diferencial - se você ainda não fez coado no coador de pano, a gente ensina. Conforto com serviço de cerveja (chope, conhecimento básico de estilos). Uma presença tranquila e caprichosa atrás do balcão - alguém que se orgulha de como o bar funciona e aparece. Pontualidade e comprometimento importam muito pra gente.</p>
           </div>
 
           <div>
