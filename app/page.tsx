@@ -13,13 +13,6 @@ export default function Home() {
           About
         </Link>
         <Link
-          href="/brands"
-          className="text-[#5c3317] text-xs hover:opacity-70 transition-opacity"
-          style={{ fontFamily: "Arial, sans-serif" }}
-        >
-          Brands
-        </Link>
-        <Link
           href="/collection-1"
           className="text-[#5c3317] text-xs hover:opacity-70 transition-opacity"
           style={{ fontFamily: "Arial, sans-serif" }}
