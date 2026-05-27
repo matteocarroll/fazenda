@@ -22,6 +22,14 @@ export default function Home() {
       </div>
       <div className="flex-1 flex flex-col items-center justify-center gap-6">
         <Image
+          src="/lead-buffalo.svg"
+          alt="Lead Buffalo"
+          width={80}
+          height={80}
+          className="w-auto h-auto max-w-[60px]"
+          priority
+        />
+        <Image
           src="/fazenda_logo_w2.png"
           alt="FAZENDA"
           width={400}
