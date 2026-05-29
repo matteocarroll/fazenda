@@ -20,8 +20,9 @@ export default function Store() {
         </div>
 
         <div className="flex flex-col gap-4 text-[#5c3317] text-xs leading-relaxed mb-10">
+          <a href="https://maps.app.goo.gl/BM4pyogg5gLuH4r7A" target="_blank" rel="noopener noreferrer" className="underline hover:opacity-70 transition-opacity">177 Mott Street, 10012</a>
           <p>Fazenda is a multibrand menswear store + cafe, opening summer 2026 (no ecommerce, in person only).</p>
-          <p>Our goal is to showcase founder/family run brands, with little distribution in the US. The way we like to describe overall style are brands that have their own authentic and creative style, that attract the right kind of attention (neither flashy nor basic).</p>
+          <p>We will showcase founder/family run brands, with little distribution in the US. The way we like to describe overall style are brands that have their own authentic and creative style, that attract the right kind of attention (neither flashy nor basic).</p>
           <p>You can see our current brands <Link href="/brands" className="underline hover:opacity-70 transition-opacity">here</Link>.</p>
           <p>Our store's design is Brazil-inspired. Matteo, the founder, is from Brazil. Fazenda means farm and fabric in portuguese.</p>
         </div>
