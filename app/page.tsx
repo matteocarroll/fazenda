@@ -37,6 +37,10 @@ export default function Home() {
           className="w-auto h-auto max-w-[180px]"
           priority
         />
+        <div className="flex flex-col items-center gap-1" style={{ fontFamily: "Arial, sans-serif" }}>
+          <p className="text-[#5c3317] text-xs">177 Mott Street, 10022, New York</p>
+          <p className="text-[#5c3317] text-xs">Opening Summer 2026</p>
+        </div>
         <p className="text-[#5c3317] text-xs" style={{ fontFamily: "Arial, sans-serif" }}>
           For product requests/help, please{" "}
           <a
