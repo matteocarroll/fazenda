@@ -1,0 +1,5 @@
+[
+  { "brand": "Example Brand", "style": "Example Shirt", "type": "Shirts", "colorway": "White", "units": 6, "image": "" },
+  { "brand": "Example Brand", "style": "Example Trouser", "type": "Trousers", "colorway": "Ecru", "units": 4, "image": "" },
+  { "brand": "Example Brand", "style": "Example Knit", "type": "Knitwear", "colorway": "Sand", "units": 5, "image": "" }
+]
