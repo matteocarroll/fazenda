@@ -25,7 +25,7 @@
   { "brand": "Kuro", "style": "Used Dyed Crew Neck Sweat", "type": "Knitwear", "colorway": "Yellow", "units": 7, "image": "kuro-crewneck-sweat-yellow" },
   { "brand": "Kuro", "style": "Used Dyed Crew Neck Sweat", "type": "Knitwear", "colorway": "Purple", "units": 7, "image": "kuro-crewneck-sweat-purple" },
   { "brand": "Kuro", "style": "Unintentional Form Corduroy Pants", "type": "Trousers", "colorway": "Yellow", "units": 2, "image": "kuro-corduroy-pants-yellow" },
-  { "brand": "Kuro", "style": "Dense VW001", "type": "Trousers", "colorway": "Faded Indigo", "units": 5, "image": "kuro-dense-vw001-fadedindigo" },
+  { "brand": "Kuro", "style": "Dense VW001", "type": "Outerwear", "colorway": "Faded Indigo", "units": 5, "image": "kuro-dense-vw001-fadedindigo" },
   { "brand": "Kuro", "style": "Used Dyed Crew Neck Sweat (Faded)", "type": "Knitwear", "colorway": "Faded Black", "units": 11, "image": "kuro-crewneck-sweat-fadedblack" },
 
   { "brand": "Labo.Art", "style": "Camicia Ezio", "type": "Shirts", "colorway": "Sasso", "units": 8, "image": "laboart-ezio-sasso" },
