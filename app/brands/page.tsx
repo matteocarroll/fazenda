@@ -3,6 +3,7 @@ import Link from "next/link"
 const brands = [
   "Altea",
   "Barena",
+  "Blue Blue Japan",
   "Cale",
   "Ciota",
   "Deadwood",
@@ -14,6 +15,7 @@ const brands = [
   "Labo Art",
   "Massimo Alba",
   "Misci",
+  "Osklen",
   "Purple Mountain Observatory",
   "Valstar",
   "Wax London",
