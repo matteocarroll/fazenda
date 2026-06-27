@@ -1,5 +1,24 @@
 [
-  { "brand": "Example Brand", "style": "Example Shirt", "type": "Shirts", "colorway": "White", "units": 6, "image": "" },
-  { "brand": "Example Brand", "style": "Example Trouser", "type": "Trousers", "colorway": "Ecru", "units": 4, "image": "" },
-  { "brand": "Example Brand", "style": "Example Knit", "type": "Knitwear", "colorway": "Sand", "units": 5, "image": "" }
+  { "brand": "Osklen", "style": "T-Shirt Light Linen MC", "type": "Shirts", "colorway": "Verde Musgo", "units": 14, "image": "osklen-70700-verdemusgo" },
+  { "brand": "Osklen", "style": "T-Shirt Light Linen São Sebastião MC", "type": "Shirts", "colorway": "Offwhite", "units": 14, "image": "osklen-77720-offwhite" },
+  { "brand": "Osklen", "style": "T-Shirt Cloudline MC", "type": "Shirts", "colorway": "Offwhite", "units": 14, "image": "osklen-77320-offwhite" },
+  { "brand": "Osklen", "style": "T-Shirt Light Linen Big Fish MC", "type": "Shirts", "colorway": "Offwhite", "units": 14, "image": "osklen-78662-offwhite" },
+  { "brand": "Osklen", "style": "T-Shirt Rustic E-Basic MC", "type": "Shirts", "colorway": "Marinho", "units": 14, "image": "osklen-77309-marinho" },
+  { "brand": "Osklen", "style": "Casaco Superlight Over Windbreaker", "type": "Outerwear", "colorway": "Marinho", "units": 14, "image": "osklen-77429-marinho" },
+  { "brand": "Osklen", "style": "Camisa Classic Linen ML", "type": "Shirts", "colorway": "Azul Claro", "units": 14, "image": "osklen-65613-azulclaro" },
+  { "brand": "Osklen", "style": "Camisa Classic Linen New MC", "type": "Shirts", "colorway": "Azul Claro", "units": 14, "image": "osklen-77760-azulclaro" },
+  { "brand": "Osklen", "style": "Camisa Over Navy Stripes ML", "type": "Shirts", "colorway": "Offwhite/Marinho", "units": 14, "image": "osklen-77845-offwhitemarinho" },
+  { "brand": "Osklen", "style": "Mochila Super Light Ripstop", "type": "Accessories", "colorway": "Preto/Offwhite", "units": 5, "image": "osklen-77154-pretoffwhite" },
+  { "brand": "Osklen", "style": "Camisa Classic Cotton MC", "type": "Shirts", "colorway": "Azul Médio", "units": 14, "image": "osklen-77818-azulmedio" },
+  { "brand": "Osklen", "style": "T-Shirt Over Knit Texture ML", "type": "Shirts", "colorway": "Offwhite", "units": 14, "image": "osklen-78392-offwhite" },
+  { "brand": "Osklen", "style": "Camisa Classic Linen Color ML", "type": "Shirts", "colorway": "Rosa Sal", "units": 14, "image": "osklen-78643-rossal" },
+  { "brand": "Osklen", "style": "Camisa Over Wrinkled Cotton ML", "type": "Shirts", "colorway": "Cru", "units": 14, "image": "osklen-76385-cru" },
+  { "brand": "Osklen", "style": "Camisa Jacquard Silk ML", "type": "Shirts", "colorway": "Offwhite", "units": 14, "image": "osklen-78082-offwhite" },
+  { "brand": "Osklen", "style": "Short Resort Aquaone Flex Itaguaré", "type": "Trousers", "colorway": "Preto", "units": 16, "image": "osklen-71393-preto" },
+  { "brand": "Osklen", "style": "Bermuda Surf Aquaone Ripstop", "type": "Trousers", "colorway": "Preto", "units": 14, "image": "osklen-75628-preto" },
+  { "brand": "Osklen", "style": "Beach Short Litoral Stripes", "type": "Trousers", "colorway": "Cacau/Areia", "units": 14, "image": "osklen-74287-cacauareia" },
+  { "brand": "Osklen", "style": "Short Double Superlight", "type": "Trousers", "colorway": "Preto/Marinho", "units": 14, "image": "osklen-77220-pretomarinho" },
+  { "brand": "Osklen", "style": "Beach Short 4-Way Flex Annapurna", "type": "Trousers", "colorway": "Marinho", "units": 14, "image": "osklen-77188-marinho" },
+  { "brand": "Osklen", "style": "Beach Short New Aquaone Flex", "type": "Trousers", "colorway": "Preto", "units": 14, "image": "osklen-70642-preto-ss27" },
+  { "brand": "Osklen", "style": "Calça Judô Linen", "type": "Trousers", "colorway": "Cacau", "units": 12, "image": "osklen-77542-cacau" }
 ]

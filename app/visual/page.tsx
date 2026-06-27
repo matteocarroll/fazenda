@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from "react";
 import Image from "next/image";
+import ss26Data from "@/data/ss26.json";
 import fw26Data from "@/data/fw26.json";
 import ss27Data from "@/data/ss27.json";
 
@@ -17,6 +18,7 @@ type Item = {
 type Season = { key: string; label: string; data: Item[] };
 
 const SEASONS: Season[] = [
+  { key: "ss26", label: "SS26", data: ss26Data as Item[] },
   { key: "fw26", label: "FW26", data: fw26Data as Item[] },
   { key: "ss27", label: "SS27", data: ss27Data as Item[] },
 ];
