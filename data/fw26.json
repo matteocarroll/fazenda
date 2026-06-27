@@ -39,5 +39,16 @@
   { "brand": "Labo.Art", "style": "Giacca Ovest", "type": "Outerwear", "colorway": "Sasso", "units": 7, "image": "laboart-ovest-sasso" },
   { "brand": "Labo.Art", "style": "Basica LS", "type": "Knitwear", "colorway": "Atlantic", "units": 7, "image": "laboart-basica-atlantic" },
   { "brand": "Labo.Art", "style": "Basica LS", "type": "Knitwear", "colorway": "Cacao", "units": 7, "image": "laboart-basica-cacao" },
-  { "brand": "Labo.Art", "style": "Giacca Giulio", "type": "Outerwear", "colorway": "Sasso", "units": 6, "image": "laboart-giulio-sasso" }
+  { "brand": "Labo.Art", "style": "Giacca Giulio", "type": "Outerwear", "colorway": "Sasso", "units": 6, "image": "laboart-giulio-sasso" },
+
+  { "brand": "Valstar", "style": "Ian Padded Jacket", "type": "Outerwear", "colorway": "Caffè", "units": 7, "image": "valstar-ian-padded-jacket-caffe" },
+  { "brand": "Valstar", "style": "Ian Padded Jacket", "type": "Outerwear", "colorway": "Basil", "units": 7, "image": "valstar-ian-padded-jacket-basil" },
+  { "brand": "Valstar", "style": "Ian Padded Jacket", "type": "Outerwear", "colorway": "Liquiriza", "units": 7, "image": "valstar-ian-padded-jacket-liquiriza" },
+  { "brand": "Valstar", "style": "Cudden Goose Down Padded Aviator Jacket", "type": "Outerwear", "colorway": "Caffè", "units": 7, "image": "valstar-cudden-aviator-jacket-caffe" },
+  { "brand": "Valstar", "style": "Cudden Goose Down Padded Aviator Jacket", "type": "Outerwear", "colorway": "Liquirizia", "units": 7, "image": "valstar-cudden-aviator-jacket-liquirizia" },
+  { "brand": "Valstar", "style": "Deer Leather Duke Jacket", "type": "Outerwear", "colorway": "Natural", "units": 7, "image": "valstar-deer-leather-duke-jacket-whichever" },
+  { "brand": "Valstar", "style": "Smith Padded Aviator Jacket", "type": "Outerwear", "colorway": "Marrone", "units": 7, "image": "valstar-smith-padded-aviator-jacket-marrone" },
+  { "brand": "Valstar", "style": "Parker Trench Coat", "type": "Outerwear", "colorway": "Navy", "units": 7, "image": "valstar-parker-trench-coat-navy" },
+  { "brand": "Valstar", "style": "Alan Goose Down Vest", "type": "Outerwear", "colorway": "Sandal", "units": 7, "image": "valstar-alan-goose-down-vest-sandal" },
+  { "brand": "Valstar", "style": "Colin Padded Bomber Jacket", "type": "Outerwear", "colorway": "Cardamomo", "units": 6, "image": "valstar-colin-padded-bomber-jacket-cardamomo" }
 ]
