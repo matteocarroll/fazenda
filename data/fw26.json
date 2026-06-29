@@ -120,5 +120,19 @@
   { "brand": "Cale", "style": "Sheep Suede Jacket", "type": "Outerwear", "colorway": "Red-Brown", "units": 14, "image": "cale-c263l02" },
   { "brand": "Cale", "style": "Glove Leather Jacket", "type": "Outerwear", "colorway": "Black", "units": 8, "image": "cale-c263l03" },
   { "brand": "Cale", "style": "Super 120 Air-Wool Fleece Shirt", "type": "Shirts", "colorway": "Blue-Gray", "units": 6, "image": "cale-c263u02" },
-  { "brand": "Cale", "style": "Royal Baby Alpaca Smooth Shirt", "type": "Shirts", "colorway": "Light Gray", "units": 4, "image": "cale-c263u03" }
+  { "brand": "Cale", "style": "Royal Baby Alpaca Smooth Shirt", "type": "Shirts", "colorway": "Light Gray", "units": 4, "image": "cale-c263u03" },
+
+  { "brand": "Ciota", "style": "Moleskin French Work Jacket (One Wash)", "type": "Outerwear", "colorway": "Navy", "units": 6, "image": "ciota-jklm160ow-navy" },
+  { "brand": "Ciota", "style": "Moleskin French Work Jacket (One Wash)", "type": "Outerwear", "colorway": "Black", "units": 6, "image": "ciota-jklm160ow-black" },
+  { "brand": "Ciota", "style": "Cotton-Nylon Back-Sateen M-1965 Field Jacket (Stone Wash)", "type": "Outerwear", "colorway": "Dark Olive", "units": 6, "image": "ciota-jklm156sw-darkolive" },
+  { "brand": "Ciota", "style": "Cotton-Nylon Back-Sateen M-1965 Field Jacket (Stone Wash)", "type": "Outerwear", "colorway": "Black", "units": 6, "image": "ciota-jklm156sw-black" },
+  { "brand": "Ciota", "style": "Wide-Wale Corduroy 2 Tuck Pants (One Wash)", "type": "Trousers", "colorway": "Charcoal Gray", "units": 10, "image": "ciota-ptlm194ow-charcoalgray" },
+  { "brand": "Ciota", "style": "Wide-Wale Corduroy 2 Tuck Pants (One Wash)", "type": "Trousers", "colorway": "Black", "units": 10, "image": "ciota-ptlm194ow-black" },
+  { "brand": "Ciota", "style": "Fine-Wale Corduroy Baggy 5 Pocket Pants (One Wash)", "type": "Trousers", "colorway": "Navy", "units": 10, "image": "ciota-ptlm172ow-navy" },
+  { "brand": "Ciota", "style": "Fine-Wale Corduroy Baker Pants Baggy (One Wash)", "type": "Trousers", "colorway": "Navy", "units": 10, "image": "ciota-ptlm195ow-navy" },
+  { "brand": "Ciota", "style": "Cotton Back-Sateen Baker Pants Wide Tapered (One Wash)", "type": "Trousers", "colorway": "Dark Olive", "units": 10, "image": "ciota-ptlm129ow-darkolive" },
+  { "brand": "Ciota", "style": "Cotton Back-Sateen Baker Pants Wide Tapered (One Wash)", "type": "Trousers", "colorway": "Black", "units": 10, "image": "ciota-ptlm129ow-black" },
+  { "brand": "Ciota", "style": "Double Pocket Denim Jacket", "type": "Outerwear", "colorway": "Medium Black", "units": 6, "image": "ciota-jklm302mbk-medblack" },
+  { "brand": "Ciota", "style": "Denim Painter Pants", "type": "Trousers", "colorway": "Medium Black", "units": 8, "image": "ciota-ptlm14paw-medblack" },
+  { "brand": "Ciota", "style": "Denim Slacks", "type": "Trousers", "colorway": "Dark Navy", "units": 10, "image": "ciota-ptlm16dsw-darknavy" }
 ]
