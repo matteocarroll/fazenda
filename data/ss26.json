@@ -3,5 +3,10 @@
   { "brand": "Osklen", "style": "Calça Alfaiataria Fluid Linen", "type": "Trousers", "colorway": "Preto", "units": 11, "image": "osklen-52300-preto" },
   { "brand": "Osklen", "style": "Calça Alfaiataria Fluid Linen", "type": "Trousers", "colorway": "Chino", "units": 11, "image": "osklen-52300-chino" },
   { "brand": "Osklen", "style": "Calça Tokyo Pleats", "type": "Trousers", "colorway": "Preto", "units": 6, "image": "osklen-74883-preto" },
-  { "brand": "Osklen", "style": "Camisa Classic Linen ML", "type": "Shirts", "colorway": "Natural", "units": 10, "image": "osklen-75614-natural" }
+  { "brand": "Osklen", "style": "Camisa Classic Linen ML", "type": "Shirts", "colorway": "Natural", "units": 10, "image": "osklen-75614-natural" },
+
+  { "brand": "Erevan", "style": "Pantalon Capon Jacquard Rayure", "type": "Trousers", "colorway": "Azur", "units": 8, "image": "erevan-24-p-b-pan-3-352-bleu" },
+  { "brand": "Erevan", "style": "Vareuse La Ponche Jacquard", "type": "Shirts", "colorway": "Blanc", "units": 12, "image": "erevan-24-p-h-var-1-371-blanc" },
+  { "brand": "Erevan", "style": "Pantalon Capon Oxford", "type": "Trousers", "colorway": "Azur", "units": 8, "image": "erevan-25-p-b-pan-3-830-azur" },
+  { "brand": "Erevan", "style": "Vareuse La Ponche Jacquard Carreaux", "type": "Shirts", "colorway": "Azur", "units": 9, "image": "" }
 ]
