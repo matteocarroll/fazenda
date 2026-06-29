@@ -134,5 +134,16 @@
   { "brand": "Ciota", "style": "Cotton Back-Sateen Baker Pants Wide Tapered (One Wash)", "type": "Trousers", "colorway": "Black", "units": 10, "image": "ciota-ptlm129ow-black" },
   { "brand": "Ciota", "style": "Double Pocket Denim Jacket", "type": "Outerwear", "colorway": "Medium Black", "units": 6, "image": "ciota-jklm302mbk-medblack" },
   { "brand": "Ciota", "style": "Denim Painter Pants", "type": "Trousers", "colorway": "Medium Black", "units": 8, "image": "ciota-ptlm14paw-medblack" },
-  { "brand": "Ciota", "style": "Denim Slacks", "type": "Trousers", "colorway": "Dark Navy", "units": 10, "image": "ciota-ptlm16dsw-darknavy" }
+  { "brand": "Ciota", "style": "Denim Slacks", "type": "Trousers", "colorway": "Dark Navy", "units": 10, "image": "ciota-ptlm16dsw-darknavy" },
+
+  { "brand": "Erevan", "style": "Veste Camargue Nubuck", "type": "Outerwear", "colorway": "Castano", "units": 11, "image": "erevan-veste-camargue-nubuck-castano" },
+  { "brand": "Erevan", "style": "Vareuse La Ponche Mérinos", "type": "Knitwear", "colorway": "Burgundy", "units": 12, "image": "erevan-vareuse-merinos-burgundy" },
+  { "brand": "Erevan", "style": "Vareuse La Ponche Mérinos", "type": "Knitwear", "colorway": "Navy", "units": 12, "image": "erevan-vareuse-merinos-navy" },
+  { "brand": "Erevan", "style": "Veste Camargue Cashmere", "type": "Outerwear", "colorway": "Navy", "units": 11, "image": "erevan-veste-camargue-cashmere-navy" },
+  { "brand": "Erevan", "style": "Veste 8A Cashmere", "type": "Outerwear", "colorway": "Burgundy", "units": 9, "image": "erevan-veste-8a-cashmere-burgundy" },
+  { "brand": "Erevan", "style": "Chemise Oxford Stripe", "type": "Shirts", "colorway": "Purple", "units": 9, "image": "erevan-chemise-oxford-stripe-purple" },
+  { "brand": "Erevan", "style": "L43 Cashmere Pants", "type": "Trousers", "colorway": "Cream", "units": 10, "image": "erevan-l43-pants-cream" },
+  { "brand": "Erevan", "style": "L43 Cashmere Pants", "type": "Trousers", "colorway": "Blue", "units": 10, "image": "erevan-l43-pants-blue" },
+  { "brand": "Erevan", "style": "L43 Cashmere Pants", "type": "Trousers", "colorway": "Brown", "units": 10, "image": "erevan-l43-pants-brown" },
+  { "brand": "Erevan", "style": "Pantalon Capon Jacquard Rayure", "type": "Trousers", "colorway": "Navy", "units": 6, "image": "erevan-pantalon-capon-jacquard-navy" }
 ]
