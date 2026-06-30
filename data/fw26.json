@@ -145,5 +145,15 @@
   { "brand": "Erevan", "style": "L43 Cashmere Pants", "type": "Trousers", "colorway": "Cream", "units": 10, "image": "erevan-l43-pants-cream" },
   { "brand": "Erevan", "style": "L43 Cashmere Pants", "type": "Trousers", "colorway": "Blue", "units": 10, "image": "erevan-l43-pants-blue" },
   { "brand": "Erevan", "style": "L43 Cashmere Pants", "type": "Trousers", "colorway": "Brown", "units": 10, "image": "erevan-l43-pants-brown" },
-  { "brand": "Erevan", "style": "Pantalon Capon Jacquard Rayure", "type": "Trousers", "colorway": "Navy", "units": 6, "image": "erevan-pantalon-capon-jacquard-navy" }
+  { "brand": "Erevan", "style": "Pantalon Capon Jacquard Rayure", "type": "Trousers", "colorway": "Navy", "units": 6, "image": "erevan-pantalon-capon-jacquard-navy" },
+
+  { "brand": "Husbands", "style": "Knit Tie in Silk", "type": "Accessories", "colorway": "Black", "units": 5, "image": "husbands-knittie-black" },
+  { "brand": "Husbands", "style": "Thin Belt in Nappa Calfskin", "type": "Accessories", "colorway": "Black", "units": 12, "image": "husbands-belt-nappa-black" },
+  { "brand": "Husbands", "style": "Thin Belt in Crackled Patent Calfskin", "type": "Accessories", "colorway": "Black", "units": 10, "image": "husbands-belt-patent-black" },
+  { "brand": "Husbands", "style": "Crewneck Sweater in Brushed Superfine Alpaca Blend", "type": "Knitwear", "colorway": "Cream", "units": 10, "image": "husbands-crewneck-alpaca-cream" },
+  { "brand": "Husbands", "style": "Crewneck Sweater in Brushed Superfine Alpaca Blend", "type": "Knitwear", "colorway": "Blush", "units": 10, "image": "husbands-crewneck-alpaca-blush" },
+  { "brand": "Husbands", "style": "Crewneck Sweater in Brushed Superfine Alpaca Blend", "type": "Knitwear", "colorway": "Ink", "units": 6, "image": "husbands-crewneck-alpaca-ink" },
+  { "brand": "Husbands", "style": "Turtleneck Sweater in Cashmere", "type": "Knitwear", "colorway": "Dark Chocolate", "units": 10, "image": "husbands-turtleneck-cashmere-darkchocolate" },
+  { "brand": "Husbands", "style": "Western Shirt in Cotton Denim", "type": "Shirts", "colorway": "Light Blue Stone Wash", "units": 8, "image": "husbands-western-shirt-lightblue" },
+  { "brand": "Husbands", "style": "Trench Coat in Polyester & Cotton Gabardine", "type": "Outerwear", "colorway": "Putty", "units": 8, "image": "husbands-trench-putty" }
 ]
