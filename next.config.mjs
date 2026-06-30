@@ -3,6 +3,10 @@ const nextConfig = {
   async rewrites() {
     return [
       {
+        source: '/potracker',
+        destination: '/potracker.html',
+      },
+      {
         source: '/shopifyimport',
         destination: 'https://fazenda-order-import.vercel.app/',
       },

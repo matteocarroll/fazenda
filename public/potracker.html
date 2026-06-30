@@ -1,0 +1,1187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PO Payment Tracker</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #f7f6f3;
+    --surface: #ffffff;
+    --border: #e8e5e0;
+    --border-light: #f0ede8;
+    --text: #1a1a18;
+    --text-muted: #8a8780;
+    --text-light: #b8b5b0;
+    --accent: #2c2c2a;
+    --blue: #3b6fd4;
+    --blue-light: #e8eef9;
+    --green: #2d7d5a;
+    --green-light: #e6f4ed;
+    --red: #c0392b;
+    --red-light: #fbeae8;
+    --amber: #b8860b;
+    --amber-light: #fdf5e0;
+    --radius: 8px;
+    --radius-sm: 5px;
+    --shadow: 0 1px 3px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.04);
+    --shadow-md: 0 4px 12px rgba(0,0,0,0.08), 0 2px 4px rgba(0,0,0,0.05);
+  }
+
+  body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 14px;
+    line-height: 1.5;
+    min-height: 100vh;
+  }
+
+  /* ── Header ── */
+  .app-header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 60px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .app-title { font-size: 15px; font-weight: 600; letter-spacing: -0.01em; }
+  .app-title span { color: var(--text-muted); font-weight: 400; }
+  .header-actions { display: flex; gap: 8px; align-items: center; }
+
+  /* ── Buttons ── */
+  .btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 7px 14px; border-radius: var(--radius-sm);
+    font-size: 13px; font-weight: 500; font-family: inherit;
+    cursor: pointer; border: 1px solid transparent;
+    transition: all 0.15s; text-decoration: none; white-space: nowrap;
+  }
+  .btn-primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .btn-primary:hover { background: #383836; }
+  .btn-ghost { background: transparent; color: var(--text-muted); border-color: var(--border); }
+  .btn-ghost:hover { background: var(--bg); color: var(--text); }
+  .btn-icon {
+    background: transparent; border: none; cursor: pointer;
+    color: var(--text-muted); padding: 6px; border-radius: var(--radius-sm);
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.12s;
+  }
+  .btn-icon:hover { background: var(--bg); color: var(--text); }
+  .btn-sm { padding: 4px 9px; font-size: 12px; }
+  .btn-pay-deposit { background: var(--blue-light); color: var(--blue); border-color: transparent; }
+  .btn-pay-deposit:hover { background: #dce6f7; }
+  .btn-pay-final { background: var(--green-light); color: var(--green); border-color: transparent; }
+  .btn-pay-final:hover { background: #d5eddf; }
+  .btn-danger { background: transparent; color: var(--red); border-color: transparent; }
+  .btn-danger:hover { background: var(--red-light); }
+  .btn-unpay { background: transparent; color: var(--text-light); border-color: transparent; font-size: 11px; }
+  .btn-unpay:hover { color: var(--text-muted); }
+
+  /* ── Main ── */
+  .main { max-width: 1280px; margin: 0 auto; padding: 28px 32px; }
+
+  /* ── Stats ── */
+  .stats-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 28px; }
+  .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 20px; box-shadow: var(--shadow); }
+  .stat-label { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); margin-bottom: 8px; }
+  .stat-value { font-size: 22px; font-weight: 600; letter-spacing: -0.02em; color: var(--text); line-height: 1.1; }
+  .stat-sub { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+  .stat-card.highlight .stat-value { color: var(--blue); }
+
+  /* ── Controls ── */
+  .controls { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; gap: 12px; }
+  .filter-tabs { display: flex; gap: 2px; background: var(--border-light); border-radius: var(--radius-sm); padding: 3px; }
+  .filter-tab {
+    padding: 5px 12px; border-radius: 4px; font-size: 13px; font-weight: 500;
+    cursor: pointer; color: var(--text-muted); border: none; background: transparent;
+    font-family: inherit; transition: all 0.12s;
+  }
+  .filter-tab.active { background: var(--surface); color: var(--text); box-shadow: var(--shadow); }
+  .sort-control { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-muted); }
+  .sort-control select {
+    font-family: inherit; font-size: 13px; border: 1px solid var(--border);
+    border-radius: var(--radius-sm); padding: 5px 10px; background: var(--surface);
+    color: var(--text); cursor: pointer; outline: none;
+  }
+
+  /* ── Table ── */
+  .po-table-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; }
+  .po-table { width: 100%; border-collapse: collapse; }
+  .po-table th {
+    text-align: left; font-size: 11px; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.06em; color: var(--text-muted); padding: 12px 16px;
+    background: var(--bg); border-bottom: 1px solid var(--border);
+  }
+  .po-table td { padding: 10px 16px; border-bottom: 1px solid var(--border-light); vertical-align: top; }
+  .po-table tr:last-child td { border-bottom: none; }
+  .po-table tr:hover td { background: #faf9f7; }
+  .po-brand { font-weight: 600; font-size: 12px; }
+  .po-number { font-size: 11px; color: var(--text-muted); margin-top: 1px; }
+  .po-amount { font-weight: 600; font-size: 12px; }
+  .po-notes { font-size: 11px; color: var(--text-muted); max-width: 140px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .po-file { font-size: 10px; color: var(--blue); margin-top: 1px; }
+  .type-badge { display: inline-block; font-size: 11px; font-weight: 600; letter-spacing: 0.04em; color: var(--text); background: var(--border-light); border: 1px solid var(--border); padding: 1px 7px; border-radius: 4px; }
+  .payment-cell { min-width: 140px; }
+  .payment-amount { font-weight: 500; font-size: 12px; }
+  .payment-date { font-size: 11px; color: var(--text-muted); margin-top: 1px; }
+  .payment-actions { margin-top: 6px; display: flex; gap: 5px; flex-wrap: wrap; }
+
+  /* ── Badges ── */
+  .badge { display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; border-radius: 20px; font-size: 11px; font-weight: 600; letter-spacing: 0.02em; }
+  .badge-paid { background: var(--green-light); color: var(--green); }
+  .badge-due { background: var(--amber-light); color: var(--amber); }
+  .badge-overdue { background: var(--red-light); color: var(--red); }
+  .badge-active { background: var(--blue-light); color: var(--blue); }
+  .badge-upcoming { background: #f0ede8; color: var(--text-muted); }
+
+  /* ── Progress ── */
+  .progress-wrap { min-width: 160px; }
+  .progress-bar-outer { height: 6px; background: #ede9e3; border-radius: 3px; overflow: hidden; margin-bottom: 5px; }
+  .progress-bar-fill { height: 100%; border-radius: 3px; transition: width 0.4s ease; }
+  .fill-none { background: #ede9e3; }
+  .fill-deposit { background: var(--blue); }
+  .fill-paid { background: var(--green); }
+  .fill-overdue { background: var(--red); }
+  .progress-label { font-size: 11px; color: var(--text-muted); }
+  .timeline-wrap { position: relative; height: 18px; margin-top: 8px; }
+  .timeline-track { position: absolute; top: 50%; left: 0; right: 0; height: 1px; background: var(--border); transform: translateY(-50%); }
+  .timeline-marker { position: absolute; top: 50%; transform: translate(-50%, -50%); width: 7px; height: 7px; border-radius: 50%; border: 1.5px solid var(--surface); }
+  .timeline-marker.deposit { background: var(--blue); }
+  .timeline-marker.final { background: var(--green); }
+  .timeline-marker.delivery { background: var(--text-muted); }
+  .po-row-actions { display: flex; gap: 4px; }
+
+  /* ── Empty State ── */
+  .empty-state { padding: 60px 20px; text-align: center; color: var(--text-muted); }
+  .empty-state svg { margin-bottom: 14px; opacity: 0.35; }
+  .empty-state h3 { font-size: 15px; font-weight: 500; margin-bottom: 6px; color: var(--text); }
+  .empty-state p { font-size: 13px; }
+
+  /* ── Modal ── */
+  .modal-backdrop {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.35); backdrop-filter: blur(2px);
+    z-index: 200; display: flex; align-items: center; justify-content: center;
+    padding: 20px; opacity: 0; pointer-events: none; transition: opacity 0.2s;
+  }
+  .modal-backdrop.open { opacity: 1; pointer-events: all; }
+  .modal {
+    background: var(--surface); border-radius: 12px; box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+    width: 100%; max-width: 580px; max-height: 92vh; overflow-y: auto;
+    transform: translateY(10px); transition: transform 0.2s;
+  }
+  .modal-backdrop.open .modal { transform: translateY(0); }
+  .modal-header { padding: 22px 24px 0; display: flex; align-items: center; justify-content: space-between; }
+  .modal-title { font-size: 16px; font-weight: 600; }
+  .modal-close {
+    width: 28px; height: 28px; border-radius: 50%; border: none; background: var(--bg);
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    color: var(--text-muted); font-size: 18px; line-height: 1; transition: background 0.12s;
+  }
+  .modal-close:hover { background: var(--border); }
+  .modal-body { padding: 20px 24px 24px; }
+
+  /* ── Upload Zone ── */
+  .upload-zone {
+    border: 1.5px dashed var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.15s;
+    margin-bottom: 20px;
+    position: relative;
+    background: var(--bg);
+  }
+  .upload-zone:hover, .upload-zone.dragover { border-color: var(--blue); background: var(--blue-light); }
+  .upload-zone input[type="file"] {
+    position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%;
+  }
+  .upload-zone-icon { margin-bottom: 8px; color: var(--text-muted); }
+  .upload-zone-label { font-size: 13px; font-weight: 500; color: var(--text); margin-bottom: 3px; }
+  .upload-zone-sub { font-size: 12px; color: var(--text-muted); }
+  .upload-zone.has-file { border-color: var(--green); background: var(--green-light); }
+  .upload-zone.has-file .upload-zone-icon { color: var(--green); }
+  .upload-zone.has-file .upload-zone-label { color: var(--green); }
+  .upload-zone.has-file .upload-zone-sub { color: var(--green); opacity: 0.8; }
+  .upload-zone.parsing { border-color: var(--blue); background: var(--blue-light); pointer-events: none; }
+
+  /* Parsing shimmer */
+  .parsing-indicator {
+    display: none;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--blue);
+    font-weight: 500;
+    margin-bottom: 14px;
+    padding: 10px 14px;
+    background: var(--blue-light);
+    border-radius: var(--radius-sm);
+  }
+  .parsing-indicator.visible { display: flex; }
+  .spin {
+    width: 14px; height: 14px; border: 2px solid rgba(59,111,212,0.25);
+    border-top-color: var(--blue); border-radius: 50%;
+    animation: spin 0.7s linear infinite; flex-shrink: 0;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* AI-filled field highlight */
+  .ai-filled {
+    border-color: var(--blue) !important;
+    background: #f5f8ff !important;
+  }
+  .ai-filled-label {
+    display: inline-flex; align-items: center; gap: 4px;
+    font-size: 10px; color: var(--blue); font-weight: 500;
+    text-transform: uppercase; letter-spacing: 0.04em; margin-left: 5px;
+  }
+  .ai-note {
+    grid-column: 1 / -1;
+    font-size: 12px; color: var(--text-muted);
+    padding: 9px 12px; background: var(--blue-light);
+    border-radius: var(--radius-sm); display: none;
+  }
+  .ai-note.visible { display: block; }
+
+  /* ── Form ── */
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .form-group { display: flex; flex-direction: column; gap: 5px; }
+  .form-group.full { grid-column: 1 / -1; }
+  label {
+    font-size: 12px; font-weight: 500; color: var(--text-muted);
+    text-transform: uppercase; letter-spacing: 0.05em;
+    display: flex; align-items: center; gap: 0;
+  }
+  input, textarea, select {
+    font-family: inherit; font-size: 14px; border: 1px solid var(--border);
+    border-radius: var(--radius-sm); padding: 8px 10px; color: var(--text);
+    background: var(--surface); outline: none; transition: border-color 0.12s, background 0.12s; width: 100%;
+  }
+  input:focus, textarea:focus, select:focus { border-color: #999; }
+  textarea { resize: vertical; min-height: 70px; }
+  .form-divider { grid-column: 1 / -1; border: none; border-top: 1px solid var(--border-light); margin: 2px 0; }
+  .calc-preview {
+    grid-column: 1 / -1; background: var(--bg); border-radius: var(--radius-sm);
+    padding: 12px 14px; font-size: 13px; color: var(--text-muted); display: flex; gap: 20px;
+  }
+  .calc-preview strong { color: var(--text); }
+  .form-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 20px; }
+
+  /* ── Settings Modal ── */
+  .settings-section { margin-bottom: 20px; }
+  .settings-section h3 { font-size: 13px; font-weight: 600; margin-bottom: 12px; color: var(--text); }
+  .settings-row { display: flex; gap: 8px; }
+  .settings-row input { flex: 1; }
+  .api-key-status {
+    font-size: 12px; margin-top: 6px; display: flex; align-items: center; gap: 5px;
+  }
+  .api-key-status.set { color: var(--green); }
+  .api-key-status.unset { color: var(--text-muted); }
+  .settings-info {
+    font-size: 12px; color: var(--text-muted); line-height: 1.6;
+    background: var(--bg); padding: 10px 12px; border-radius: var(--radius-sm); margin-top: 10px;
+  }
+  .settings-info a { color: var(--blue); text-decoration: none; }
+  .settings-info a:hover { text-decoration: underline; }
+
+  /* ── Toast ── */
+  .toast-container { position: fixed; bottom: 24px; right: 24px; z-index: 500; display: flex; flex-direction: column; gap: 8px; }
+  .toast { background: var(--accent); color: #fff; padding: 10px 16px; border-radius: var(--radius); font-size: 13px; box-shadow: var(--shadow-md); animation: toastIn 0.2s ease, toastOut 0.3s ease 2.5s forwards; }
+  .toast.error { background: var(--red); }
+  @keyframes toastIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+  @keyframes toastOut { to { opacity: 0; transform: translateY(8px); } }
+
+  /* ── Responsive ── */
+  @media (max-width: 900px) {
+    .stats-grid { grid-template-columns: repeat(3, 1fr); }
+    .main { padding: 20px 16px; }
+    .app-header { padding: 0 16px; }
+    .po-table th:nth-child(7), .po-table td:nth-child(7) { display: none; }
+  }
+  @media (max-width: 600px) {
+    .stats-grid { grid-template-columns: 1fr 1fr; }
+    .form-grid { grid-template-columns: 1fr; }
+    .form-group.full { grid-column: auto; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="app-header">
+  <div class="app-title">PO Tracker <span>/ Menswear</span></div>
+  <div class="header-actions">
+    <button class="btn-icon" onclick="openSettings()" title="Settings">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+        <circle cx="8" cy="8" r="2.2" stroke="currentColor" stroke-width="1.4"/>
+        <path d="M8 1v1.5M8 13.5V15M15 8h-1.5M2.5 8H1M12.7 3.3l-1.06 1.06M4.36 11.64l-1.06 1.06M12.7 12.7l-1.06-1.06M4.36 4.36L3.3 3.3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+      </svg>
+    </button>
+    <button class="btn btn-primary" onclick="openModal()">
+      <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M7 1v12M1 7h12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      New PO
+    </button>
+  </div>
+</header>
+
+<!-- Main -->
+<main class="main">
+  <div class="stats-grid" id="stats"></div>
+  <div class="controls">
+    <div class="filter-tabs">
+      <button class="filter-tab active" onclick="setFilter('all', this)">All</button>
+      <button class="filter-tab" onclick="setFilter('active', this)">Active</button>
+      <button class="filter-tab" onclick="setFilter('overdue', this)">Overdue</button>
+      <button class="filter-tab" onclick="setFilter('paid', this)">Fully Paid</button>
+    </div>
+    <div class="sort-control">
+      <span>Sort by</span>
+      <select id="sortSelect" onchange="onSortChange()">
+        <option value="created" selected>Date added (newest)</option>
+        <option value="nextDue">Next payment due</option>
+        <option value="delivery">Delivery date</option>
+        <option value="brand">Brand name</option>
+        <option value="amount">Total amount</option>
+      </select>
+    </div>
+  </div>
+  <div class="po-table-wrap">
+    <table class="po-table">
+      <thead>
+        <tr>
+          <th>Brand / PO</th>
+          <th>Type</th>
+          <th>Total</th>
+          <th>Deposit</th>
+          <th>Final Payment</th>
+          <th>Delivery</th>
+          <th>Progress</th>
+          <th>Status</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="poTableBody"></tbody>
+    </table>
+    <div id="emptyState" class="empty-state" style="display:none">
+      <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+        <rect x="6" y="4" width="28" height="32" rx="3" stroke="#1a1a18" stroke-width="1.5"/>
+        <path d="M13 14h14M13 20h14M13 26h8" stroke="#1a1a18" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+      <h3>No purchase orders yet</h3>
+      <p>Add your first PO to start tracking payments and delivery timelines.</p>
+    </div>
+  </div>
+</main>
+
+<!-- PO Modal -->
+<div class="modal-backdrop" id="modalBackdrop" onclick="handleBackdropClick(event)">
+  <div class="modal" id="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="modalTitle">New Purchase Order</div>
+      <button class="modal-close" onclick="closeModal()">×</button>
+    </div>
+    <div class="modal-body">
+
+      <!-- Upload zone -->
+      <div class="upload-zone" id="uploadZone"
+           ondragover="handleDragOver(event)"
+           ondragleave="handleDragLeave(event)"
+           ondrop="handleDrop(event)">
+        <input type="file" id="fFile" accept=".pdf,.png,.jpg,.jpeg" onchange="handleFileChange(event)">
+        <div class="upload-zone-icon" id="uploadIcon">
+          <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+            <rect x="3" y="2" width="14" height="18" rx="2" stroke="currentColor" stroke-width="1.4"/>
+            <path d="M7 7h8M7 10.5h8M7 14h5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+            <path d="M14 16.5v4m0 0l-1.5-1.5M14 20.5l1.5-1.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="upload-zone-label" id="uploadLabel">Upload PO document to auto-fill</div>
+        <div class="upload-zone-sub" id="uploadSub">PDF, PNG or JPG — Claude reads it and fills the form</div>
+      </div>
+
+      <!-- Parsing status -->
+      <div class="parsing-indicator" id="parsingIndicator">
+        <div class="spin"></div>
+        <span id="parsingMsg">Reading document…</span>
+      </div>
+
+      <!-- Form -->
+      <div class="form-grid">
+        <div class="ai-note" id="aiNote">
+          ✦ Fields highlighted in blue were extracted from the document — review and edit anything before saving.
+        </div>
+
+        <div class="form-group">
+          <label>Brand Name * <span class="ai-filled-label" id="lBrand" style="display:none">✦ AI</span></label>
+          <input type="text" id="fBrand" placeholder="e.g. Loro Piana" oninput="clearAiFill('fBrand','lBrand')">
+        </div>
+        <div class="form-group">
+          <label>PO Number <span class="ai-filled-label" id="lPoNum" style="display:none">✦ AI</span></label>
+          <input type="text" id="fPoNum" placeholder="e.g. LP-2024-001" oninput="clearAiFill('fPoNum','lPoNum')">
+        </div>
+        <div class="form-group">
+          <label>Total Order Amount (USD) * <span class="ai-filled-label" id="lTotal" style="display:none">✦ AI</span></label>
+          <input type="number" id="fTotal" placeholder="0.00" min="0" step="0.01" oninput="updateCalc(); clearAiFill('fTotal','lTotal')">
+        </div>
+        <div class="form-group">
+          <label>Deposit Amount (USD) * <span class="ai-filled-label" id="lDeposit" style="display:none">✦ AI</span></label>
+          <input type="number" id="fDeposit" placeholder="0.00" min="0" step="0.01" oninput="updateCalc(); clearAiFill('fDeposit','lDeposit')">
+        </div>
+        <div class="calc-preview" id="calcPreview" style="display:none">
+          <span>Final payment: <strong id="calcFinal">—</strong></span>
+          <span>Deposit: <strong id="calcPct">—</strong> of total</span>
+        </div>
+        <hr class="form-divider">
+        <div class="form-group">
+          <label>Deposit Due Date * <span class="ai-filled-label" id="lDepositDate" style="display:none">✦ AI</span></label>
+          <input type="date" id="fDepositDate" oninput="clearAiFill('fDepositDate','lDepositDate')">
+        </div>
+        <div class="form-group">
+          <label>Final Payment Due Date * <span class="ai-filled-label" id="lFinalDate" style="display:none">✦ AI</span></label>
+          <input type="date" id="fFinalDate" oninput="clearAiFill('fFinalDate','lFinalDate')">
+        </div>
+        <div class="form-group">
+          <label>Estimated Delivery Date <span class="ai-filled-label" id="lDeliveryDate" style="display:none">✦ AI</span></label>
+          <input type="date" id="fDeliveryDate" oninput="clearAiFill('fDeliveryDate','lDeliveryDate')">
+        </div>
+        <div class="form-group">
+          <label>Type / Season <span class="ai-filled-label" id="lType" style="display:none">✦ AI</span></label>
+          <input type="text" id="fType" list="typeOptions" placeholder="e.g. FW26" oninput="clearAiFill('fType','lType')">
+          <datalist id="typeOptions">
+            <option value="FW26"></option>
+            <option value="SS27"></option>
+            <option value="ATS"></option>
+          </datalist>
+        </div>
+        <div class="form-group full">
+          <label>Notes <span class="ai-filled-label" id="lNotes" style="display:none">✦ AI</span></label>
+          <textarea id="fNotes" placeholder="Seasonal notes, special terms, vendor contacts…" oninput="clearAiFill('fNotes','lNotes')"></textarea>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button class="btn btn-ghost" onclick="closeModal()">Cancel</button>
+        <button class="btn btn-primary" onclick="savePO()">Save PO</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Settings Modal -->
+<div class="modal-backdrop" id="settingsBackdrop" onclick="handleSettingsBackdropClick(event)">
+  <div class="modal" style="max-width:440px">
+    <div class="modal-header">
+      <div class="modal-title">Settings</div>
+      <button class="modal-close" onclick="closeSettings()">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="settings-section">
+        <h3>Claude API Key</h3>
+        <div class="settings-row">
+          <input type="password" id="apiKeyInput" placeholder="sk-ant-…" autocomplete="off">
+          <button class="btn btn-primary" onclick="saveApiKey()">Save</button>
+        </div>
+        <div class="api-key-status" id="apiKeyStatus">
+          <span>—</span>
+        </div>
+        <div class="settings-info">
+          Used to extract fields from uploaded PO documents. Your key is stored only in this browser's localStorage and never sent anywhere except Anthropic's API directly.<br><br>
+          Get a key at <a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a> → API Keys.
+        </div>
+      </div>
+      <div class="form-actions" style="margin-top:0">
+        <button class="btn btn-ghost" onclick="closeSettings()">Done</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Toasts -->
+<div class="toast-container" id="toastContainer"></div>
+
+<script>
+// ── Config ──────────────────────────────────────────────────
+const STORE_KEY  = 'po_tracker_v1';
+const APIKEY_KEY = 'po_tracker_apikey';
+const SORT_KEY   = 'po_tracker_sort';
+
+pdfjsLib.GlobalWorkerOptions.workerSrc =
+  'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+// ── Data ─────────────────────────────────────────────────────
+function loadPOs() { try { return JSON.parse(localStorage.getItem(STORE_KEY)) || []; } catch { return []; } }
+function savePOs(p) { localStorage.setItem(STORE_KEY, JSON.stringify(p)); }
+let pos = loadPOs();
+let currentFilter = 'all';
+let editingId = null;
+let pendingFileName = '';   // filename of the doc just uploaded (works for drag-drop too)
+let pendingFileData = '';   // base64 data URL of the uploaded doc, stored with the PO
+let pendingFileType = '';   // MIME type of the uploaded doc
+
+// ── Helpers ──────────────────────────────────────────────────
+function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2,7); }
+function fmt(n) {
+  if (n == null || isNaN(n)) return '—';
+  return '$' + Number(n).toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2});
+}
+function fmtDate(d) {
+  if (!d) return '—';
+  const [y,m,day] = d.split('-');
+  return ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][+m-1] + ' ' + +day;
+}
+function today() { return new Date().toISOString().slice(0,10); }
+function daysDiff(dateStr) {
+  if (!dateStr) return null;
+  return Math.round((new Date(dateStr) - new Date(today())) / 86400000);
+}
+function hasDeposit(po) { return Number(po.deposit) > 0; }
+function paymentStatus(po, type) {
+  // A $0 deposit is not a real milestone — treat it as non-applicable
+  if (type==='deposit' && !hasDeposit(po)) return 'none';
+  if (po[type==='deposit'?'depositPaid':'finalPaid']) return 'paid';
+  const diff = daysDiff(po[type==='deposit'?'depositDueDate':'finalDueDate']);
+  if (diff === null) return 'upcoming';
+  return diff < 0 ? 'overdue' : 'due';
+}
+function poStatus(po) {
+  const depDone = po.depositPaid || !hasDeposit(po);
+  if (depDone && po.finalPaid) return 'paid';
+  if (paymentStatus(po,'deposit')==='overdue' || paymentStatus(po,'final')==='overdue') return 'overdue';
+  return 'active';
+}
+function paidPercent(po) {
+  if (!po.total || po.total===0) return 0;
+  let paid = 0;
+  if (po.depositPaid) paid += Number(po.deposit);
+  if (po.finalPaid)   paid += Number(po.total) - Number(po.deposit);
+  return Math.round((paid / Number(po.total)) * 100);
+}
+function nextDueDate(po) {
+  if (!po.depositPaid && hasDeposit(po) && po.depositDueDate) return po.depositDueDate;
+  if (!po.finalPaid   && po.finalDueDate)   return po.finalDueDate;
+  return '9999-12-31';
+}
+function esc(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ── Stats ─────────────────────────────────────────────────────
+function renderStats() {
+  const open = pos.filter(p => poStatus(p) !== 'paid');
+  const totalCommitted = open.reduce((s,p) => s + Number(p.total||0), 0);
+  let totalPaid = 0;
+  pos.forEach(p => {
+    if (p.depositPaid) totalPaid += Number(p.deposit||0);
+    if (p.finalPaid)   totalPaid += Number(p.total||0) - Number(p.deposit||0);
+  });
+  let totalOut = 0;
+  open.forEach(p => {
+    if (!p.depositPaid) totalOut += Number(p.deposit||0);
+    if (!p.finalPaid)   totalOut += Number(p.total||0) - Number(p.deposit||0);
+  });
+  const unpaid = [...pos.filter(p=>poStatus(p)!=='paid')].sort((a,b)=>nextDueDate(a).localeCompare(nextDueDate(b)));
+  let nextStr='—', nextSub='';
+  if (unpaid.length) {
+    const np=unpaid[0], isD=hasDeposit(np) && !np.depositPaid;
+    const amt = isD ? Number(np.deposit) : Number(np.total)-Number(np.deposit);
+    const date = isD ? np.depositDueDate : np.finalDueDate;
+    const diff = daysDiff(date);
+    nextStr = `${np.brand} · ${fmt(amt)}`;
+    nextSub = diff===0?'Due today':diff===1?'Due tomorrow':diff<0?`${Math.abs(diff)}d overdue`:fmtDate(date);
+  }
+  const del30 = pos.filter(p => { const d=daysDiff(p.deliveryDate); return d!==null&&d>=0&&d<=30; }).length;
+  document.getElementById('stats').innerHTML = `
+    <div class="stat-card"><div class="stat-label">Total Committed</div><div class="stat-value">${fmt(totalCommitted)}</div><div class="stat-sub">${open.length} open ${open.length===1?'order':'orders'}</div></div>
+    <div class="stat-card"><div class="stat-label">Total Paid</div><div class="stat-value">${fmt(totalPaid)}</div></div>
+    <div class="stat-card"><div class="stat-label">Outstanding</div><div class="stat-value">${fmt(totalOut)}</div></div>
+    <div class="stat-card highlight"><div class="stat-label">Next Payment Due</div><div class="stat-value" style="font-size:15px;line-height:1.3">${nextStr}</div><div class="stat-sub">${nextSub}</div></div>
+    <div class="stat-card"><div class="stat-label">Deliveries (30 days)</div><div class="stat-value">${del30}</div><div class="stat-sub">${del30===1?'shipment':'shipments'} expected</div></div>`;
+}
+
+// ── Table ─────────────────────────────────────────────────────
+function render() {
+  renderStats();
+  let data = [...pos];
+  if (currentFilter!=='all') data = data.filter(p => {
+    const s=poStatus(p);
+    if (currentFilter==='paid') return s==='paid';
+    if (currentFilter==='overdue') return s==='overdue';
+    if (currentFilter==='active') return s==='active';
+    return true;
+  });
+  const sort = document.getElementById('sortSelect').value;
+  data.sort((a,b)=>{
+    if (sort==='nextDue') return nextDueDate(a).localeCompare(nextDueDate(b));
+    if (sort==='created') {
+      const ca=a.createdAt||0, cb=b.createdAt||0;
+      if (ca||cb) return cb-ca;                 // newest first
+      return (b.id||'').localeCompare(a.id||''); // fallback: ids encode time
+    }
+    if (sort==='delivery') return (a.deliveryDate||'9999').localeCompare(b.deliveryDate||'9999');
+    if (sort==='brand') return a.brand.localeCompare(b.brand);
+    if (sort==='amount') return Number(b.total)-Number(a.total);
+    return 0;
+  });
+  const body=document.getElementById('poTableBody'), empty=document.getElementById('emptyState');
+  if (!data.length) { body.innerHTML=''; empty.style.display='block'; return; }
+  empty.style.display='none';
+  body.innerHTML = data.map(renderRow).join('');
+}
+
+function paymentBadge(s) {
+  const cls={paid:'badge-paid',due:'badge-due',overdue:'badge-overdue',upcoming:'badge-upcoming'};
+  const lbl={paid:'✓ Paid',due:'Due',overdue:'Overdue',upcoming:'Upcoming'};
+  return `<span class="badge ${cls[s]}">${lbl[s]}</span>`;
+}
+function poStatusBadge(s) {
+  const cls={active:'badge-active',overdue:'badge-overdue',paid:'badge-paid'};
+  const lbl={active:'Active',overdue:'Overdue',paid:'Fully Paid'};
+  return `<span class="badge ${cls[s]}">${lbl[s]}</span>`;
+}
+
+function renderRow(po) {
+  const hasDep=hasDeposit(po);
+  const dStat=paymentStatus(po,'deposit'), fStat=paymentStatus(po,'final'), status=poStatus(po);
+  const pct=paidPercent(po), finalAmt=Number(po.total)-Number(po.deposit);
+  const dDiff=daysDiff(po.depositDueDate), fDiff=daysDiff(po.finalDueDate);
+  function dueSub(diff,stat) {
+    if (stat==='paid'||diff===null) return '';
+    if (diff===0) return '<span style="color:var(--amber);font-size:11px">Today</span>';
+    if (diff===1) return '<span style="color:var(--amber);font-size:11px">Tomorrow</span>';
+    if (diff<0)  return `<span style="color:var(--red);font-size:11px">${Math.abs(diff)}d overdue</span>`;
+    if (diff<=7) return `<span style="color:var(--amber);font-size:11px">In ${diff}d</span>`;
+    return '';
+  }
+  let fillClass = pct===100?'fill-paid':pct>0&&status!=='overdue'?'fill-deposit':status==='overdue'?'fill-overdue':'fill-none';
+  let timeline='';
+  const allDates=[hasDep?po.depositDueDate:null,po.finalDueDate,po.deliveryDate].filter(Boolean);
+  if (allDates.length) {
+    const minD=new Date(allDates.reduce((a,b)=>a<b?a:b));
+    const maxD=new Date(allDates.reduce((a,b)=>a>b?a:b));
+    const range=maxD-minD||1;
+    const pos2=d=>d?Math.max(5,Math.min(95,Math.round(((new Date(d)-minD)/range)*86)+7)):null;
+    const dp=hasDep?pos2(po.depositDueDate):null, fp=pos2(po.finalDueDate), dv=pos2(po.deliveryDate);
+    timeline=`<div class="timeline-wrap"><div class="timeline-track"></div>
+      ${dp!=null?`<div class="timeline-marker deposit" style="left:${dp}%" title="Deposit: ${fmtDate(po.depositDueDate)}"></div>`:''}
+      ${fp!=null?`<div class="timeline-marker final"   style="left:${fp}%" title="Final: ${fmtDate(po.finalDueDate)}"></div>`:''}
+      ${dv!=null?`<div class="timeline-marker delivery" style="left:${dv}%" title="Delivery: ${fmtDate(po.deliveryDate)}"></div>`:''}
+    </div>`;
+  }
+  const delStr = po.deliveryDate ? (()=>{
+    const d=daysDiff(po.deliveryDate);
+    if(d===0) return '<div style="font-size:11px;color:var(--blue)">Today</div>';
+    if(d>0&&d<=30) return `<div style="font-size:11px;color:var(--blue)">In ${d}d</div>`;
+    if(d<0) return '<div style="font-size:11px;color:var(--text-muted)">Delivered</div>';
+    return '';
+  })() : '';
+  return `<tr>
+    <td>
+      <div class="po-brand">${esc(po.brand)}</div>
+      ${po.poNum?`<div class="po-number">${esc(po.poNum)}</div>`:''}
+      ${po.fileName?(po.fileData
+        ? `<div class="po-file" style="cursor:pointer" onclick="openFile('${po.id}')" title="Open ${esc(po.fileName)}">📎 ${esc(po.fileName)}</div>`
+        : `<div class="po-file" style="color:var(--text-muted)" title="No file stored — re-upload to attach">📎 ${esc(po.fileName)}</div>`):''}
+      ${po.notes?`<div class="po-notes" title="${esc(po.notes)}">${esc(po.notes)}</div>`:''}
+    </td>
+    <td>${po.type?`<span class="type-badge">${esc(po.type)}</span>`:'<span style="color:var(--text-light)">—</span>'}</td>
+    <td><div class="po-amount">${fmt(po.total)}</div></td>
+    <td class="payment-cell">
+      ${hasDep ? `
+      <div class="payment-amount">${fmt(po.deposit)}</div>
+      <div class="payment-date">${fmtDate(po.depositDueDate)} ${dueSub(dDiff,dStat)}</div>
+      <div style="margin-top:4px">${paymentBadge(dStat)}</div>
+      <div class="payment-actions">
+        ${dStat!=='paid'?`<button class="btn btn-sm btn-pay-deposit" onclick="markPaid('${po.id}','deposit')">Mark Paid</button>`:''}
+        ${dStat==='paid'?`<button class="btn btn-sm btn-unpay" onclick="markUnpaid('${po.id}','deposit')">Undo</button>`:''}
+      </div>
+      ` : `
+      <div class="payment-amount" style="color:var(--text-light)">—</div>
+      <div class="payment-date" style="color:var(--text-light)">No deposit</div>
+      `}
+    </td>
+    <td class="payment-cell">
+      <div class="payment-amount">${fmt(finalAmt)}</div>
+      <div class="payment-date">${fmtDate(po.finalDueDate)} ${dueSub(fDiff,fStat)}</div>
+      <div style="margin-top:4px">${paymentBadge(fStat)}</div>
+      <div class="payment-actions">
+        ${fStat!=='paid'?`<button class="btn btn-sm btn-pay-final" onclick="markPaid('${po.id}','final')">Mark Paid</button>`:''}
+        ${fStat==='paid'?`<button class="btn btn-sm btn-unpay" onclick="markUnpaid('${po.id}','final')">Undo</button>`:''}
+      </div>
+    </td>
+    <td>
+      ${po.deliveryDate?`<div style="font-size:13px;font-weight:500">${fmtDate(po.deliveryDate)}</div>`:'<span style="color:var(--text-light)">—</span>'}
+      ${delStr}
+    </td>
+    <td class="progress-wrap">
+      <div class="progress-bar-outer"><div class="progress-bar-fill ${fillClass}" style="width:${pct}%"></div></div>
+      <div class="progress-label">${pct}% paid</div>
+      ${timeline}
+    </td>
+    <td>${poStatusBadge(status)}</td>
+    <td>
+      <div class="po-row-actions">
+        <button class="btn btn-ghost btn-sm" onclick="editPO('${po.id}')" title="Edit">
+          <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M9.5 2.5l2 2-7 7H2.5v-2l7-7z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+        </button>
+        <button class="btn btn-danger btn-sm" onclick="deletePO('${po.id}')" title="Delete">
+          <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M2 3.5h10M5.5 3.5V2.5h3v1M5 5.5v5M9 5.5v5M3 3.5l.8 7.5h6.4l.8-7.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+    </td>
+  </tr>`;
+}
+
+// ── Actions ───────────────────────────────────────────────────
+function markPaid(id, type) {
+  const po=pos.find(p=>p.id===id); if(!po) return;
+  po[type==='deposit'?'depositPaid':'finalPaid']=true;
+  savePOs(pos); render(); toast('Payment marked as paid');
+}
+function markUnpaid(id, type) {
+  const po=pos.find(p=>p.id===id); if(!po) return;
+  po[type==='deposit'?'depositPaid':'finalPaid']=false;
+  savePOs(pos); render();
+}
+function deletePO(id) {
+  if (!confirm('Delete this purchase order? This cannot be undone.')) return;
+  pos=pos.filter(p=>p.id!==id); savePOs(pos); render(); toast('PO deleted');
+}
+function editPO(id) {
+  const po=pos.find(p=>p.id===id); if(!po) return;
+  editingId=id;
+  document.getElementById('modalTitle').textContent='Edit Purchase Order';
+  document.getElementById('fBrand').value=po.brand||'';
+  document.getElementById('fPoNum').value=po.poNum||'';
+  document.getElementById('fType').value=po.type||'';
+  document.getElementById('fTotal').value=po.total||'';
+  document.getElementById('fDeposit').value=po.deposit||'';
+  document.getElementById('fDepositDate').value=po.depositDueDate||'';
+  document.getElementById('fFinalDate').value=po.finalDueDate||'';
+  document.getElementById('fDeliveryDate').value=po.deliveryDate||'';
+  document.getElementById('fNotes').value=po.notes||'';
+  // Carry the existing attachment so editing without re-upload keeps it
+  pendingFileName=po.fileName||''; pendingFileData=po.fileData||''; pendingFileType=po.fileType||'';
+  if (po.fileName) {
+    const z=document.getElementById('uploadZone');
+    z.classList.add('has-file');
+    document.getElementById('uploadLabel').textContent=po.fileName;
+    document.getElementById('uploadSub').textContent=po.fileData?'Document attached':'Filename only — re-upload to store the file';
+  }
+  updateCalc();
+  openModal();
+}
+function setFilter(f, el) {
+  currentFilter=f;
+  document.querySelectorAll('.filter-tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active'); render();
+}
+function onSortChange() {
+  localStorage.setItem(SORT_KEY, document.getElementById('sortSelect').value);
+  render();
+}
+
+// ── Modal ─────────────────────────────────────────────────────
+function openModal() { document.getElementById('modalBackdrop').classList.add('open'); }
+function closeModal() {
+  document.getElementById('modalBackdrop').classList.remove('open');
+  resetForm(); editingId=null;
+  document.getElementById('modalTitle').textContent='New Purchase Order';
+}
+function handleBackdropClick(e) { if(e.target===document.getElementById('modalBackdrop')) closeModal(); }
+
+function resetForm() {
+  ['fBrand','fPoNum','fType','fTotal','fDeposit','fDepositDate','fFinalDate','fDeliveryDate','fNotes'].forEach(id=>{
+    document.getElementById(id).value='';
+  });
+  document.getElementById('fFile').value='';
+  pendingFileName=''; pendingFileData=''; pendingFileType='';
+  document.getElementById('calcPreview').style.display='none';
+  clearAllAiFill();
+  resetUploadZone();
+  document.getElementById('parsingIndicator').classList.remove('visible');
+  document.getElementById('aiNote').classList.remove('visible');
+}
+
+function updateCalc() {
+  const total=parseFloat(document.getElementById('fTotal').value);
+  const deposit=parseFloat(document.getElementById('fDeposit').value);
+  const preview=document.getElementById('calcPreview');
+  if (!isNaN(total)&&!isNaN(deposit)&&total>0) {
+    document.getElementById('calcFinal').textContent=fmt(total-deposit);
+    document.getElementById('calcPct').textContent=Math.round((deposit/total)*100)+'%';
+    preview.style.display='flex';
+  } else { preview.style.display='none'; }
+}
+
+function savePO() {
+  const brand=document.getElementById('fBrand').value.trim();
+  const total=parseFloat(document.getElementById('fTotal').value);
+  const deposit=parseFloat(document.getElementById('fDeposit').value);
+  const depositDate=document.getElementById('fDepositDate').value;
+  const finalDate=document.getElementById('fFinalDate').value;
+  if (!brand)                           { alert('Please enter a brand name.'); return; }
+  if (isNaN(total)||total<=0)           { alert('Please enter a valid total amount.'); return; }
+  if (isNaN(deposit)||deposit<0)        { alert('Please enter a valid deposit amount.'); return; }
+  if (deposit>total)                    { alert('Deposit cannot exceed total order amount.'); return; }
+  if (!depositDate)                     { alert('Please enter a deposit due date.'); return; }
+  if (!finalDate)                       { alert('Please enter a final payment due date.'); return; }
+  const fileInput=document.getElementById('fFile');
+  const fileName=(fileInput.files.length?fileInput.files[0].name:'') || pendingFileName;
+  const data={brand, poNum:document.getElementById('fPoNum').value.trim(),
+    type:document.getElementById('fType').value.trim(),
+    total, deposit,
+    depositDueDate:depositDate, finalDueDate:finalDate,
+    deliveryDate:document.getElementById('fDeliveryDate').value,
+    notes:document.getElementById('fNotes').value.trim(),
+    fileName, fileData:pendingFileData, fileType:pendingFileType,
+    depositPaid:false, finalPaid:false};
+  if (editingId) {
+    const idx=pos.findIndex(p=>p.id===editingId);
+    if (idx>=0) {
+      data.id=editingId; data.depositPaid=pos[idx].depositPaid; data.finalPaid=pos[idx].finalPaid;
+      data.createdAt=pos[idx].createdAt||Date.now();
+      // Keep the previously attached file if no new one was uploaded
+      if (!pendingFileData && pos[idx].fileName) {
+        data.fileName=pos[idx].fileName; data.fileData=pos[idx].fileData||''; data.fileType=pos[idx].fileType||'';
+      }
+      pos[idx]=data;
+    }
+    toast('PO updated');
+  } else { data.id=uid(); data.createdAt=Date.now(); pos.push(data); toast('PO added'); }
+  if (!persistPOs(data)) return;   // handles storage-quota fallback
+  closeModal(); render();
+}
+
+// Save POs, gracefully degrading if the attached PDF blows past the storage quota
+function persistPOs(justSaved) {
+  try { savePOs(pos); return true; }
+  catch (e) {
+    if (justSaved && justSaved.fileData) {
+      justSaved.fileData=''; justSaved.fileType='';
+      try {
+        savePOs(pos);
+        toast('PDF too large to store — saved without the attachment', true);
+        return true;
+      } catch (e2) { /* fall through */ }
+    }
+    alert('Could not save — your browser storage is full. Try removing some older POs or their attached files.');
+    return false;
+  }
+}
+
+// ── Upload / PDF Parsing ──────────────────────────────────────
+function handleDragOver(e)  { e.preventDefault(); document.getElementById('uploadZone').classList.add('dragover'); }
+function handleDragLeave(e) { document.getElementById('uploadZone').classList.remove('dragover'); }
+function handleDrop(e) {
+  e.preventDefault();
+  document.getElementById('uploadZone').classList.remove('dragover');
+  const file=e.dataTransfer.files[0];
+  if (file) processFile(file);
+}
+function handleFileChange(e) {
+  const file=e.target.files[0];
+  if (file) processFile(file);
+}
+
+function resetUploadZone() {
+  const z=document.getElementById('uploadZone');
+  z.classList.remove('has-file','parsing');
+  document.getElementById('uploadLabel').textContent='Upload PO document to auto-fill';
+  document.getElementById('uploadSub').textContent='PDF, PNG or JPG — Claude reads it and fills the form';
+  document.getElementById('uploadIcon').innerHTML=`
+    <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+      <rect x="3" y="2" width="14" height="18" rx="2" stroke="currentColor" stroke-width="1.4"/>
+      <path d="M7 7h8M7 10.5h8M7 14h5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+      <path d="M14 16.5v4m0 0l-1.5-1.5M14 20.5l1.5-1.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>`;
+}
+
+async function processFile(file) {
+  pendingFileName = file.name;   // capture now — drag-drop never reaches the file input
+  pendingFileType = file.type || '';
+  try { pendingFileData = await fileToDataURL(file); } catch { pendingFileData = ''; }
+  const apiKey = localStorage.getItem(APIKEY_KEY);
+  if (!apiKey) {
+    toast('Add your Claude API key in Settings (⚙) first', true);
+    openSettings();
+    return;
+  }
+  // Show parsing state
+  const z=document.getElementById('uploadZone');
+  z.classList.add('parsing');
+  document.getElementById('uploadLabel').textContent=file.name;
+  document.getElementById('uploadSub').textContent='Extracting text…';
+  const indicator=document.getElementById('parsingIndicator');
+  indicator.classList.add('visible');
+  document.getElementById('parsingMsg').textContent='Reading document…';
+  try {
+    let text='';
+    if (file.type==='application/pdf' || file.name.toLowerCase().endsWith('.pdf')) {
+      text = await extractPDFText(file);
+    } else {
+      // Image: convert to base64 and send directly to Claude vision
+      text = await extractImageText(file, apiKey);
+      if (text === '__IMAGE__') {
+        // already sent to claude as image, result is in text as parsed JSON string
+        // handled differently below - re-route
+        await parseImageWithClaude(file, apiKey);
+        return;
+      }
+    }
+    document.getElementById('parsingMsg').textContent='Parsing fields with Claude…';
+    const parsed = await parsePOWithClaude(text, apiKey);
+    applyParsedFields(parsed, file.name);
+  } catch(err) {
+    console.error(err);
+    toast('Could not parse document: ' + (err.message||'Unknown error'), true);
+    z.classList.remove('parsing');
+    document.getElementById('uploadLabel').textContent=file.name;
+    document.getElementById('uploadSub').textContent='Upload another file or fill in manually';
+    indicator.classList.remove('visible');
+  }
+}
+
+async function extractPDFText(file) {
+  const arrayBuffer = await file.arrayBuffer();
+  const pdf = await pdfjsLib.getDocument({data: arrayBuffer}).promise;
+  let fullText = '';
+  for (let i=1; i<=pdf.numPages; i++) {
+    const page = await pdf.getPage(i);
+    const content = await page.getTextContent();
+    fullText += content.items.map(item=>item.str).join(' ') + '\n';
+  }
+  return fullText;
+}
+
+async function extractImageText(file) {
+  // For images we'll send directly to Claude as vision input
+  // Return a sentinel so the caller knows to use the image path
+  return '__IMAGE__';
+}
+
+async function parseImageWithClaude(file, apiKey) {
+  const indicator=document.getElementById('parsingIndicator');
+  document.getElementById('parsingMsg').textContent='Parsing image with Claude…';
+  const base64 = await fileToBase64(file);
+  const mediaType = file.type || 'image/jpeg';
+  const body = {
+    model: 'claude-haiku-4-5',
+    max_tokens: 600,
+    system: buildSystemPrompt(),
+    messages: [{
+      role: 'user',
+      content: [{
+        type: 'image',
+        source: { type: 'base64', media_type: mediaType, data: base64 }
+      }, {
+        type: 'text',
+        text: 'Extract the purchase order fields from this image and return JSON as instructed.'
+      }]
+    }]
+  };
+  const result = await callClaudeAPI(body, apiKey);
+  applyParsedFields(result, file.name);
+}
+
+function fileToBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result.split(',')[1]);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+function fileToDataURL(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+// Open a PO's stored document in a new tab
+function openFile(id) {
+  const po = pos.find(p => p.id === id);
+  if (!po || !po.fileData) { toast('No file stored for this PO', true); return; }
+  fetch(po.fileData).then(r => r.blob()).then(blob => {
+    const url = URL.createObjectURL(blob);
+    window.open(url, '_blank');
+    setTimeout(() => URL.revokeObjectURL(url), 60000);
+  }).catch(() => toast('Could not open the file', true));
+}
+
+function buildSystemPrompt() {
+  const yr = new Date().getFullYear();
+  return `You are a purchase order parser for a menswear boutique. Extract key fields from the PO text and return ONLY a JSON object — no markdown, no explanation, just raw JSON.
+
+Fields to extract:
+- brand: the fashion BRAND / LABEL name — the designer or collection name the boutique is buying (e.g. "Barena", "Loro Piana", "Osklen"). This is usually in the document header, logo, or "Collection"/"Brand" line. DO NOT use the legal company entity, the manufacturer, the seller's S.r.l./S.p.A./Inc. registration name, the bank name, or the account-holder name from payment/wire instructions. If the header shows a brand and the footer shows a different legal/bank entity, always choose the brand.
+- poNum: purchase order number (string)
+- type: the season or order type code if present — e.g. "FW26", "SS27", "ATS" (FW = Fall/Winter, SS = Spring/Summer, ATS = at-once/stock). Normalize to that short form.
+- total: total order amount as a number (no currency symbols)
+- deposit: deposit/down-payment amount as a number (if shown as a % of total, calculate the dollar amount). If no deposit is mentioned at all, set deposit to 0.
+- depositDueDate: deposit due date in YYYY-MM-DD format (if year is ambiguous, assume ${yr} or ${yr+1} based on context)
+- finalDueDate: final/balance payment due date in YYYY-MM-DD format
+- deliveryDate: estimated ship/delivery date in YYYY-MM-DD format
+- notes: any relevant payment terms or special conditions (short string, max 120 chars)
+
+Rules:
+- Omit any field you cannot find (do not guess dates or amounts)
+- Dates must be YYYY-MM-DD
+- Numbers must be plain floats, no $ or commas
+- If there is only one payment with no deposit, set deposit to 0
+- Return only the JSON object, nothing else`;
+}
+
+async function parsePOWithClaude(text, apiKey) {
+  const body = {
+    model: 'claude-haiku-4-5',
+    max_tokens: 600,
+    system: buildSystemPrompt(),
+    messages: [{role:'user', content:`Here is the purchase order text:\n\n${text.slice(0,12000)}`}]
+  };
+  return callClaudeAPI(body, apiKey);
+}
+
+async function callClaudeAPI(body, apiKey) {
+  const resp = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-api-key': apiKey,
+      'anthropic-version': '2023-06-01',
+      'anthropic-dangerous-direct-browser-access': 'true'
+    },
+    body: JSON.stringify(body)
+  });
+  if (!resp.ok) {
+    const err = await resp.json().catch(()=>({}));
+    throw new Error(err?.error?.message || `API error ${resp.status}`);
+  }
+  const data = await resp.json();
+  const raw = data.content?.[0]?.text || '';
+  // Strip any accidental markdown fences
+  const clean = raw.replace(/```(?:json)?/gi,'').replace(/```/g,'').trim();
+  try { return JSON.parse(clean); }
+  catch { throw new Error('Claude returned unexpected output — try again'); }
+}
+
+function applyParsedFields(parsed, fileName) {
+  const z=document.getElementById('uploadZone');
+  z.classList.remove('parsing'); z.classList.add('has-file');
+  document.getElementById('uploadLabel').textContent=fileName;
+  document.getElementById('uploadSub').textContent='Document attached — fields filled below';
+  document.getElementById('uploadIcon').innerHTML=`
+    <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+      <circle cx="11" cy="11" r="9" stroke="currentColor" stroke-width="1.4"/>
+      <path d="M7 11l2.5 2.5L15 8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>`;
+  document.getElementById('parsingIndicator').classList.remove('visible');
+
+  const fieldMap = {
+    brand:       ['fBrand','lBrand'],
+    poNum:       ['fPoNum','lPoNum'],
+    type:        ['fType','lType'],
+    total:       ['fTotal','lTotal'],
+    deposit:     ['fDeposit','lDeposit'],
+    depositDueDate: ['fDepositDate','lDepositDate'],
+    finalDueDate:   ['fFinalDate','lFinalDate'],
+    deliveryDate:   ['fDeliveryDate','lDeliveryDate'],
+    notes:          ['fNotes','lNotes'],
+  };
+  let filled = 0;
+  for (const [key,[inputId,labelId]] of Object.entries(fieldMap)) {
+    const val = parsed[key];
+    if (val !== undefined && val !== null && val !== '') {
+      const el = document.getElementById(inputId);
+      el.value = val;
+      el.classList.add('ai-filled');
+      document.getElementById(labelId).style.display='inline-flex';
+      filled++;
+    }
+  }
+  if (filled > 0) {
+    document.getElementById('aiNote').classList.add('visible');
+    updateCalc();
+    toast(`${filled} fields filled from document`);
+  } else {
+    toast('Document parsed but no fields found — fill in manually', true);
+  }
+}
+
+function clearAiFill(inputId, labelId) {
+  document.getElementById(inputId).classList.remove('ai-filled');
+  document.getElementById(labelId).style.display='none';
+}
+
+function clearAllAiFill() {
+  const pairs=[['fBrand','lBrand'],['fPoNum','lPoNum'],['fType','lType'],['fTotal','lTotal'],['fDeposit','lDeposit'],
+    ['fDepositDate','lDepositDate'],['fFinalDate','lFinalDate'],['fDeliveryDate','lDeliveryDate'],['fNotes','lNotes']];
+  pairs.forEach(([i,l])=>{ document.getElementById(i).classList.remove('ai-filled'); document.getElementById(l).style.display='none'; });
+}
+
+// ── Settings ──────────────────────────────────────────────────
+function openSettings() {
+  const key=localStorage.getItem(APIKEY_KEY)||'';
+  document.getElementById('apiKeyInput').value=key?'••••••••••••'+key.slice(-4):'';
+  updateApiKeyStatus();
+  document.getElementById('settingsBackdrop').classList.add('open');
+}
+function closeSettings() { document.getElementById('settingsBackdrop').classList.remove('open'); }
+function handleSettingsBackdropClick(e) { if(e.target===document.getElementById('settingsBackdrop')) closeSettings(); }
+function saveApiKey() {
+  let val=document.getElementById('apiKeyInput').value.trim();
+  if (!val) { localStorage.removeItem(APIKEY_KEY); updateApiKeyStatus(); toast('API key removed'); return; }
+  if (val.startsWith('••')) { closeSettings(); return; } // unchanged masked value
+  localStorage.setItem(APIKEY_KEY, val);
+  updateApiKeyStatus();
+  toast('API key saved');
+  closeSettings();
+}
+function updateApiKeyStatus() {
+  const key=localStorage.getItem(APIKEY_KEY);
+  const el=document.getElementById('apiKeyStatus');
+  if (key) {
+    el.className='api-key-status set';
+    el.innerHTML=`<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5" fill="var(--green)"/><path d="M3.5 6l1.8 1.8L8.5 4.5" stroke="#fff" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg> Key saved (ends in …${key.slice(-4)})`;
+  } else {
+    el.className='api-key-status unset';
+    el.innerHTML='No key set — upload auto-fill will prompt for one';
+  }
+}
+
+// ── Toast ─────────────────────────────────────────────────────
+function toast(msg, isError=false) {
+  const c=document.getElementById('toastContainer');
+  const t=document.createElement('div');
+  t.className='toast'+(isError?' error':'');
+  t.textContent=msg;
+  c.appendChild(t);
+  setTimeout(()=>t.remove(), 2800);
+}
+
+// ── Keyboard ─────────────────────────────────────────────────
+document.addEventListener('keydown', e=>{
+  if (e.key==='Escape') { closeModal(); closeSettings(); }
+});
+
+// ── Init ─────────────────────────────────────────────────────
+(function restoreSort(){
+  const saved=localStorage.getItem(SORT_KEY);
+  const sel=document.getElementById('sortSelect');
+  if (saved && [...sel.options].some(o=>o.value===saved)) sel.value=saved;
+})();
+render();
+</script>
+</body>
+</html>
