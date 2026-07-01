@@ -97,6 +97,21 @@
   .stat-sub { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
   .stat-card.highlight .stat-value { color: var(--blue); }
 
+  /* ── Totals by Type ── */
+  .type-totals { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 28px; }
+  .type-total-card {
+    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+    box-shadow: var(--shadow); padding: 12px 16px; min-width: 130px;
+    display: flex; flex-direction: column; gap: 4px;
+  }
+  .type-total-head { display: flex; align-items: center; gap: 7px; }
+  .type-total-value { font-size: 17px; font-weight: 600; letter-spacing: -0.01em; }
+  .type-total-sub { font-size: 11px; color: var(--text-muted); }
+  .type-totals-label {
+    align-self: center; font-size: 11px; font-weight: 500; text-transform: uppercase;
+    letter-spacing: 0.06em; color: var(--text-muted); margin-right: 2px;
+  }
+
   /* ── Controls ── */
   .controls { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; gap: 12px; }
   .filter-tabs { display: flex; gap: 2px; background: var(--border-light); border-radius: var(--radius-sm); padding: 3px; }
@@ -337,6 +352,7 @@
 <!-- Main -->
 <main class="main">
   <div class="stats-grid" id="stats"></div>
+  <div class="type-totals" id="typeTotals"></div>
   <div class="controls">
     <div class="filter-tabs">
       <button class="filter-tab active" onclick="setFilter('all', this)">All</button>
@@ -608,9 +624,38 @@ function renderStats() {
     <div class="stat-card"><div class="stat-label">Deliveries (30 days)</div><div class="stat-value">${del30}</div><div class="stat-sub">${del30===1?'shipment':'shipments'} expected</div></div>`;
 }
 
+// ── Totals by Type ────────────────────────────────────────────
+function renderTypeTotals() {
+  const el = document.getElementById('typeTotals');
+  const groups = {};   // type -> {total, count}
+  pos.forEach(p => {
+    const key = (p.type||'').trim() || 'Untyped';
+    if (!groups[key]) groups[key] = { total:0, count:0 };
+    groups[key].total += Number(p.total||0);
+    groups[key].count += 1;
+  });
+  const keys = Object.keys(groups);
+  if (!keys.length) { el.innerHTML=''; return; }
+  // Sort: named types alphabetically, "Untyped" last
+  keys.sort((a,b)=> a==='Untyped'?1 : b==='Untyped'?-1 : a.localeCompare(b));
+  const cards = keys.map(k => {
+    const g = groups[k];
+    const label = k==='Untyped'
+      ? `<span class="type-badge" style="opacity:.6">Untyped</span>`
+      : `<span class="type-badge">${esc(k)}</span>`;
+    return `<div class="type-total-card">
+      <div class="type-total-head">${label}</div>
+      <div class="type-total-value">${fmt(g.total)}</div>
+      <div class="type-total-sub">${g.count} ${g.count===1?'order':'orders'}</div>
+    </div>`;
+  }).join('');
+  el.innerHTML = `<span class="type-totals-label">Order total by type</span>${cards}`;
+}
+
 // ── Table ─────────────────────────────────────────────────────
 function render() {
   renderStats();
+  renderTypeTotals();
   let data = [...pos];
   if (currentFilter!=='all') data = data.filter(p => {
     const s=poStatus(p);
