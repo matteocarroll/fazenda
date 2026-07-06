@@ -145,6 +145,9 @@
   .po-notes { font-size: 11px; color: var(--text-muted); max-width: 140px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .po-file { font-size: 10px; color: var(--blue); margin-top: 1px; }
   .type-badge { display: inline-block; font-size: 11px; font-weight: 600; letter-spacing: 0.04em; color: var(--text); background: var(--border-light); border: 1px solid var(--border); padding: 1px 7px; border-radius: 4px; }
+  .delivered-check { display: inline-flex; align-items: center; gap: 5px; margin-top: 6px; cursor: pointer; font-size: 11px; color: var(--text-muted); user-select: none; }
+  .delivered-check input { width: 13px; height: 13px; cursor: pointer; accent-color: var(--green); margin: 0; }
+  .delivered-check input:checked + span { color: var(--green); font-weight: 600; }
   .payment-cell { min-width: 140px; }
   .payment-amount { font-weight: 500; font-size: 12px; }
   .payment-date { font-size: 11px; color: var(--text-muted); margin-top: 1px; }
@@ -615,7 +618,7 @@ function renderStats() {
     nextStr = `${np.brand} · ${fmt(amt)}`;
     nextSub = diff===0?'Due today':diff===1?'Due tomorrow':diff<0?`${Math.abs(diff)}d overdue`:fmtDate(date);
   }
-  const del30 = pos.filter(p => { const d=daysDiff(p.deliveryDate); return d!==null&&d>=0&&d<=30; }).length;
+  const del30 = pos.filter(p => { if(p.delivered) return false; const d=daysDiff(p.deliveryDate); return d!==null&&d>=0&&d<=30; }).length;
   document.getElementById('stats').innerHTML = `
     <div class="stat-card"><div class="stat-label">Total Committed</div><div class="stat-value">${fmt(totalCommitted)}</div><div class="stat-sub">${open.length} open ${open.length===1?'order':'orders'}</div></div>
     <div class="stat-card"><div class="stat-label">Total Paid</div><div class="stat-value">${fmt(totalPaid)}</div></div>
@@ -722,11 +725,11 @@ function renderRow(po) {
       ${dv!=null?`<div class="timeline-marker delivery" style="left:${dv}%" title="Delivery: ${fmtDate(po.deliveryDate)}"></div>`:''}
     </div>`;
   }
-  const delStr = po.deliveryDate ? (()=>{
+  const delStr = (po.deliveryDate && !po.delivered) ? (()=>{
     const d=daysDiff(po.deliveryDate);
     if(d===0) return '<div style="font-size:11px;color:var(--blue)">Today</div>';
     if(d>0&&d<=30) return `<div style="font-size:11px;color:var(--blue)">In ${d}d</div>`;
-    if(d<0) return '<div style="font-size:11px;color:var(--text-muted)">Delivered</div>';
+    if(d<0) return '<div style="font-size:11px;color:var(--amber)">Past due</div>';
     return '';
   })() : '';
   return `<tr>
@@ -766,6 +769,10 @@ function renderRow(po) {
     <td>
       ${po.deliveryDate?`<div style="font-size:13px;font-weight:500">${fmtDate(po.deliveryDate)}</div>`:'<span style="color:var(--text-light)">—</span>'}
       ${delStr}
+      <label class="delivered-check">
+        <input type="checkbox" ${po.delivered?'checked':''} onchange="toggleDelivered('${po.id}', this.checked)">
+        <span>${po.delivered?'Delivered':'Delivered?'}</span>
+      </label>
     </td>
     <td class="progress-wrap">
       <div class="progress-bar-outer"><div class="progress-bar-fill ${fillClass}" style="width:${pct}%"></div></div>
@@ -791,6 +798,11 @@ function markPaid(id, type) {
   const po=pos.find(p=>p.id===id); if(!po) return;
   po[type==='deposit'?'depositPaid':'finalPaid']=true;
   savePOs(pos); render(); toast('Payment marked as paid');
+}
+function toggleDelivered(id, checked) {
+  const po=pos.find(p=>p.id===id); if(!po) return;
+  po.delivered=checked;
+  savePOs(pos); render(); toast(checked?'Marked as delivered':'Delivery unmarked');
 }
 function markUnpaid(id, type) {
   const po=pos.find(p=>p.id===id); if(!po) return;
