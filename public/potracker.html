@@ -449,11 +449,17 @@
           <input type="text" id="fPoNum" placeholder="e.g. LP-2024-001" oninput="clearAiFill('fPoNum','lPoNum')">
         </div>
         <div class="form-group">
-          <label>Total Order Amount (USD) * <span class="ai-filled-label" id="lTotal" style="display:none">✦ AI</span></label>
-          <input type="number" id="fTotal" placeholder="0.00" min="0" step="0.01" oninput="updateCalc(); clearAiFill('fTotal','lTotal')">
+          <label>Total Order Amount * <span class="ai-filled-label" id="lTotal" style="display:none">✦ AI</span></label>
+          <div style="display:flex;gap:6px">
+            <select id="fCurrency" style="width:auto;flex:0 0 auto" onchange="updateCalc()">
+              <option value="USD">$ USD</option>
+              <option value="EUR">€ EUR</option>
+            </select>
+            <input type="number" id="fTotal" placeholder="0.00" min="0" step="0.01" oninput="updateCalc(); clearAiFill('fTotal','lTotal')">
+          </div>
         </div>
         <div class="form-group">
-          <label>Deposit Amount (USD) * <span class="ai-filled-label" id="lDeposit" style="display:none">✦ AI</span></label>
+          <label>Deposit Amount * <span class="ai-filled-label" id="lDeposit" style="display:none">✦ AI</span></label>
           <input type="number" id="fDeposit" placeholder="0.00" min="0" step="0.01" oninput="updateCalc(); clearAiFill('fDeposit','lDeposit')">
         </div>
         <div class="calc-preview" id="calcPreview" style="display:none">
@@ -518,6 +524,20 @@
           Get a key at <a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a> → API Keys.
         </div>
       </div>
+
+      <div class="settings-section">
+        <h3>EUR → USD Exchange Rate</h3>
+        <div class="settings-row">
+          <input type="number" id="rateInput" step="0.0001" min="0" placeholder="1.0800">
+          <button class="btn btn-primary" onclick="saveRate()">Set</button>
+          <button class="btn btn-ghost" onclick="useLiveRate()">Use live</button>
+        </div>
+        <div class="api-key-status" id="rateStatus"><span>—</span></div>
+        <div class="settings-info">
+          EUR purchase orders are converted to USD using this rate for all dashboard totals. A live rate is fetched automatically (daily) — set a value here to lock in your own.
+        </div>
+      </div>
+
       <div class="form-actions" style="margin-top:0">
         <button class="btn btn-ghost" onclick="closeSettings()">Done</button>
       </div>
@@ -533,6 +553,8 @@
 const STORE_KEY  = 'po_tracker_v1';
 const APIKEY_KEY = 'po_tracker_apikey';
 const SORT_KEY   = 'po_tracker_sort';
+const RATE_KEY   = 'po_tracker_eurusd';   // {rate, ts, manual}
+const DEFAULT_EURUSD = 1.08;              // fallback if no live rate yet
 
 pdfjsLib.GlobalWorkerOptions.workerSrc =
   'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
@@ -549,9 +571,36 @@ let pendingFileType = '';   // MIME type of the uploaded doc
 
 // ── Helpers ──────────────────────────────────────────────────
 function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2,7); }
-function fmt(n) {
+function fmt(n, currency) {
   if (n == null || isNaN(n)) return '—';
-  return '$' + Number(n).toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2});
+  const sym = currency==='EUR' ? '€' : '$';
+  return sym + Number(n).toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2});
+}
+// EUR→USD conversion
+function getRate() {
+  try { const r=JSON.parse(localStorage.getItem(RATE_KEY)); if (r && r.rate) return Number(r.rate); } catch {}
+  return DEFAULT_EURUSD;
+}
+function toUSD(amount, currency) {
+  const n = Number(amount||0);
+  return currency==='EUR' ? n * getRate() : n;
+}
+async function fetchRate() {
+  // Skip if a manual override is set, or a live rate was fetched in the last 12h
+  try {
+    const r=JSON.parse(localStorage.getItem(RATE_KEY));
+    if (r && (r.manual || (r.ts && Date.now()-r.ts < 12*3600*1000))) return;
+  } catch {}
+  try {
+    const resp = await fetch('https://api.frankfurter.app/latest?from=EUR&to=USD');
+    if (!resp.ok) return;
+    const data = await resp.json();
+    const rate = data?.rates?.USD;
+    if (rate) {
+      localStorage.setItem(RATE_KEY, JSON.stringify({rate, ts:Date.now(), manual:false}));
+      render(); updateRateStatus();
+    }
+  } catch {}
 }
 function fmtDate(d) {
   if (!d) return '—';
@@ -596,18 +645,21 @@ function esc(s) {
 
 // ── Stats ─────────────────────────────────────────────────────
 function renderStats() {
+  // All dashboard figures are normalised to USD (EUR POs converted at the current rate)
   const open = pos.filter(p => poStatus(p) !== 'paid');
-  const totalCommitted = open.reduce((s,p) => s + Number(p.total||0), 0);
+  const totalCommitted = open.reduce((s,p) => s + toUSD(p.total, p.currency), 0);
   let totalPaid = 0;
   pos.forEach(p => {
-    if (p.depositPaid) totalPaid += Number(p.deposit||0);
-    if (p.finalPaid)   totalPaid += Number(p.total||0) - Number(p.deposit||0);
+    if (p.depositPaid) totalPaid += toUSD(p.deposit, p.currency);
+    if (p.finalPaid)   totalPaid += toUSD(Number(p.total||0) - Number(p.deposit||0), p.currency);
   });
   let totalOut = 0;
   open.forEach(p => {
-    if (!p.depositPaid) totalOut += Number(p.deposit||0);
-    if (!p.finalPaid)   totalOut += Number(p.total||0) - Number(p.deposit||0);
+    if (!p.depositPaid) totalOut += toUSD(p.deposit, p.currency);
+    if (!p.finalPaid)   totalOut += toUSD(Number(p.total||0) - Number(p.deposit||0), p.currency);
   });
+  const hasEur = pos.some(p => p.currency==='EUR');
+  const usdNote = hasEur ? ` · EUR @ ${getRate().toFixed(4)}` : '';
   const unpaid = [...pos.filter(p=>poStatus(p)!=='paid')].sort((a,b)=>nextDueDate(a).localeCompare(nextDueDate(b)));
   let nextStr='—', nextSub='';
   if (unpaid.length) {
@@ -615,12 +667,12 @@ function renderStats() {
     const amt = isD ? Number(np.deposit) : Number(np.total)-Number(np.deposit);
     const date = isD ? np.depositDueDate : np.finalDueDate;
     const diff = daysDiff(date);
-    nextStr = `${np.brand} · ${fmt(amt)}`;
+    nextStr = `${np.brand} · ${fmt(amt, np.currency)}`;
     nextSub = diff===0?'Due today':diff===1?'Due tomorrow':diff<0?`${Math.abs(diff)}d overdue`:fmtDate(date);
   }
   const del30 = pos.filter(p => { if(p.delivered) return false; const d=daysDiff(p.deliveryDate); return d!==null&&d>=0&&d<=30; }).length;
   document.getElementById('stats').innerHTML = `
-    <div class="stat-card"><div class="stat-label">Total Committed</div><div class="stat-value">${fmt(totalCommitted)}</div><div class="stat-sub">${open.length} open ${open.length===1?'order':'orders'}</div></div>
+    <div class="stat-card"><div class="stat-label">Total Committed</div><div class="stat-value">${fmt(totalCommitted)}</div><div class="stat-sub">${open.length} open ${open.length===1?'order':'orders'}${usdNote}</div></div>
     <div class="stat-card"><div class="stat-label">Total Paid</div><div class="stat-value">${fmt(totalPaid)}</div></div>
     <div class="stat-card"><div class="stat-label">Outstanding</div><div class="stat-value">${fmt(totalOut)}</div></div>
     <div class="stat-card highlight"><div class="stat-label">Next Payment Due</div><div class="stat-value" style="font-size:15px;line-height:1.3">${nextStr}</div><div class="stat-sub">${nextSub}</div></div>
@@ -634,7 +686,7 @@ function renderTypeTotals() {
   pos.forEach(p => {
     const key = (p.type||'').trim() || 'Untyped';
     if (!groups[key]) groups[key] = { total:0, count:0 };
-    groups[key].total += Number(p.total||0);
+    groups[key].total += toUSD(p.total, p.currency);   // normalised to USD
     groups[key].count += 1;
   });
   const keys = Object.keys(groups);
@@ -652,7 +704,7 @@ function renderTypeTotals() {
       <div class="type-total-sub">${g.count} ${g.count===1?'order':'orders'}</div>
     </div>`;
   }).join('');
-  el.innerHTML = `<span class="type-totals-label">Order total by type</span>${cards}`;
+  el.innerHTML = `<span class="type-totals-label">Order total by type (USD)</span>${cards}`;
 }
 
 // ── Table ─────────────────────────────────────────────────────
@@ -677,7 +729,7 @@ function render() {
     }
     if (sort==='delivery') return (a.deliveryDate||'9999').localeCompare(b.deliveryDate||'9999');
     if (sort==='brand') return a.brand.localeCompare(b.brand);
-    if (sort==='amount') return Number(b.total)-Number(a.total);
+    if (sort==='amount') return toUSD(b.total,b.currency)-toUSD(a.total,a.currency);
     return 0;
   });
   const body=document.getElementById('poTableBody'), empty=document.getElementById('emptyState');
@@ -742,10 +794,10 @@ function renderRow(po) {
       ${po.notes?`<div class="po-notes" title="${esc(po.notes)}">${esc(po.notes)}</div>`:''}
     </td>
     <td>${po.type?`<span class="type-badge">${esc(po.type)}</span>`:'<span style="color:var(--text-light)">—</span>'}</td>
-    <td><div class="po-amount">${fmt(po.total)}</div></td>
+    <td><div class="po-amount">${fmt(po.total, po.currency)}</div>${po.currency==='EUR'?`<div style="font-size:10px;color:var(--text-muted)">≈ ${fmt(toUSD(po.total,'EUR'))}</div>`:''}</td>
     <td class="payment-cell">
       ${hasDep ? `
-      <div class="payment-amount">${fmt(po.deposit)}</div>
+      <div class="payment-amount">${fmt(po.deposit, po.currency)}</div>
       <div class="payment-date">${fmtDate(po.depositDueDate)} ${dueSub(dDiff,dStat)}</div>
       <div style="margin-top:4px">${paymentBadge(dStat)}</div>
       <div class="payment-actions">
@@ -758,7 +810,7 @@ function renderRow(po) {
       `}
     </td>
     <td class="payment-cell">
-      <div class="payment-amount">${fmt(finalAmt)}</div>
+      <div class="payment-amount">${fmt(finalAmt, po.currency)}</div>
       <div class="payment-date">${fmtDate(po.finalDueDate)} ${dueSub(fDiff,fStat)}</div>
       <div style="margin-top:4px">${paymentBadge(fStat)}</div>
       <div class="payment-actions">
@@ -820,6 +872,7 @@ function editPO(id) {
   document.getElementById('fBrand').value=po.brand||'';
   document.getElementById('fPoNum').value=po.poNum||'';
   document.getElementById('fType').value=po.type||'';
+  document.getElementById('fCurrency').value=po.currency||'USD';
   document.getElementById('fTotal').value=po.total||'';
   document.getElementById('fDeposit').value=po.deposit||'';
   document.getElementById('fDepositDate').value=po.depositDueDate||'';
@@ -861,6 +914,7 @@ function resetForm() {
     document.getElementById(id).value='';
   });
   document.getElementById('fFile').value='';
+  document.getElementById('fCurrency').value='USD';
   pendingFileName=''; pendingFileData=''; pendingFileType='';
   document.getElementById('calcPreview').style.display='none';
   clearAllAiFill();
@@ -872,9 +926,12 @@ function resetForm() {
 function updateCalc() {
   const total=parseFloat(document.getElementById('fTotal').value);
   const deposit=parseFloat(document.getElementById('fDeposit').value);
+  const cur=document.getElementById('fCurrency').value;
   const preview=document.getElementById('calcPreview');
   if (!isNaN(total)&&!isNaN(deposit)&&total>0) {
-    document.getElementById('calcFinal').textContent=fmt(total-deposit);
+    const finalAmt=total-deposit;
+    const usdNote = cur==='EUR' ? ` (≈ ${fmt(toUSD(finalAmt,'EUR'))})` : '';
+    document.getElementById('calcFinal').textContent=fmt(finalAmt,cur)+usdNote;
     document.getElementById('calcPct').textContent=Math.round((deposit/total)*100)+'%';
     preview.style.display='flex';
   } else { preview.style.display='none'; }
@@ -896,6 +953,7 @@ function savePO() {
   const fileName=(fileInput.files.length?fileInput.files[0].name:'') || pendingFileName;
   const data={brand, poNum:document.getElementById('fPoNum').value.trim(),
     type:document.getElementById('fType').value.trim(),
+    currency:document.getElementById('fCurrency').value,
     total, deposit,
     depositDueDate:depositDate, finalDueDate:finalDate,
     deliveryDate:document.getElementById('fDeliveryDate').value,
@@ -1086,7 +1144,8 @@ Fields to extract:
 - poNum: purchase order number (string)
 - type: the season or order type code if present — e.g. "FW26", "SS27", "ATS" (FW = Fall/Winter, SS = Spring/Summer, ATS = at-once/stock). Normalize to that short form.
 - total: total order amount as a number (no currency symbols)
-- deposit: deposit/down-payment amount as a number (if shown as a % of total, calculate the dollar amount). If no deposit is mentioned at all, set deposit to 0.
+- currency: the currency of the amounts — "EUR" if the PO uses euros (€, EUR, "euro"), otherwise "USD". Default "USD" if unclear.
+- deposit: deposit/down-payment amount as a number (if shown as a % of total, calculate the amount). If no deposit is mentioned at all, set deposit to 0.
 - depositDueDate: deposit due date in YYYY-MM-DD format (if year is ambiguous, assume ${yr} or ${yr+1} based on context)
 - finalDueDate: final/balance payment due date in YYYY-MM-DD format
 - deliveryDate: estimated ship/delivery date in YYYY-MM-DD format
@@ -1095,7 +1154,7 @@ Fields to extract:
 Rules:
 - Omit any field you cannot find (do not guess dates or amounts)
 - Dates must be YYYY-MM-DD
-- Numbers must be plain floats, no $ or commas
+- Numbers must be plain floats, no currency symbols or commas
 - If there is only one payment with no deposit, set deposit to 0
 - Return only the JSON object, nothing else`;
 }
@@ -1156,6 +1215,10 @@ function applyParsedFields(parsed, fileName) {
     deliveryDate:   ['fDeliveryDate','lDeliveryDate'],
     notes:          ['fNotes','lNotes'],
   };
+  // Currency has no ai-fill label — apply it directly to the select
+  if (parsed.currency === 'EUR' || parsed.currency === 'USD') {
+    document.getElementById('fCurrency').value = parsed.currency;
+  }
   let filled = 0;
   for (const [key,[inputId,labelId]] of Object.entries(fieldMap)) {
     const val = parsed[key];
@@ -1191,7 +1254,9 @@ function clearAllAiFill() {
 function openSettings() {
   const key=localStorage.getItem(APIKEY_KEY)||'';
   document.getElementById('apiKeyInput').value=key?'••••••••••••'+key.slice(-4):'';
+  document.getElementById('rateInput').value=getRate().toFixed(4);
   updateApiKeyStatus();
+  updateRateStatus();
   document.getElementById('settingsBackdrop').classList.add('open');
 }
 function closeSettings() { document.getElementById('settingsBackdrop').classList.remove('open'); }
@@ -1214,6 +1279,33 @@ function updateApiKeyStatus() {
   } else {
     el.className='api-key-status unset';
     el.innerHTML='No key set — upload auto-fill will prompt for one';
+  }
+}
+function saveRate() {
+  const val=parseFloat(document.getElementById('rateInput').value);
+  if (isNaN(val)||val<=0) { toast('Enter a valid rate', true); return; }
+  localStorage.setItem(RATE_KEY, JSON.stringify({rate:val, ts:Date.now(), manual:true}));
+  updateRateStatus(); render(); toast('Exchange rate set');
+}
+function useLiveRate() {
+  localStorage.removeItem(RATE_KEY);
+  fetchRate().then(()=>{ document.getElementById('rateInput').value=getRate().toFixed(4); updateRateStatus(); render(); });
+  toast('Fetching live rate…');
+}
+function updateRateStatus() {
+  const el=document.getElementById('rateStatus');
+  if (!el) return;
+  let info={};
+  try { info=JSON.parse(localStorage.getItem(RATE_KEY))||{}; } catch {}
+  if (info.manual) {
+    el.className='api-key-status set';
+    el.innerHTML=`Manual rate: 1 EUR = $${getRate().toFixed(4)}`;
+  } else if (info.ts) {
+    el.className='api-key-status set';
+    el.innerHTML=`Live rate: 1 EUR = $${getRate().toFixed(4)} · updated ${fmtDate(new Date(info.ts).toISOString().slice(0,10))}`;
+  } else {
+    el.className='api-key-status unset';
+    el.innerHTML=`Using default 1 EUR = $${DEFAULT_EURUSD.toFixed(4)} (live rate loads shortly)`;
   }
 }
 
@@ -1239,6 +1331,7 @@ document.addEventListener('keydown', e=>{
   if (saved && [...sel.options].some(o=>o.value===saved)) sel.value=saved;
 })();
 render();
+fetchRate();   // refresh EUR→USD rate in the background
 </script>
 </body>
 </html>
