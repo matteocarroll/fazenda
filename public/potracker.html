@@ -141,6 +141,7 @@
   .po-table tr:hover td { background: #faf9f7; }
   .po-brand { font-weight: 600; font-size: 12px; }
   .po-number { font-size: 11px; color: var(--text-muted); margin-top: 1px; }
+  .po-qty { font-size: 11px; color: var(--text); font-weight: 500; margin-top: 3px; }
   .po-amount { font-weight: 600; font-size: 12px; }
   .po-notes { font-size: 11px; color: var(--text-muted); max-width: 140px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .po-file { font-size: 10px; color: var(--blue); margin-top: 1px; }
@@ -488,6 +489,14 @@
             <option value="ATS"></option>
           </datalist>
         </div>
+        <div class="form-group">
+          <label># Unique Styles <span class="ai-filled-label" id="lStyles" style="display:none">✦ AI</span></label>
+          <input type="number" id="fStyles" min="0" step="1" placeholder="e.g. 12" oninput="clearAiFill('fStyles','lStyles')">
+        </div>
+        <div class="form-group">
+          <label># Total Units <span class="ai-filled-label" id="lUnits" style="display:none">✦ AI</span></label>
+          <input type="number" id="fUnits" min="0" step="1" placeholder="e.g. 340" oninput="clearAiFill('fUnits','lUnits')">
+        </div>
         <div class="form-group full">
           <label>Notes <span class="ai-filled-label" id="lNotes" style="display:none">✦ AI</span></label>
           <textarea id="fNotes" placeholder="Seasonal notes, special terms, vendor contacts…" oninput="clearAiFill('fNotes','lNotes')"></textarea>
@@ -788,6 +797,10 @@ function renderRow(po) {
     <td>
       <div class="po-brand">${esc(po.brand)}</div>
       ${po.poNum?`<div class="po-number">${esc(po.poNum)}</div>`:''}
+      ${(po.styles!=null||po.units!=null)?`<div class="po-qty">${[
+        po.styles!=null?`${po.styles} ${po.styles===1?'style':'styles'}`:null,
+        po.units!=null?`${Number(po.units).toLocaleString('en-US')} units`:null
+      ].filter(Boolean).join(' · ')}</div>`:''}
       ${po.fileName?(po.fileData
         ? `<div class="po-file" style="cursor:pointer" onclick="openFile('${po.id}')" title="Open ${esc(po.fileName)}">📎 ${esc(po.fileName)}</div>`
         : `<div class="po-file" style="color:var(--text-muted)" title="No file stored — re-upload to attach">📎 ${esc(po.fileName)}</div>`):''}
@@ -872,6 +885,8 @@ function editPO(id) {
   document.getElementById('fBrand').value=po.brand||'';
   document.getElementById('fPoNum').value=po.poNum||'';
   document.getElementById('fType').value=po.type||'';
+  document.getElementById('fStyles').value=(po.styles!=null?po.styles:'');
+  document.getElementById('fUnits').value=(po.units!=null?po.units:'');
   document.getElementById('fCurrency').value=po.currency||'USD';
   document.getElementById('fTotal').value=po.total||'';
   document.getElementById('fDeposit').value=po.deposit||'';
@@ -910,7 +925,7 @@ function closeModal() {
 function handleBackdropClick(e) { if(e.target===document.getElementById('modalBackdrop')) closeModal(); }
 
 function resetForm() {
-  ['fBrand','fPoNum','fType','fTotal','fDeposit','fDepositDate','fFinalDate','fDeliveryDate','fNotes'].forEach(id=>{
+  ['fBrand','fPoNum','fType','fStyles','fUnits','fTotal','fDeposit','fDepositDate','fFinalDate','fDeliveryDate','fNotes'].forEach(id=>{
     document.getElementById(id).value='';
   });
   document.getElementById('fFile').value='';
@@ -951,8 +966,12 @@ function savePO() {
   if (!finalDate)                       { alert('Please enter a final payment due date.'); return; }
   const fileInput=document.getElementById('fFile');
   const fileName=(fileInput.files.length?fileInput.files[0].name:'') || pendingFileName;
+  const stylesVal=parseInt(document.getElementById('fStyles').value,10);
+  const unitsVal=parseInt(document.getElementById('fUnits').value,10);
   const data={brand, poNum:document.getElementById('fPoNum').value.trim(),
     type:document.getElementById('fType').value.trim(),
+    styles:isNaN(stylesVal)?null:stylesVal,
+    units:isNaN(unitsVal)?null:unitsVal,
     currency:document.getElementById('fCurrency').value,
     total, deposit,
     depositDueDate:depositDate, finalDueDate:finalDate,
@@ -1149,6 +1168,8 @@ Fields to extract:
 - depositDueDate: deposit due date in YYYY-MM-DD format (if year is ambiguous, assume ${yr} or ${yr+1} based on context)
 - finalDueDate: final/balance payment due date in YYYY-MM-DD format
 - deliveryDate: estimated ship/delivery date in YYYY-MM-DD format
+- styles: the number of UNIQUE styles / products / SKUs / line items on the order (count of distinct style numbers or line-item rows), as an integer
+- units: the TOTAL number of units / pieces across all styles (sum of the quantity column), as an integer
 - notes: any relevant payment terms or special conditions (short string, max 120 chars)
 
 Rules:
@@ -1208,6 +1229,8 @@ function applyParsedFields(parsed, fileName) {
     brand:       ['fBrand','lBrand'],
     poNum:       ['fPoNum','lPoNum'],
     type:        ['fType','lType'],
+    styles:      ['fStyles','lStyles'],
+    units:       ['fUnits','lUnits'],
     total:       ['fTotal','lTotal'],
     deposit:     ['fDeposit','lDeposit'],
     depositDueDate: ['fDepositDate','lDepositDate'],
@@ -1245,7 +1268,7 @@ function clearAiFill(inputId, labelId) {
 }
 
 function clearAllAiFill() {
-  const pairs=[['fBrand','lBrand'],['fPoNum','lPoNum'],['fType','lType'],['fTotal','lTotal'],['fDeposit','lDeposit'],
+  const pairs=[['fBrand','lBrand'],['fPoNum','lPoNum'],['fType','lType'],['fStyles','lStyles'],['fUnits','lUnits'],['fTotal','lTotal'],['fDeposit','lDeposit'],
     ['fDepositDate','lDepositDate'],['fFinalDate','lFinalDate'],['fDeliveryDate','lDeliveryDate'],['fNotes','lNotes']];
   pairs.forEach(([i,l])=>{ document.getElementById(i).classList.remove('ai-filled'); document.getElementById(l).style.display='none'; });
 }
