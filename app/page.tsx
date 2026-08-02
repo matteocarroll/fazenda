@@ -30,11 +30,11 @@ export default function Home() {
           priority
         />
         <Image
-          src="/fazenda_logo_w2.png"
+          src="/fazenda-scene.png"
           alt="FAZENDA"
           width={400}
-          height={83}
-          className="w-auto h-auto max-w-[180px]"
+          height={300}
+          className="w-auto h-auto max-w-[220px]"
           priority
         />
         <div className="flex flex-col items-center gap-1" style={{ fontFamily: "Arial, sans-serif" }}>
