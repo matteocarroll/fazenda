@@ -22,19 +22,11 @@ export default function Home() {
       </div>
       <div className="flex-1 flex flex-col items-center justify-center gap-6">
         <Image
-          src="/lead-buffalo.svg"
-          alt="Lead Buffalo"
-          width={80}
-          height={80}
-          className="w-auto h-auto max-w-[60px]"
-          priority
-        />
-        <Image
-          src="/fazenda-scene.png"
+          src="/fazenda_logo_w2.png"
           alt="FAZENDA"
           width={400}
-          height={300}
-          className="w-auto h-auto max-w-[220px]"
+          height={83}
+          className="w-auto h-auto max-w-[180px]"
           priority
         />
         <div className="flex flex-col items-center gap-1" style={{ fontFamily: "Arial, sans-serif" }}>
