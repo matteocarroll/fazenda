@@ -22,6 +22,14 @@ export default function Home() {
       </div>
       <div className="flex-1 flex flex-col items-center justify-center gap-6">
         <Image
+          src="/fazenda-scene-brazilwood.png"
+          alt="Fazenda"
+          width={400}
+          height={300}
+          className="w-auto h-auto max-w-[160px]"
+          priority
+        />
+        <Image
           src="/fazenda_logo_w2.png"
           alt="FAZENDA"
           width={400}
