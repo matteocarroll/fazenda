@@ -455,6 +455,8 @@
             <select id="fCurrency" style="width:auto;flex:0 0 auto" onchange="updateCalc()">
               <option value="USD">$ USD</option>
               <option value="EUR">€ EUR</option>
+              <option value="GBP">£ GBP</option>
+              <option value="JPY">¥ JPY</option>
             </select>
             <input type="number" id="fTotal" placeholder="0.00" min="0" step="0.01" oninput="updateCalc(); clearAiFill('fTotal','lTotal')">
           </div>
@@ -535,15 +537,35 @@
       </div>
 
       <div class="settings-section">
-        <h3>EUR → USD Exchange Rate</h3>
-        <div class="settings-row">
-          <input type="number" id="rateInput" step="0.0001" min="0" placeholder="1.0800">
-          <button class="btn btn-primary" onclick="saveRate()">Set</button>
+        <h3>Exchange Rates (per $1 USD)</h3>
+        <div id="rateRows" style="display:flex;flex-direction:column;gap:8px"></div>
+        <div class="settings-row" style="margin-top:10px">
+          <button class="btn btn-primary" onclick="saveRate()">Set manual</button>
           <button class="btn btn-ghost" onclick="useLiveRate()">Use live</button>
         </div>
         <div class="api-key-status" id="rateStatus"><span>—</span></div>
         <div class="settings-info">
-          EUR purchase orders are converted to USD using this rate for all dashboard totals. A live rate is fetched automatically (daily) — set a value here to lock in your own.
+          Non-USD purchase orders (EUR, GBP, JPY) are converted to USD using these rates for all dashboard totals. Live rates are fetched automatically (daily) — enter values and press "Set manual" to lock in your own.
+        </div>
+      </div>
+
+      <div class="settings-section">
+        <h3>Import / Export</h3>
+        <div class="settings-row" style="flex-wrap:wrap">
+          <button class="btn btn-ghost" onclick="exportPOs()">Export all POs (.json)</button>
+          <button class="btn btn-ghost" onclick="document.getElementById('importFile').click()">Import from file…</button>
+          <input type="file" id="importFile" accept=".json,application/json" style="display:none" onchange="importFromFile(event)">
+        </div>
+        <textarea id="importText" placeholder="…or paste PO JSON here" style="width:100%;min-height:70px;margin-top:8px;font-family:monospace;font-size:12px"></textarea>
+        <div class="settings-row" style="margin-top:8px">
+          <button class="btn btn-primary" onclick="importFromText()">Import pasted JSON</button>
+          <select id="importMode" style="width:auto">
+            <option value="merge">Add to existing</option>
+            <option value="replace">Replace all</option>
+          </select>
+        </div>
+        <div class="settings-info">
+          Export downloads a backup of every PO (including attached files). Import accepts that same format — use "Add to existing" to append, or "Replace all" to start fresh. Your data stays in this browser.
         </div>
       </div>
 
@@ -562,8 +584,10 @@
 const STORE_KEY  = 'po_tracker_v1';
 const APIKEY_KEY = 'po_tracker_apikey';
 const SORT_KEY   = 'po_tracker_sort';
-const RATE_KEY   = 'po_tracker_eurusd';   // {rate, ts, manual}
-const DEFAULT_EURUSD = 1.08;              // fallback if no live rate yet
+const RATE_KEY   = 'po_tracker_rates';    // {rates:{EUR,GBP,JPY}, ts, manual} — units of currency per 1 USD
+const CURRENCIES = ['USD','EUR','GBP','JPY'];
+const CUR_SYM = { USD:'$', EUR:'€', GBP:'£', JPY:'¥' };
+const DEFAULT_RATES = { EUR:0.92, GBP:0.79, JPY:157 };   // per 1 USD, fallback until live rates load
 
 pdfjsLib.GlobalWorkerOptions.workerSrc =
   'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
@@ -582,31 +606,32 @@ let pendingFileType = '';   // MIME type of the uploaded doc
 function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2,7); }
 function fmt(n, currency) {
   if (n == null || isNaN(n)) return '—';
-  const sym = currency==='EUR' ? '€' : '$';
-  return sym + Number(n).toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2});
+  const sym = CUR_SYM[currency] || '$';
+  const dp = currency==='JPY' ? 0 : 2;   // yen has no minor unit
+  return sym + Number(n).toLocaleString('en-US', {minimumFractionDigits:dp, maximumFractionDigits:dp});
 }
-// EUR→USD conversion
-function getRate() {
-  try { const r=JSON.parse(localStorage.getItem(RATE_KEY)); if (r && r.rate) return Number(r.rate); } catch {}
-  return DEFAULT_EURUSD;
+// Multi-currency → USD conversion. Rates are stored as units-of-currency per 1 USD.
+function getRates() {
+  try { const r=JSON.parse(localStorage.getItem(RATE_KEY)); if (r && r.rates) return {...DEFAULT_RATES, ...r.rates}; } catch {}
+  return {...DEFAULT_RATES};
 }
+function rateFor(currency) { return currency==='USD' ? 1 : (getRates()[currency] || DEFAULT_RATES[currency] || 1); }
 function toUSD(amount, currency) {
   const n = Number(amount||0);
-  return currency==='EUR' ? n * getRate() : n;
+  return currency==='USD' || !currency ? n : n / rateFor(currency);
 }
 async function fetchRate() {
-  // Skip if a manual override is set, or a live rate was fetched in the last 12h
+  // Skip if a manual override is set, or live rates were fetched in the last 12h
   try {
     const r=JSON.parse(localStorage.getItem(RATE_KEY));
     if (r && (r.manual || (r.ts && Date.now()-r.ts < 12*3600*1000))) return;
   } catch {}
   try {
-    const resp = await fetch('https://api.frankfurter.app/latest?from=EUR&to=USD');
+    const resp = await fetch('https://api.frankfurter.app/latest?from=USD&to=EUR,GBP,JPY');
     if (!resp.ok) return;
     const data = await resp.json();
-    const rate = data?.rates?.USD;
-    if (rate) {
-      localStorage.setItem(RATE_KEY, JSON.stringify({rate, ts:Date.now(), manual:false}));
+    if (data && data.rates) {
+      localStorage.setItem(RATE_KEY, JSON.stringify({rates:data.rates, ts:Date.now(), manual:false}));
       render(); updateRateStatus();
     }
   } catch {}
@@ -667,8 +692,8 @@ function renderStats() {
     if (!p.depositPaid) totalOut += toUSD(p.deposit, p.currency);
     if (!p.finalPaid)   totalOut += toUSD(Number(p.total||0) - Number(p.deposit||0), p.currency);
   });
-  const hasEur = pos.some(p => p.currency==='EUR');
-  const usdNote = hasEur ? ` · EUR @ ${getRate().toFixed(4)}` : '';
+  const hasFx = pos.some(p => p.currency && p.currency!=='USD');
+  const usdNote = hasFx ? ` · USD-converted` : '';
   const unpaid = [...pos.filter(p=>poStatus(p)!=='paid')].sort((a,b)=>nextDueDate(a).localeCompare(nextDueDate(b)));
   let nextStr='—', nextSub='';
   if (unpaid.length) {
@@ -807,7 +832,7 @@ function renderRow(po) {
       ${po.notes?`<div class="po-notes" title="${esc(po.notes)}">${esc(po.notes)}</div>`:''}
     </td>
     <td>${po.type?`<span class="type-badge">${esc(po.type)}</span>`:'<span style="color:var(--text-light)">—</span>'}</td>
-    <td><div class="po-amount">${fmt(po.total, po.currency)}</div>${po.currency==='EUR'?`<div style="font-size:10px;color:var(--text-muted)">≈ ${fmt(toUSD(po.total,'EUR'))}</div>`:''}</td>
+    <td><div class="po-amount">${fmt(po.total, po.currency)}</div>${(po.currency&&po.currency!=='USD')?`<div style="font-size:10px;color:var(--text-muted)">≈ ${fmt(toUSD(po.total,po.currency))}</div>`:''}</td>
     <td class="payment-cell">
       ${hasDep ? `
       <div class="payment-amount">${fmt(po.deposit, po.currency)}</div>
@@ -1163,7 +1188,7 @@ Fields to extract:
 - poNum: purchase order number (string)
 - type: the season or order type code if present — e.g. "FW26", "SS27", "ATS" (FW = Fall/Winter, SS = Spring/Summer, ATS = at-once/stock). Normalize to that short form.
 - total: total order amount as a number (no currency symbols)
-- currency: the currency of the amounts — "EUR" if the PO uses euros (€, EUR, "euro"), otherwise "USD". Default "USD" if unclear.
+- currency: the currency of the amounts — one of "USD" ($), "EUR" (€/euro), "GBP" (£/pound), or "JPY" (¥/yen/JPY). Default "USD" if unclear.
 - deposit: deposit/down-payment amount as a number (if shown as a % of total, calculate the amount). If no deposit is mentioned at all, set deposit to 0.
 - depositDueDate: deposit due date in YYYY-MM-DD format (if year is ambiguous, assume ${yr} or ${yr+1} based on context)
 - finalDueDate: final/balance payment due date in YYYY-MM-DD format
@@ -1239,7 +1264,7 @@ function applyParsedFields(parsed, fileName) {
     notes:          ['fNotes','lNotes'],
   };
   // Currency has no ai-fill label — apply it directly to the select
-  if (parsed.currency === 'EUR' || parsed.currency === 'USD') {
+  if (CURRENCIES.includes(parsed.currency)) {
     document.getElementById('fCurrency').value = parsed.currency;
   }
   let filled = 0;
@@ -1277,7 +1302,7 @@ function clearAllAiFill() {
 function openSettings() {
   const key=localStorage.getItem(APIKEY_KEY)||'';
   document.getElementById('apiKeyInput').value=key?'••••••••••••'+key.slice(-4):'';
-  document.getElementById('rateInput').value=getRate().toFixed(4);
+  renderRateRows();
   updateApiKeyStatus();
   updateRateStatus();
   document.getElementById('settingsBackdrop').classList.add('open');
@@ -1304,32 +1329,109 @@ function updateApiKeyStatus() {
     el.innerHTML='No key set — upload auto-fill will prompt for one';
   }
 }
+function renderRateRows() {
+  const rates=getRates();
+  document.getElementById('rateRows').innerHTML = ['EUR','GBP','JPY'].map(c=>`
+    <div style="display:flex;align-items:center;gap:8px">
+      <span style="width:110px;font-size:13px;color:var(--text-muted)">$1 = ${CUR_SYM[c]} </span>
+      <input type="number" id="rate_${c}" step="0.0001" min="0" value="${(rates[c]||'').toString()}" style="flex:1">
+      <span style="width:36px;font-size:12px;color:var(--text-muted)">${c}</span>
+    </div>`).join('');
+}
 function saveRate() {
-  const val=parseFloat(document.getElementById('rateInput').value);
-  if (isNaN(val)||val<=0) { toast('Enter a valid rate', true); return; }
-  localStorage.setItem(RATE_KEY, JSON.stringify({rate:val, ts:Date.now(), manual:true}));
-  updateRateStatus(); render(); toast('Exchange rate set');
+  const rates={};
+  for (const c of ['EUR','GBP','JPY']) {
+    const v=parseFloat(document.getElementById('rate_'+c).value);
+    if (isNaN(v)||v<=0) { toast(`Enter a valid ${c} rate`, true); return; }
+    rates[c]=v;
+  }
+  localStorage.setItem(RATE_KEY, JSON.stringify({rates, ts:Date.now(), manual:true}));
+  updateRateStatus(); render(); toast('Exchange rates set');
 }
 function useLiveRate() {
   localStorage.removeItem(RATE_KEY);
-  fetchRate().then(()=>{ document.getElementById('rateInput').value=getRate().toFixed(4); updateRateStatus(); render(); });
-  toast('Fetching live rate…');
+  toast('Fetching live rates…');
+  fetchRate().then(()=>{ renderRateRows(); updateRateStatus(); render(); });
 }
 function updateRateStatus() {
   const el=document.getElementById('rateStatus');
   if (!el) return;
   let info={};
   try { info=JSON.parse(localStorage.getItem(RATE_KEY))||{}; } catch {}
+  const r=getRates();
+  const summary=`€${r.EUR} · £${r.GBP} · ¥${r.JPY} per $1`;
   if (info.manual) {
     el.className='api-key-status set';
-    el.innerHTML=`Manual rate: 1 EUR = $${getRate().toFixed(4)}`;
+    el.innerHTML=`Manual rates — ${summary}`;
   } else if (info.ts) {
     el.className='api-key-status set';
-    el.innerHTML=`Live rate: 1 EUR = $${getRate().toFixed(4)} · updated ${fmtDate(new Date(info.ts).toISOString().slice(0,10))}`;
+    el.innerHTML=`Live rates — ${summary} · updated ${fmtDate(new Date(info.ts).toISOString().slice(0,10))}`;
   } else {
     el.className='api-key-status unset';
-    el.innerHTML=`Using default 1 EUR = $${DEFAULT_EURUSD.toFixed(4)} (live rate loads shortly)`;
+    el.innerHTML=`Using default rates — ${summary} (live loads shortly)`;
   }
+}
+
+// ── Import / Export ───────────────────────────────────────────
+function exportPOs() {
+  const blob = new Blob([JSON.stringify(pos, null, 2)], {type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `po-tracker-export-${today()}.json`;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url), 5000);
+  toast(`Exported ${pos.length} PO${pos.length===1?'':'s'}`);
+}
+function normalizeImported(arr) {
+  // Accept an array of PO objects; fill defaults and ensure ids
+  return arr.map(p => ({
+    id: p.id || uid(),
+    brand: String(p.brand||'').trim(),
+    poNum: p.poNum||'', type: p.type||'', currency: CURRENCIES.includes(p.currency)?p.currency:'USD',
+    total: Number(p.total)||0, deposit: Number(p.deposit)||0,
+    depositDueDate: p.depositDueDate||'', finalDueDate: p.finalDueDate||'', deliveryDate: p.deliveryDate||'',
+    notes: p.notes||'', styles: (p.styles!=null?Number(p.styles):null), units: (p.units!=null?Number(p.units):null),
+    fileName: p.fileName||'', fileData: p.fileData||'', fileType: p.fileType||'',
+    depositPaid: !!p.depositPaid, finalPaid: !!p.finalPaid, delivered: !!p.delivered,
+    createdAt: p.createdAt || Date.now()
+  })).filter(p => p.brand);
+}
+function applyImport(arr) {
+  const mode = document.getElementById('importMode').value;
+  const incoming = normalizeImported(arr);
+  if (!incoming.length) { toast('No valid POs found in import', true); return; }
+  if (mode==='replace') {
+    if (!confirm(`Replace all ${pos.length} existing PO(s) with ${incoming.length} imported one(s)?`)) return;
+    pos = incoming;
+  } else {
+    const existing = new Set(pos.map(p=>p.id));
+    incoming.forEach(p=>{ if (existing.has(p.id)) p.id = uid(); });
+    pos = pos.concat(incoming);
+  }
+  savePOs(pos); render();
+  toast(`Imported ${incoming.length} PO${incoming.length===1?'':'s'}`);
+  closeSettings();
+}
+function parseImport(text) {
+  let data;
+  try { data = JSON.parse(text); } catch { toast('Invalid JSON', true); return null; }
+  if (Array.isArray(data)) return data;
+  if (data && Array.isArray(data.pos)) return data.pos;   // tolerate {pos:[...]}
+  toast('JSON must be an array of POs', true); return null;
+}
+function importFromText() {
+  const text = document.getElementById('importText').value.trim();
+  if (!text) { toast('Paste JSON first', true); return; }
+  const arr = parseImport(text); if (arr) applyImport(arr);
+}
+function importFromFile(e) {
+  const file = e.target.files[0]; if (!file) return;
+  const reader = new FileReader();
+  reader.onload = () => { const arr = parseImport(reader.result); if (arr) applyImport(arr); };
+  reader.onerror = () => toast('Could not read file', true);
+  reader.readAsText(file);
+  e.target.value = '';
 }
 
 // ── Toast ─────────────────────────────────────────────────────
