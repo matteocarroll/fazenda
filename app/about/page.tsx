@@ -21,7 +21,7 @@ export default function About() {
   }
 
   return (
-    <main className="min-h-screen bg-white py-12 px-6" style={{ fontFamily: "Arial, sans-serif" }}>
+    <main className="min-h-screen bg-white py-12 px-6" >
       <div className="max-w-3xl mx-auto">
         <div className="flex items-center justify-between mb-10">
           <Link href="/" className="text-[#5c3317] text-xs hover:opacity-70 transition-opacity">

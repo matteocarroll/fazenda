@@ -1,6 +1,6 @@
 export default function Barista() {
   return (
-    <main className="min-h-screen bg-white py-12 px-6" style={{ fontFamily: "Arial, sans-serif" }}>
+    <main className="min-h-screen bg-white py-12 px-6" >
       <div className="max-w-xl mx-auto">
 
         <p className="text-[#5c3317] text-xs mb-10">For Portuguese please scroll down.</p>

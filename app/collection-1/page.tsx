@@ -17,10 +17,10 @@ export default function Collection1() {
     <main className="min-h-screen bg-white py-12 px-6">
       <div className="max-w-3xl mx-auto">
         <div className="flex items-center justify-between mb-10">
-          <Link href="/" className="text-[#5c3317] text-xs hover:opacity-70 transition-opacity" style={{ fontFamily: "Arial, sans-serif" }}>
+          <Link href="/" className="text-[#5c3317] text-xs hover:opacity-70 transition-opacity" >
             ← Back
           </Link>
-          <h1 className="text-[#5c3317] text-xs tracking-widest" style={{ fontFamily: "Arial, sans-serif" }}>
+          <h1 className="text-[#5c3317] text-xs tracking-widest" >
             COLLECTION PRIMEIRA
           </h1>
           <div className="w-10" />

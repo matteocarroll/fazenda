@@ -8,14 +8,14 @@ export default function Home() {
         <Link
           href="/about"
           className="text-[#5c3317] text-xs hover:opacity-70 transition-opacity"
-          style={{ fontFamily: "Arial, sans-serif" }}
+          
         >
           About
         </Link>
         <Link
           href="/collection-1"
           className="text-[#5c3317] text-xs hover:opacity-70 transition-opacity"
-          style={{ fontFamily: "Arial, sans-serif" }}
+          
         >
           Collection Primeira
         </Link>
@@ -37,8 +37,8 @@ export default function Home() {
           className="w-auto h-auto max-w-[180px]"
           priority
         />
-        <p className="text-[#5c3317] text-xs" style={{ fontFamily: "Arial, sans-serif" }}>177 Mott Street, 10012, New York</p>
-        <p className="text-[#5c3317] text-xs" style={{ fontFamily: "Arial, sans-serif" }}>
+        <p className="text-[#5c3317] text-xs" >177 Mott Street, 10012, New York</p>
+        <p className="text-[#5c3317] text-xs" >
           For product requests/help, please{" "}
           <a
             href="https://wa.me/19298408626"
@@ -51,7 +51,7 @@ export default function Home() {
         </p>
       </div>
       <footer className="pb-4">
-        <p className="text-[#5c3317] text-xs" style={{ fontFamily: "Arial, sans-serif" }}>support@fazendacompany.com</p>
+        <p className="text-[#5c3317] text-xs" >support@fazendacompany.com</p>
       </footer>
     </main>
   )
