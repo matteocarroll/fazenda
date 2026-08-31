@@ -105,7 +105,7 @@ export default function Sep12() {
       `}</style>
 
       <div className="my-auto flex flex-col items-center gap-10 text-[#5c3317] text-xs text-center leading-relaxed w-full max-w-sm">
-        <div className="flex flex-col items-center gap-4 w-full">
+        <div className="flex flex-col items-center gap-6 w-full">
           <div className="scene" role="img" aria-label="Fazenda" />
           <div className="wordmark" role="img" aria-label="Fazenda" />
         </div>
