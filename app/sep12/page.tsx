@@ -61,11 +61,10 @@ export default function Sep12() {
   return (
     <main className="sep12 min-h-screen bg-white flex justify-center px-6 py-12">
       <style>{`
-        /* Monospace throughout — echoes the typewriter. Set on the page
-           root so the copy, form fields and button all inherit it. */
+        /* Arial throughout. Set on the page root so the copy, form fields
+           and button all inherit it. */
         .sep12, .sep12 input, .sep12 button {
-          font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Monaco,
-            Consolas, "Liberation Mono", "Courier New", monospace;
+          font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
         }
 
         ${colourKeyframes}
