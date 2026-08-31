@@ -27,7 +27,13 @@ const colourKeyframes = `@keyframes wordmark-cycle {\n${PALETTE.map((c, i) => {
   return `  ${at}%, ${(at + 100 / PALETTE.length - FADE).toFixed(2)}% { background-color: ${c}; }`
 }).join("\n")}\n  100% { background-color: ${PALETTE[0]}; }\n}`
 
-const HEAD = ["SEPTEMBER 12 2026", "OPENING DAY EVENT", "RSVP FOR DJ, DRINKS, AND SPECIAL GUESTS"]
+const HEAD = [
+  "SEPTEMBER 12 2026",
+  "OPEN STARTING 8AM CLOTHING, COFFEE, SNACKS",
+  "VINYL STARTING 5PM",
+  "OPENING DAY EVENT",
+  "RSVP FOR DJ, DRINKS, AND SPECIAL GUESTS",
+]
 const BODY =
   "Please join us for the Fazenda opening event! We'll be open starting 8am, please stop by for a morning coffee or come later in the day for some more coffee or snacks."
 
@@ -112,7 +118,7 @@ export default function Sep12() {
         </div>
 
         <div className="flex flex-col items-center gap-6 w-full">
-          <div className="flex flex-col gap-1.5 min-h-[64px]">
+          <div className="flex flex-col gap-1.5 min-h-[144px]">
             {headLines.map((line, i) => (
               <p key={i} className="font-semibold text-sm tracking-wide">
                 {line}
