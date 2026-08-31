@@ -28,8 +28,8 @@ const colourKeyframes = `@keyframes wordmark-cycle {\n${PALETTE.map((c, i) => {
 }).join("\n")}\n  100% { background-color: ${PALETTE[0]}; }\n}`
 
 const HEAD = [
-  "OPENING DAY EVENT",
   "SEPTEMBER 12 2026",
+  "OPENING DAY EVENT",
   "OPEN STARTING 8AM CLOTHING, COFFEE, SNACKS",
   "VINYL STARTING 5PM",
   "RSVP FOR DJ, DRINKS, AND SPECIAL GUESTS",
