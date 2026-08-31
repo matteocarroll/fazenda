@@ -2,19 +2,11 @@
 
 import { useEffect, useState } from "react"
 
-/* The Fazenda palette, sampled from the wordmark artwork.
-   bianco / limestone / white are omitted — they are invisible on white. */
+/* Colours sampled from the wordmark artwork. */
 const PALETTE = [
-  "#43150E", // tobacco
-  "#264D9D", // azulejo
-  "#5D0A21", // brazilwood
-  "#71973E", // chlorophyll
-  "#B78FAC", // wisteria
   "#040707", // black
-  "#6FA5A9", // turquoise
-  "#5B321F", // cacao
-  "#E0C991", // naples
-  "#36602E", // terreverte
+  "#43150E", // tobacco — the darkest brown
+  "#5D0A21", // brazilwood — burgundy
 ]
 
 const HOLD = 3 // seconds each colour is held
@@ -76,7 +68,7 @@ export default function Sep12() {
   const done = n >= FULL.length
 
   return (
-    <main className="min-h-screen bg-white flex items-center justify-center px-6">
+    <main className="min-h-screen bg-white flex justify-center px-6 py-12">
       <style>{`
         @keyframes caret { 0%, 49% { opacity: 1 } 50%, 100% { opacity: 0 } }
         .caret { animation: caret 1s step-end infinite; }
@@ -115,7 +107,7 @@ export default function Sep12() {
         }
       `}</style>
 
-      <div className="flex flex-col items-center gap-10 text-[#5c3317] text-xs text-center leading-relaxed w-full max-w-sm -mt-10">
+      <div className="my-auto flex flex-col items-center gap-10 text-[#5c3317] text-xs text-center leading-relaxed w-full max-w-sm">
         <div className="flex flex-col items-center gap-4 w-full">
           <div className="scene" role="img" aria-label="Fazenda farmhouse" />
           <div className="wordmark" role="img" aria-label="Fazenda" />
