@@ -58,23 +58,41 @@ export default function Sep12() {
 
         /* The wordmark is painted as a background colour showing through the
            artwork's own alpha, so every brand colour renders from one asset. */
-        .wordmark {
+        .scene, .wordmark {
           width: 100%;
+          background-color: ${PALETTE[0]};
+          -webkit-mask-repeat: no-repeat;
+          mask-repeat: no-repeat;
+          -webkit-mask-position: center;
+          mask-position: center;
+          -webkit-mask-size: contain;
+          mask-size: contain;
+          /* one shared animation, so both always show the same colour */
+          animation: wordmark-cycle ${CYCLE}s linear infinite;
+        }
+        .scene {
+          max-width: 270px;
+          aspect-ratio: 1101 / 460;
+          -webkit-mask-image: url(/fazenda-scene-mask.png);
+          mask-image: url(/fazenda-scene-mask.png);
+        }
+        .wordmark {
           max-width: 220px;
           aspect-ratio: 1446 / 182;
-          background-color: ${PALETTE[0]};
-          -webkit-mask: url(/fazenda-w2-mask.png) center / contain no-repeat;
-          mask: url(/fazenda-w2-mask.png) center / contain no-repeat;
-          animation: wordmark-cycle ${CYCLE}s linear infinite;
+          -webkit-mask-image: url(/fazenda-w2-mask.png);
+          mask-image: url(/fazenda-w2-mask.png);
         }
 
         @media (prefers-reduced-motion: reduce) {
-          .caret, .wordmark { animation: none }
+          .caret, .scene, .wordmark { animation: none }
         }
       `}</style>
 
       <div className="flex flex-col items-center gap-10 text-[#5c3317] text-xs text-center leading-relaxed w-full max-w-sm -mt-10">
-        <div className="wordmark" role="img" aria-label="Fazenda" />
+        <div className="flex flex-col items-center gap-4 w-full">
+          <div className="scene" role="img" aria-label="Fazenda farmhouse" />
+          <div className="wordmark" role="img" aria-label="Fazenda" />
+        </div>
 
         <div className="flex flex-col items-center gap-6 w-full">
           <div className="flex flex-col gap-1.5 min-h-[64px]">
