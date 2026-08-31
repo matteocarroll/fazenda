@@ -5,6 +5,27 @@ import { useState } from "react"
 /* Tobacco, sampled from the wordmark artwork. */
 const LOGO_COLOUR = "#43150E"
 
+/* The scene's elements, shown one at a time. */
+const LOGOS = [
+  "/logos/baby.png",
+  "/logos/house.png",
+  "/logos/rear.png",
+  "/logos/tree.png",
+  "/logos/lead.png",
+]
+
+const HOLD = 3 // seconds each mark is held
+const LOGO_CYCLE = LOGOS.length * HOLD
+const SLOT = 100 / LOGOS.length
+
+/* Paired stops so each mark holds its slot and swaps cleanly at the boundary
+   — mask-image is a discrete property, so it would otherwise flip mid-slot. */
+const logoKeyframes = `@keyframes logo-cycle {\n${LOGOS.map((src, i) => {
+  const at = i * SLOT
+  const url = `url(${src})`
+  return `  ${at}%, ${(at + SLOT - 0.01).toFixed(2)}% { -webkit-mask-image: ${url}; mask-image: ${url}; }`
+}).join("\n")}\n}`
+
 /* Set off by a blank line above and below. */
 const SPACED_LINE = "OPENING DAY EVENT"
 
@@ -49,8 +70,10 @@ export default function Sep12() {
           font-family: "Times New Roman", Times, serif;
         }
 
+        ${logoKeyframes}
+
         /* The artwork is painted as a background colour showing through its
-           own alpha, so the mark renders from a single asset. */
+           own alpha, so each mark renders in the brand colour. */
         .scene, .wordmark {
           width: 100%;
           background-color: ${LOGO_COLOUR};
@@ -61,11 +84,17 @@ export default function Sep12() {
           -webkit-mask-size: contain;
           mask-size: contain;
         }
+        /* Fixed height, so marks of differing proportions swap without
+           shifting the layout. */
         .scene {
-          max-width: 270px;
-          aspect-ratio: 1101 / 460;
-          -webkit-mask-image: url(/fazenda-scene-mask.png);
-          mask-image: url(/fazenda-scene-mask.png);
+          height: 130px;
+          -webkit-mask-image: url(${LOGOS[0]});
+          mask-image: url(${LOGOS[0]});
+          animation: logo-cycle ${LOGO_CYCLE}s step-end infinite;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .scene { animation: none }
         }
         .wordmark {
           max-width: 220px;
@@ -77,7 +106,7 @@ export default function Sep12() {
 
       <div className="my-auto flex flex-col items-center gap-10 text-[#5c3317] text-xs text-center leading-relaxed w-full max-w-sm">
         <div className="flex flex-col items-center gap-4 w-full">
-          <div className="scene" role="img" aria-label="Fazenda farmhouse" />
+          <div className="scene" role="img" aria-label="Fazenda" />
           <div className="wordmark" role="img" aria-label="Fazenda" />
         </div>
 
