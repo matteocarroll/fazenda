@@ -71,6 +71,12 @@ export default function Sep12() {
         @keyframes caret { 0%, 49% { opacity: 1 } 50%, 100% { opacity: 0 } }
         .caret { animation: caret 1s step-end infinite; }
 
+        /* Monospace for the event details — echoes the typewriter. */
+        .head-line {
+          font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Monaco,
+            Consolas, "Liberation Mono", "Courier New", monospace;
+        }
+
         ${colourKeyframes}
 
         /* The wordmark is painted as a background colour showing through the
@@ -114,7 +120,7 @@ export default function Sep12() {
         <div className="flex flex-col items-center gap-6 w-full">
           <div className="flex flex-col gap-1.5">
             {HEAD.map((line) => (
-              <p key={line} className="font-semibold text-base tracking-wide">
+              <p key={line} className="head-line font-semibold text-base">
                 {line}
               </p>
             ))}
