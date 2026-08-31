@@ -61,10 +61,11 @@ export default function Sep12() {
   return (
     <main className="sep12 min-h-screen bg-white flex justify-center px-6 py-12">
       <style>{`
-        /* Arial throughout. Set on the page root so the copy, form fields
-           and button all inherit it. */
+        /* Times New Roman, matching the rest of the site. Set on the page
+           root so the form fields and button inherit it too — browsers give
+           form controls their own font otherwise. */
         .sep12, .sep12 input, .sep12 button {
-          font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+          font-family: "Times New Roman", Times, serif;
         }
 
         ${colourKeyframes}
