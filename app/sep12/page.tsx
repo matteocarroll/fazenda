@@ -20,13 +20,11 @@ const colourKeyframes = `@keyframes wordmark-cycle {\n${PALETTE.map((c, i) => {
 }).join("\n")}\n  100% { background-color: ${PALETTE[0]}; }\n}`
 
 const HEAD = [
-  "RSVP",
-  "SEPTEMBER 12 2026",
+  "MULTIBRAND MENSWEAR STORE",
+  "RSVP SEPTEMBER 12 2026",
   "OPENING DAY EVENT",
   "STARTING 8AM CLOTHING, COFFEE, SNACKS",
-  "VINYL STARTING 5PM",
-  "RSVP FOR DJ, DRINKS, AND SPECIAL GUESTS",
-  "MULTIBRAND MENSWEAR STORE",
+  "VINYL DJ STARTING 5PM",
 ]
 const BODY = [
   "Hello! Please join us for the Fazenda opening event on September 12th. Please stop by. We'll have some special guests and will be later joined by dj and vinyl. We hope to see you soon.",
