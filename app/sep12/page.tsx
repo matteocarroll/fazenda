@@ -1,139 +1,156 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useState } from "react"
+import { BUFFALO, GAIT, type Buffalo } from "./buffalo"
 
-function BuffaloCanvas({ src, w, bodyFrac, fLegX, bLegX, legW, phase }: {
-  src: string
-  w: number
-  bodyFrac: number
-  fLegX: [number, number]
-  bLegX: [number, number]
-  legW: number
-  phase: number
+/* One buffalo: the original artwork with its real legs cut out and re-hung
+   at the hip, so each leg swings as the herd crosses the page. */
+function Buffalo({
+  data,
+  width,
+  duration,
+  stride,
+  delay,
+  bottom,
+}: {
+  data: Buffalo
+  width: number
+  duration: number
+  /* seconds per full leg cycle — tuned to the crossing speed so hooves
+     don't skate along the ground */
+  stride: number
+  delay: number
+  bottom: number
 }) {
-  const ref = useRef<HTMLCanvasElement>(null)
+  const s = width / data.w
 
-  useEffect(() => {
-    const canvas = ref.current
-    if (!canvas) return
-    const ctx = canvas.getContext("2d")
-    if (!ctx) return
-
-    const img = new window.Image()
-    img.src = src
-    let raf: number
-    let t = phase * Math.PI * 2
-
-    img.onload = () => {
-      const h = Math.round((img.naturalHeight * w) / img.naturalWidth)
-      canvas.width = w
-      canvas.height = h
-
-      const bodyY = h * bodyFrac
-      const legLen = h * (1 - bodyFrac) * 0.9
-      const lw = w * legW
-
-      const drawLeg = (x: number, y: number, angle: number, len: number, width: number, color: string) => {
-        ctx.save()
-        ctx.translate(x, y)
-        ctx.rotate(angle)
-        ctx.fillStyle = color
-        ctx.beginPath()
-        ctx.rect(-width / 2, 0, width, len * 0.8)
-        ctx.fill()
-        ctx.beginPath()
-        ctx.ellipse(0, len * 0.8, width * 0.55, width * 0.42, 0, 0, Math.PI * 2)
-        ctx.fill()
-        ctx.restore()
-      }
-
-      const draw = () => {
-        t += 0.068
-        const s = Math.sin(t) * 0.27
-
-        ctx.clearRect(0, 0, w, h)
-
-        // Far legs (slightly lighter, behind)
-        drawLeg(w * fLegX[1], bodyY, -s, legLen, lw * 0.7, "#2e2e2e")
-        drawLeg(w * bLegX[1], bodyY,  s, legLen, lw * 0.7, "#2e2e2e")
-        // Near legs (black, in front)
-        drawLeg(w * fLegX[0], bodyY,  s, legLen, lw, "#080808")
-        drawLeg(w * bLegX[0], bodyY, -s, legLen, lw, "#080808")
-
-        // Paste body on top (clipped above bodyY)
-        ctx.save()
-        ctx.beginPath()
-        ctx.rect(0, 0, w, bodyY + 8)
-        ctx.clip()
-        ctx.drawImage(img, 0, 0, w, h)
-        ctx.restore()
-
-        raf = requestAnimationFrame(draw)
-      }
-
-      draw()
-    }
-
-    return () => cancelAnimationFrame(raf)
-  }, [src, w, bodyFrac, fLegX, bLegX, legW, phase])
-
-  return <canvas ref={ref} style={{ display: "block" }} />
+  return (
+    <div
+      className="buf"
+      style={{
+        bottom,
+        width,
+        height: data.h * s,
+        animationDuration: `${duration}s`,
+        animationDelay: `${delay}s`,
+      }}
+    >
+      <div
+        className="buf-bob"
+        style={{ animationDuration: `${stride / 2}s`, animationDelay: `${delay}s` }}
+      >
+        {data.legs.map((leg, i) => (
+          <img
+            key={leg.src}
+            src={leg.src}
+            alt=""
+            className="buf-leg"
+            style={{
+              left: leg.x * s,
+              top: leg.y * s,
+              width: leg.w * s,
+              height: leg.h * s,
+              transformOrigin: `${leg.px * s}px ${leg.py * s}px`,
+              animationDuration: `${stride}s`,
+              animationDelay: `${delay + GAIT[i] * stride}s`,
+            }}
+          />
+        ))}
+        <img src={data.body} alt="" className="buf-body" style={{ width }} />
+      </div>
+    </div>
+  )
 }
 
-const FULL = "September 12 2026\nOpening Day Event\nRSVP for DJ, Drinks, and Special Guests\n\nPlease join us for the Fazenda opening event! We'll be open starting 8am, please stop by for a morning coffee or come later in the day for some more coffee or snacks."
+const HEAD = ["September 12 2026", "Opening Day Event", "RSVP for DJ, Drinks, and Special Guests"]
+const BODY =
+  "Please join us for the Fazenda opening event! We'll be open starting 8am, please stop by for a morning coffee or come later in the day for some more coffee or snacks."
+
+const FULL = HEAD.join("\n") + "\n\n" + BODY
 
 export default function Sep12() {
-  const [count, setCount] = useState(0)
+  const [n, setN] = useState(0)
 
   useEffect(() => {
-    if (count >= FULL.length) return
-    const t = setTimeout(() => setCount((c) => c + 1), 30)
+    if (n >= FULL.length) return
+    const gap = FULL[n] === "\n" ? 130 : 22
+    const t = setTimeout(() => setN((c) => c + 1), gap)
     return () => clearTimeout(t)
-  }, [count])
+  }, [n])
 
-  const displayed = FULL.slice(0, count)
-  const [headerPart, ...rest] = displayed.split("\n\n")
-  const headerLines = headerPart.split("\n").filter(Boolean)
-  const bodyPart = rest.join("\n\n")
+  const typed = FULL.slice(0, n)
+  const [headTyped, bodyTyped = ""] = typed.split("\n\n")
+  const headLines = headTyped.split("\n")
+  const done = n >= FULL.length
 
   return (
     <main className="min-h-screen bg-white overflow-hidden flex flex-col">
       <style>{`
-        @keyframes bwalk {
-          from { transform: translateX(-400px); }
-          to   { transform: translateX(calc(100vw + 200px)); }
+        @keyframes buf-cross {
+          from { transform: translateX(-46vw); }
+          to   { transform: translateX(112vw); }
         }
-        .bw { position: absolute; bottom: 0; animation: bwalk 13s linear infinite; }
-        .bw1 { animation-delay: 0s; }
-        .bw2 { animation-delay: -5.2s; bottom: 10px; }
-        .bw3 { animation-delay: -9.1s; bottom: 20px; }
+        @keyframes buf-step {
+          0%   { transform: rotate(-15deg); }
+          50%  { transform: rotate(15deg); }
+          100% { transform: rotate(-15deg); }
+        }
+        @keyframes buf-bob {
+          0%, 100% { transform: translateY(0); }
+          50%      { transform: translateY(-3px); }
+        }
+        @keyframes caret { 0%, 49% { opacity: 1 } 50%, 100% { opacity: 0 } }
+
+        .buf {
+          position: absolute;
+          left: 0;
+          animation-name: buf-cross;
+          animation-timing-function: linear;
+          animation-iteration-count: infinite;
+        }
+        .buf-bob {
+          position: relative;
+          width: 100%;
+          height: 100%;
+          animation-name: buf-bob;
+          animation-timing-function: ease-in-out;
+          animation-iteration-count: infinite;
+        }
+        .buf-leg {
+          position: absolute;
+          animation-name: buf-step;
+          animation-timing-function: ease-in-out;
+          animation-iteration-count: infinite;
+        }
+        .buf-body { position: absolute; left: 0; top: 0; height: auto; }
+        .caret { animation: caret 1s step-end infinite; }
+
+        @media (prefers-reduced-motion: reduce) {
+          .buf, .buf-bob, .buf-leg, .caret { animation: none !important; }
+        }
       `}</style>
 
-      <div style={{ position: "relative", height: 210, flexShrink: 0 }}>
-        <div className="bw bw1">
-          <BuffaloCanvas src="/LeadBuffalo_Black.png" w={275} bodyFrac={0.62} fLegX={[0.71, 0.77]} bLegX={[0.20, 0.26]} legW={0.058} phase={0} />
-        </div>
-        <div className="bw bw2">
-          <BuffaloCanvas src="/RearBuffalo_Black.png" w={255} bodyFrac={0.62} fLegX={[0.70, 0.76]} bLegX={[0.21, 0.27]} legW={0.056} phase={0.33} />
-        </div>
-        <div className="bw bw3">
-          <BuffaloCanvas src="/BabyBuffaloBlack.png" w={150} bodyFrac={0.60} fLegX={[0.67, 0.73]} bLegX={[0.19, 0.25]} legW={0.062} phase={0.67} />
-        </div>
+      <div style={{ position: "relative", height: 190, flexShrink: 0 }}>
+        <Buffalo data={BUFFALO.lead} width={250} duration={26} stride={1.3} delay={0} bottom={0} />
+        <Buffalo data={BUFFALO.baby} width={140} duration={26} stride={0.9} delay={-6.5} bottom={2} />
+        <Buffalo data={BUFFALO.rear} width={232} duration={26} stride={1.25} delay={-13} bottom={1} />
       </div>
 
-      <div className="flex flex-col items-center gap-4 text-[#5c3317] text-xs text-center px-6 py-10 leading-relaxed max-w-xl mx-auto w-full">
-        <div className="flex flex-col gap-1">
-          {headerLines.map((line, i) => (
-            <p key={i} className="font-semibold text-sm">{line}</p>
+      <div className="flex flex-col items-center gap-5 text-[#5c3317] text-xs text-center px-6 pb-16 leading-relaxed max-w-xl mx-auto w-full">
+        <div className="flex flex-col gap-1 min-h-[54px]">
+          {headLines.map((line, i) => (
+            <p key={i} className="font-semibold text-sm">
+              {line}
+              {!done && bodyTyped === "" && i === headLines.length - 1 && (
+                <span className="caret">|</span>
+              )}
+            </p>
           ))}
-          {count < FULL.length && !bodyPart && <span className="animate-pulse inline-block">|</span>}
         </div>
-        {bodyPart && (
-          <p className="max-w-sm">
-            {bodyPart}
-            {count < FULL.length && <span className="animate-pulse">|</span>}
-          </p>
-        )}
+        <p className="max-w-sm min-h-[48px]">
+          {bodyTyped}
+          {!done && bodyTyped !== "" && <span className="caret">|</span>}
+        </p>
       </div>
     </main>
   )
