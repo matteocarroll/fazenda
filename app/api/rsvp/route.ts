@@ -37,6 +37,12 @@ async function addToFolk(name: string, email: string, phone?: string) {
   return { ok: true }
 }
 
+/* Diagnostic only: reports whether the Folk key reached this deployment.
+   Returns a boolean, never the key itself. */
+export async function GET() {
+  return NextResponse.json({ folkConfigured: Boolean(process.env.FOLK_API_KEY) })
+}
+
 export async function POST(req: Request) {
   let name = ""
   let email = ""
