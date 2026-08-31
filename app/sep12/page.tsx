@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react"
 
-const HEAD = ["September 12 2026", "Opening Day Event", "RSVP for DJ, Drinks, and Special Guests"]
+const HEAD = ["SEPTEMBER 12 2026", "OPENING DAY EVENT", "RSVP FOR DJ, DRINKS, AND SPECIAL GUESTS"]
 const BODY =
   "Please join us for the Fazenda opening event! We'll be open starting 8am, please stop by for a morning coffee or come later in the day for some more coffee or snacks."
 
