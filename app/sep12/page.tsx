@@ -33,7 +33,8 @@ const BODY = [
   "It'll be a closed list starting 4pm so please make sure to rsvp. Please share to those interested!",
 ]
 
-const FULL = [HEAD.join("\n"), ...BODY].join("\n\n")
+/* Only the body copy types out — the titles render in full immediately. */
+const FULL = BODY.join("\n\n")
 
 export default function Sep12() {
   const [n, setN] = useState(0)
@@ -63,8 +64,7 @@ export default function Sep12() {
   }, [n])
 
   const typed = FULL.slice(0, n)
-  const [headTyped, ...bodyTyped] = typed.split("\n\n")
-  const headLines = headTyped.split("\n")
+  const bodyTyped = typed === "" ? [] : typed.split("\n\n")
   const done = n >= FULL.length
 
   return (
@@ -114,13 +114,10 @@ export default function Sep12() {
         </div>
 
         <div className="flex flex-col items-center gap-6 w-full">
-          <div className="flex flex-col gap-1.5 min-h-[252px]">
-            {headLines.map((line, i) => (
-              <p key={i} className="font-semibold text-base tracking-wide">
+          <div className="flex flex-col gap-1.5">
+            {HEAD.map((line) => (
+              <p key={line} className="font-semibold text-base tracking-wide">
                 {line}
-                {!done && bodyTyped.length === 0 && i === headLines.length - 1 && (
-                  <span className="caret">|</span>
-                )}
               </p>
             ))}
           </div>
