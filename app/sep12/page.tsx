@@ -35,6 +35,23 @@ const FULL = HEAD.join("\n") + "\n\n" + BODY
 
 export default function Sep12() {
   const [n, setN] = useState(0)
+  const [form, setForm] = useState({ name: "", email: "", phone: "" })
+  const [status, setStatus] = useState<"idle" | "sending" | "done" | "error">("idle")
+
+  const submit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setStatus("sending")
+    try {
+      const res = await fetch("/api/rsvp", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      })
+      setStatus(res.ok ? "done" : "error")
+    } catch {
+      setStatus("error")
+    }
+  }
 
   useEffect(() => {
     if (n >= FULL.length) return
@@ -109,6 +126,52 @@ export default function Sep12() {
             {bodyTyped}
             {!done && bodyTyped !== "" && <span className="caret">|</span>}
           </p>
+
+        <div className="w-full max-w-xs flex flex-col items-center gap-3">
+            {status === "done" ? (
+              <p className="text-[#5c3317] text-xs leading-relaxed">
+                Obrigado — you&apos;re on the list. See you on the 12th.
+              </p>
+            ) : (
+              <form onSubmit={submit} className="w-full flex flex-col items-center gap-3">
+                <input
+                  type="text"
+                  placeholder="Name"
+                  required
+                  value={form.name}
+                  onChange={(e) => setForm({ ...form, name: e.target.value })}
+                  className="w-full border-b border-[#5c3317]/40 bg-transparent text-[#5c3317] text-xs py-1.5 outline-none placeholder-[#5c3317]/50 text-center focus:border-[#5c3317] transition-colors"
+                />
+                <input
+                  type="email"
+                  placeholder="Email"
+                  required
+                  value={form.email}
+                  onChange={(e) => setForm({ ...form, email: e.target.value })}
+                  className="w-full border-b border-[#5c3317]/40 bg-transparent text-[#5c3317] text-xs py-1.5 outline-none placeholder-[#5c3317]/50 text-center focus:border-[#5c3317] transition-colors"
+                />
+                <input
+                  type="tel"
+                  placeholder="Phone (optional)"
+                  value={form.phone}
+                  onChange={(e) => setForm({ ...form, phone: e.target.value })}
+                  className="w-full border-b border-[#5c3317]/40 bg-transparent text-[#5c3317] text-xs py-1.5 outline-none placeholder-[#5c3317]/50 text-center focus:border-[#5c3317] transition-colors"
+                />
+                <button
+                  type="submit"
+                  disabled={status === "sending"}
+                  className="mt-3 text-[#5c3317] text-xs tracking-wide font-semibold hover:opacity-70 transition-opacity disabled:opacity-40"
+                >
+                  {status === "sending" ? "SENDING..." : "RSVP"}
+                </button>
+                {status === "error" && (
+                  <p className="text-[#5c3317] text-xs opacity-70">
+                    Something went wrong — please try again.
+                  </p>
+                )}
+              </form>
+            )}
+        </div>
         </div>
       </div>
     </main>
