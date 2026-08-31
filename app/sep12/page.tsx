@@ -87,7 +87,7 @@ export default function Sep12() {
         /* Fixed height, so marks of differing proportions swap without
            shifting the layout. */
         .scene {
-          height: 130px;
+          height: 104px;
           -webkit-mask-image: url(${LOGOS[0]});
           mask-image: url(${LOGOS[0]});
           animation: logo-cycle ${LOGO_CYCLE}s step-end infinite;
