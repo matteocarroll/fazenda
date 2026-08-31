@@ -8,16 +8,8 @@ export default function Home() {
         <Link
           href="/about"
           className="text-[#5c3317] text-xs hover:opacity-70 transition-opacity"
-          
         >
           About
-        </Link>
-        <Link
-          href="/collection-1"
-          className="text-[#5c3317] text-xs hover:opacity-70 transition-opacity"
-          
-        >
-          Collection Primeira
         </Link>
       </div>
       <div className="flex-1 flex flex-col items-center justify-center gap-6">
@@ -37,6 +29,7 @@ export default function Home() {
           className="w-auto h-auto max-w-[180px]"
           priority
         />
+        <p className="text-[#5c3317] text-xs">Multibrand menswear store</p>
         <p className="text-[#5c3317] text-xs" >177 Mott Street, 10012, New York</p>
         <p className="text-[#5c3317] text-xs" >
           For product requests/help, please{" "}
