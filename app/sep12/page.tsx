@@ -27,12 +27,9 @@ const colourKeyframes = `@keyframes wordmark-cycle {\n${PALETTE.map((c, i) => {
   return `  ${at}%, ${(at + 100 / PALETTE.length - FADE).toFixed(2)}% { background-color: ${c}; }`
 }).join("\n")}\n  100% { background-color: ${PALETTE[0]}; }\n}`
 
-/* The one line that stays bold. */
-const DATE_LINE = "RSVP SEPTEMBER 12 2026"
-
 const HEAD = [
   "MULTIBRAND MENSWEAR STORE",
-  DATE_LINE,
+  "RSVP SEPTEMBER 12 2026",
   "OPENING DAY EVENT",
   "STARTING 8AM CLOTHING, COFFEE, SNACKS",
   "VINYL DJ STARTING 5PM",
@@ -114,10 +111,7 @@ export default function Sep12() {
         <div className="flex flex-col items-center gap-6 w-full">
           <div className="flex flex-col gap-1.5">
             {HEAD.map((line) => (
-              <p
-                key={line}
-                className={`text-base${line === DATE_LINE ? " font-semibold" : ""}`}
-              >
+              <p key={line} className="font-semibold text-base">
                 {line}
               </p>
             ))}
