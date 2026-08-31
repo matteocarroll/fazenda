@@ -125,7 +125,7 @@ export default function Sep12() {
         <div className="w-full max-w-xs flex flex-col items-center gap-3">
             {status === "done" ? (
               <p className="text-[#5c3317] text-xs leading-relaxed">
-                Obrigado — you&apos;re on the list. See you on the 12th.
+                Obrigado, you&apos;re on the list. See you on the 12th.
               </p>
             ) : (
               <form onSubmit={submit} className="w-full flex flex-col items-center gap-3">
