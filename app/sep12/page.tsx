@@ -1,12 +1,20 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useState } from "react"
 
-/* Colours sampled from the wordmark artwork. */
+/* The Fazenda palette, sampled from the wordmark artwork.
+   bianco / limestone / white are omitted — they are invisible on white. */
 const PALETTE = [
+  "#43150E", // tobacco
+  "#264D9D", // azulejo
+  "#5D0A21", // brazilwood
+  "#71973E", // chlorophyll
+  "#B78FAC", // wisteria
   "#040707", // black
-  "#43150E", // tobacco — the darkest brown
-  "#5D0A21", // brazilwood — burgundy
+  "#6FA5A9", // turquoise
+  "#5B321F", // cacao
+  "#E0C991", // naples
+  "#36602E", // terreverte
 ]
 
 const HOLD = 3 // seconds each colour is held
@@ -31,11 +39,7 @@ const BODY = [
   "It'll be a closed list starting 4pm so please make sure to rsvp. Please share to those interested!",
 ]
 
-/* Only the body copy types out — the titles render in full immediately. */
-const FULL = BODY.join("\n\n")
-
 export default function Sep12() {
-  const [n, setN] = useState(0)
   const [form, setForm] = useState({ name: "", email: "", phone: "" })
   const [status, setStatus] = useState<"idle" | "sending" | "done" | "error">("idle")
 
@@ -54,23 +58,9 @@ export default function Sep12() {
     }
   }
 
-  useEffect(() => {
-    if (n >= FULL.length) return
-    const gap = FULL[n] === "\n" ? 220 : 42
-    const t = setTimeout(() => setN((c) => c + 1), gap)
-    return () => clearTimeout(t)
-  }, [n])
-
-  const typed = FULL.slice(0, n)
-  const bodyTyped = typed === "" ? [] : typed.split("\n\n")
-  const done = n >= FULL.length
-
   return (
     <main className="sep12 min-h-screen bg-white flex justify-center px-6 py-12">
       <style>{`
-        @keyframes caret { 0%, 49% { opacity: 1 } 50%, 100% { opacity: 0 } }
-        .caret { animation: caret 1s step-end infinite; }
-
         /* Monospace throughout — echoes the typewriter. Set on the page
            root so the copy, form fields and button all inherit it. */
         .sep12, .sep12 input, .sep12 button {
@@ -108,7 +98,7 @@ export default function Sep12() {
         }
 
         @media (prefers-reduced-motion: reduce) {
-          .caret, .scene, .wordmark { animation: none }
+          .scene, .wordmark { animation: none }
         }
       `}</style>
 
@@ -126,12 +116,9 @@ export default function Sep12() {
               </p>
             ))}
           </div>
-          <div className="flex flex-col gap-4 min-h-[160px]">
-            {bodyTyped.map((para, i) => (
-              <p key={i}>
-                {para}
-                {!done && i === bodyTyped.length - 1 && <span className="caret">|</span>}
-              </p>
+          <div className="flex flex-col gap-4">
+            {BODY.map((para) => (
+              <p key={para}>{para}</p>
             ))}
           </div>
 
