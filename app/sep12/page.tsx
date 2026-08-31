@@ -33,6 +33,7 @@ const HEAD = [
   "VINYL STARTING 5PM",
   "OPENING DAY EVENT",
   "RSVP FOR DJ, DRINKS, AND SPECIAL GUESTS",
+  "MULTIBRAND MENSWEAR STORE",
 ]
 const BODY = [
   "Hello! Please join us for the Fazenda opening event on September 12th. Please stop by. We'll have some special guests and will be later joined by dj and vinyl. We hope to see you soon.",
@@ -120,7 +121,7 @@ export default function Sep12() {
         </div>
 
         <div className="flex flex-col items-center gap-6 w-full">
-          <div className="flex flex-col gap-1.5 min-h-[192px]">
+          <div className="flex flex-col gap-1.5 min-h-[222px]">
             {headLines.map((line, i) => (
               <p key={i} className="font-semibold text-base tracking-wide">
                 {line}
