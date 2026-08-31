@@ -66,13 +66,14 @@ export default function Sep12() {
   const done = n >= FULL.length
 
   return (
-    <main className="min-h-screen bg-white flex justify-center px-6 py-12">
+    <main className="sep12 min-h-screen bg-white flex justify-center px-6 py-12">
       <style>{`
         @keyframes caret { 0%, 49% { opacity: 1 } 50%, 100% { opacity: 0 } }
         .caret { animation: caret 1s step-end infinite; }
 
-        /* Monospace for the event details — echoes the typewriter. */
-        .head-line {
+        /* Monospace throughout — echoes the typewriter. Set on the page
+           root so the copy, form fields and button all inherit it. */
+        .sep12, .sep12 input, .sep12 button {
           font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Monaco,
             Consolas, "Liberation Mono", "Courier New", monospace;
         }
@@ -120,12 +121,12 @@ export default function Sep12() {
         <div className="flex flex-col items-center gap-6 w-full">
           <div className="flex flex-col gap-1.5">
             {HEAD.map((line) => (
-              <p key={line} className="head-line font-semibold text-base">
+              <p key={line} className="font-semibold text-base">
                 {line}
               </p>
             ))}
           </div>
-          <div className="flex flex-col gap-4 min-h-[114px]">
+          <div className="flex flex-col gap-4 min-h-[160px]">
             {bodyTyped.map((para, i) => (
               <p key={i}>
                 {para}
