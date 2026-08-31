@@ -19,10 +19,8 @@ const colourKeyframes = `@keyframes wordmark-cycle {\n${PALETTE.map((c, i) => {
   return `  ${at}%, ${(at + 100 / PALETTE.length - FADE).toFixed(2)}% { background-color: ${c}; }`
 }).join("\n")}\n  100% { background-color: ${PALETTE[0]}; }\n}`
 
-/* Store descriptor — set smaller than the event details below it. */
-const TAGLINE = "MULTIBRAND MENSWEAR STORE"
-
 const HEAD = [
+  "MULTIBRAND MENSWEAR STORE",
   "RSVP SEPTEMBER 12 2026",
   "OPENING DAY EVENT",
   "STARTING 8AM CLOTHING, COFFEE, SNACKS",
@@ -115,7 +113,6 @@ export default function Sep12() {
 
         <div className="flex flex-col items-center gap-6 w-full">
           <div className="flex flex-col gap-1.5">
-            <p className="font-semibold text-xs tracking-wide">{TAGLINE}</p>
             {HEAD.map((line) => (
               <p key={line} className="font-semibold text-base tracking-wide">
                 {line}
