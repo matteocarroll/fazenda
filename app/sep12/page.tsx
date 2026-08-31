@@ -84,7 +84,7 @@ export default function Sep12() {
   const done = n >= FULL.length
 
   return (
-    <main className="min-h-screen bg-white overflow-hidden flex flex-col">
+    <main className="min-h-screen bg-white overflow-hidden relative flex items-center justify-center px-6">
       <style>{`
         @keyframes buf-cross {
           from { transform: translateX(-46vw); }
@@ -130,16 +130,11 @@ export default function Sep12() {
         }
       `}</style>
 
-      <div style={{ position: "relative", height: 190, flexShrink: 0 }}>
-        <Buffalo data={BUFFALO.lead} width={250} duration={26} stride={1.3} delay={0} bottom={0} />
-        <Buffalo data={BUFFALO.baby} width={140} duration={26} stride={0.9} delay={-6.5} bottom={2} />
-        <Buffalo data={BUFFALO.rear} width={232} duration={26} stride={1.25} delay={-13} bottom={1} />
-      </div>
-
-      <div className="flex flex-col items-center gap-5 text-[#5c3317] text-xs text-center px-6 pb-16 leading-relaxed max-w-xl mx-auto w-full">
-        <div className="flex flex-col gap-1 min-h-[54px]">
+      {/* Event details, centred in the viewport */}
+      <div className="flex flex-col items-center gap-6 text-[#5c3317] text-xs text-center leading-relaxed w-full max-w-sm -mt-10">
+        <div className="flex flex-col gap-1.5 min-h-[64px]">
           {headLines.map((line, i) => (
-            <p key={i} className="font-semibold text-sm">
+            <p key={i} className="font-semibold text-sm tracking-wide">
               {line}
               {!done && bodyTyped === "" && i === headLines.length - 1 && (
                 <span className="caret">|</span>
@@ -147,10 +142,17 @@ export default function Sep12() {
             </p>
           ))}
         </div>
-        <p className="max-w-sm min-h-[48px]">
+        <p className="min-h-[48px]">
           {bodyTyped}
           {!done && bodyTyped !== "" && <span className="caret">|</span>}
         </p>
+      </div>
+
+      {/* The herd walks along the foot of the page */}
+      <div className="absolute inset-x-0 bottom-10 h-[130px] pointer-events-none select-none">
+        <Buffalo data={BUFFALO.lead} width={210} duration={30} stride={1.45} delay={0} bottom={0} />
+        <Buffalo data={BUFFALO.baby} width={116} duration={30} stride={0.85} delay={-8} bottom={0} />
+        <Buffalo data={BUFFALO.rear} width={196} duration={30} stride={1.4} delay={-16} bottom={0} />
       </div>
     </main>
   )
