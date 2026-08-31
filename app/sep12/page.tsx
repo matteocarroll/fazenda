@@ -28,6 +28,7 @@ const colourKeyframes = `@keyframes wordmark-cycle {\n${PALETTE.map((c, i) => {
 }).join("\n")}\n  100% { background-color: ${PALETTE[0]}; }\n}`
 
 const HEAD = [
+  "RSVP",
   "SEPTEMBER 12 2026",
   "OPENING DAY EVENT",
   "OPEN STARTING 8AM CLOTHING, COFFEE, SNACKS",
@@ -121,7 +122,7 @@ export default function Sep12() {
         </div>
 
         <div className="flex flex-col items-center gap-6 w-full">
-          <div className="flex flex-col gap-1.5 min-h-[222px]">
+          <div className="flex flex-col gap-1.5 min-h-[252px]">
             {headLines.map((line, i) => (
               <p key={i} className="font-semibold text-base tracking-wide">
                 {line}
