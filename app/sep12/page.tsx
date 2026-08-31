@@ -13,7 +13,7 @@ export default function Sep12() {
 
   useEffect(() => {
     if (n >= FULL.length) return
-    const gap = FULL[n] === "\n" ? 130 : 22
+    const gap = FULL[n] === "\n" ? 220 : 42
     const t = setTimeout(() => setN((c) => c + 1), gap)
     return () => clearTimeout(t)
   }, [n])
