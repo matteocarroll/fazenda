@@ -27,7 +27,7 @@ const HEAD = [
   "VINYL DJ STARTING 5PM",
 ]
 const BODY = [
-  "Hello! Please join us for the Fazenda opening event on September 12th. Please stop by. We'll have some special guests and will be later joined by dj and vinyl. We hope to see you soon.",
+  "Please join us for the Fazenda opening event on September 12th. Please stop by. We'll have some special guests and will be later joined by dj and vinyl. We hope to see you soon.",
   "It'll be a closed list starting 4pm so please make sure to rsvp. Please share to those interested!",
 ]
 
