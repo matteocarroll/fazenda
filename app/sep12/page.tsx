@@ -5,13 +5,13 @@ import { useState } from "react"
 /* Tobacco, sampled from the wordmark artwork. */
 const LOGO_COLOUR = "#43150E"
 
-/* Set off by a blank line above and below. */
+/* Sits under the wordmark, set off by a blank line from the details below. */
 const SPACED_LINE = "OPENING DAY EVENT"
 
 const HEAD = [
+  SPACED_LINE,
   "MULTIBRAND MENSWEAR STORE",
   "SEPTEMBER 12 2026",
-  SPACED_LINE,
   "STARTING 8AM CLOTHING, COFFEE, SNACKS",
   "VINYL DJ STARTING 5PM",
 ]
@@ -86,7 +86,7 @@ export default function Sep12() {
             {HEAD.map((line) => (
               <p
                 key={line}
-                className={`font-semibold text-base${line === SPACED_LINE ? " my-4" : ""}`}
+                className={`font-semibold text-base${line === SPACED_LINE ? " mb-4" : ""}`}
               >
                 {line}
               </p>
