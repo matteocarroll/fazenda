@@ -34,10 +34,12 @@ const HEAD = [
   "OPENING DAY EVENT",
   "RSVP FOR DJ, DRINKS, AND SPECIAL GUESTS",
 ]
-const BODY =
-  "Please join us for the Fazenda opening event! We'll be open starting 8am, please stop by for a morning coffee or come later in the day for some more coffee or snacks."
+const BODY = [
+  "Hello! Please join us for the Fazenda opening event on September 12th. Please stop by. We'll have some special guests and will be later joined by dj and vinyl. We hope to see you soon.",
+  "It'll be a closed list starting 4pm so please make sure to rsvp. Please share to those interested!",
+]
 
-const FULL = HEAD.join("\n") + "\n\n" + BODY
+const FULL = [HEAD.join("\n"), ...BODY].join("\n\n")
 
 export default function Sep12() {
   const [n, setN] = useState(0)
@@ -67,7 +69,7 @@ export default function Sep12() {
   }, [n])
 
   const typed = FULL.slice(0, n)
-  const [headTyped, bodyTyped = ""] = typed.split("\n\n")
+  const [headTyped, ...bodyTyped] = typed.split("\n\n")
   const headLines = headTyped.split("\n")
   const done = n >= FULL.length
 
@@ -118,20 +120,24 @@ export default function Sep12() {
         </div>
 
         <div className="flex flex-col items-center gap-6 w-full">
-          <div className="flex flex-col gap-1.5 min-h-[144px]">
+          <div className="flex flex-col gap-1.5 min-h-[192px]">
             {headLines.map((line, i) => (
-              <p key={i} className="font-semibold text-sm tracking-wide">
+              <p key={i} className="font-semibold text-base tracking-wide">
                 {line}
-                {!done && bodyTyped === "" && i === headLines.length - 1 && (
+                {!done && bodyTyped.length === 0 && i === headLines.length - 1 && (
                   <span className="caret">|</span>
                 )}
               </p>
             ))}
           </div>
-          <p className="min-h-[48px]">
-            {bodyTyped}
-            {!done && bodyTyped !== "" && <span className="caret">|</span>}
-          </p>
+          <div className="flex flex-col gap-4 min-h-[114px]">
+            {bodyTyped.map((para, i) => (
+              <p key={i}>
+                {para}
+                {!done && i === bodyTyped.length - 1 && <span className="caret">|</span>}
+              </p>
+            ))}
+          </div>
 
         <div className="w-full max-w-xs flex flex-col items-center gap-3">
             {status === "done" ? (
