@@ -78,7 +78,7 @@ export default function Sep12() {
           <div className="wordmark" role="img" aria-label="Fazenda" />
         </div>
 
-        <h1 className="mt-12 text-2xl">{HEADLINE}</h1>
+        <h1 className="mt-12 text-3xl">{HEADLINE}</h1>
 
         <div className="mt-6 flex flex-col gap-3 max-w-sm">
           {INTRO.map((para) => (
