@@ -14,7 +14,7 @@ const INTRO = [
 ]
 
 /* Sits under the illustration, the way an invitation carries its details. */
-const DETAILS = ["MUSIC, FOOD, DRINKS, CLOTHES, AND MORE", "177 MOTT, 10012", "MULTIBRAND MENSWEAR STORE"]
+const DETAILS = ["MUSIC, COFFEE, FOOD, DRINKS, CLOTHES, AND MORE", "177 MOTT, 10012", "MULTIBRAND MENSWEAR STORE"]
 
 export default function Sep12() {
   const [form, setForm] = useState({ name: "", email: "", phone: "" })
