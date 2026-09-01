@@ -11,12 +11,16 @@ const HEADLINE = "OPENING DAY EVENT"
 const INTRO = [
   "Please join us for the Fazenda opening. We'll be open starting 8:30am so stop by whenever suits.",
   "RSVP below as it is a listed event. Please share with anyone who should know about Fazenda!",
-  "Spend your Saturday at Fazenda :)",
   "We hope to see you soon!",
 ]
 
+/* Sits under the RSVP button. */
+const SIGNOFF = "Spend your Saturday at Fazenda :)"
+
 /* Sits under the illustration, the way an invitation carries its details. */
-const DETAILS = ["MUSIC, COFFEE, FOOD, DRINKS, CLOTHES, AND MORE", "177 MOTT, 10012", "MULTIBRAND MENSWEAR STORE + COFFEE SHOP"]
+const DESCRIPTOR = "MULTIBRAND MENSWEAR STORE + COFFEE SHOP"
+
+const DETAILS = ["MUSIC, COFFEE, FOOD, DRINKS, CLOTHES, AND MORE", "177 MOTT, 10012"]
 
 export default function Sep12() {
   const [form, setForm] = useState({ name: "", email: "", phone: "" })
@@ -79,6 +83,8 @@ export default function Sep12() {
           <div className="scene" role="img" aria-label="Fazenda farmhouse" />
           <div className="wordmark" role="img" aria-label="Fazenda" />
         </div>
+
+        <p className="mt-6 tracking-wide">{DESCRIPTOR}</p>
 
         <h1 className="mt-12 text-3xl">{HEADLINE}</h1>
 
@@ -156,6 +162,8 @@ export default function Sep12() {
             )}
         </div>
         </div>
+
+        <p className="mt-8">{SIGNOFF}</p>
       </div>
     </main>
   )
