@@ -14,7 +14,7 @@ const ONE_LINE_SMALL = "clamp(0.66rem, 3.3vw, 0.875rem)"
 
 const INTRO = [
   "Please join us for Fazenda's opening day. We'll be open from 8:30am - stop by anytime throughout the day.",
-  "RSVP below as it is a listed event. Please share with anyone who should know about Fazenda!",
+  "RSVP below to join the guest list. Feel free to share with friends who should know about Fazenda.",
   "We hope to see you soon!",
 ]
 
