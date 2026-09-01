@@ -86,7 +86,7 @@ export default function Sep12() {
           ))}
         </div>
 
-        <p className="mt-12 text-xl">SEPTEMBER 12 2026</p>
+        <p className="mt-12 text-xl">SEPTEMBER 12 2026, 5PM</p>
 
         <div className="mt-5 flex flex-col gap-2">
           {DETAILS.map((line) => (
