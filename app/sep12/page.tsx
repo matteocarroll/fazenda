@@ -8,9 +8,9 @@ const LOGO_COLOUR = "#43150E"
 const HEADLINE = "OPENING DAY EVENT"
 
 const INTRO = [
-  "Please join us for the Fazenda opening on Sep 12. Food and drinks will be offered.",
-  "Please rsvp below as it is a listed event. We'll be open throughout the day as usual so you're welcome to stop by earlier as well. We hope to see you soon!",
-  "Start your Saturday evening at Fazenda :)",
+  "Please join us for the Fazenda opening on Saturday, Sep 12. Food and drinks will be offered throughout the day.",
+  "Please rsvp below as it is a listed event. We'll be open all day so stop by whenever suits. We hope to see you soon!",
+  "Spend your Saturday at Fazenda :)",
 ]
 
 /* Sits under the illustration, the way an invitation carries its details. */
