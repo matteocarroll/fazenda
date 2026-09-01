@@ -13,7 +13,7 @@ const HEADLINE = "OPENING DAY"
 const ONE_LINE_SMALL = "clamp(0.66rem, 3.3vw, 0.875rem)"
 
 const INTRO = [
-  "Please join us for the Fazenda opening. We'll be open starting 8:30am so stop by whenever suits.",
+  "Please join us for Fazenda's opening day. We'll be open from 8:30am - stop by anytime throughout the day.",
   "RSVP below as it is a listed event. Please share with anyone who should know about Fazenda!",
   "We hope to see you soon!",
 ]
