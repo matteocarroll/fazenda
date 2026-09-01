@@ -1,7 +1,6 @@
 "use client"
 
 import { useState } from "react"
-import Storefront from "./Storefront"
 
 /* Tobacco, sampled from the wordmark artwork. */
 const LOGO_COLOUR = "#43150E"
@@ -85,8 +84,6 @@ export default function Sep12() {
             <p key={para}>{para}</p>
           ))}
         </div>
-
-        <Storefront className="mt-12 w-full max-w-md h-auto" />
 
         <p className="mt-12 text-xl">September 12 2026</p>
 
