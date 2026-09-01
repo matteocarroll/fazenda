@@ -97,7 +97,7 @@ export default function Sep12() {
           width={1200}
           height={800}
           priority
-          className="mt-10 w-full max-w-md h-auto"
+          className="mt-10 w-full max-w-sm h-auto"
         />
 
         <div className="mt-10 flex flex-col gap-3 max-w-sm">
