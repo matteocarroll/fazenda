@@ -5,7 +5,7 @@ import { useState } from "react"
 /* Tobacco, sampled from the wordmark artwork. */
 const LOGO_COLOUR = "#43150E"
 
-const HEADLINE = "Opening Day Event"
+const HEADLINE = "OPENING DAY EVENT"
 
 const INTRO = [
   "Please join us for the Fazenda opening event on September 12th. We'll have some special guests and will be later joined by dj and vinyl. We hope to see you soon.",
@@ -85,7 +85,7 @@ export default function Sep12() {
           ))}
         </div>
 
-        <p className="mt-12 text-xl">September 12 2026</p>
+        <p className="mt-12 text-xl">SEPTEMBER 12 2026</p>
 
         <div className="mt-5 flex flex-col gap-2">
           {DETAILS.map((line) => (
