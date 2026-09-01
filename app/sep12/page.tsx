@@ -81,9 +81,13 @@ export default function Sep12() {
 
         <h1 className="mt-12 text-3xl">{HEADLINE}</h1>
 
-        <div className="mt-6 flex flex-col gap-3 max-w-sm">
-          {INTRO.map((para) => (
-            <p key={para}>{para}</p>
+        <p className="mt-6 text-2xl">SATURDAY, SEPTEMBER 12 2026</p>
+
+        <div className="mt-5 flex flex-col gap-2">
+          {DETAILS.map((line) => (
+            <p key={line} className="tracking-wide">
+              {line}
+            </p>
           ))}
         </div>
 
@@ -96,17 +100,13 @@ export default function Sep12() {
           className="mt-10 w-full max-w-md h-auto"
         />
 
-        <p className="mt-10 text-2xl">SEPTEMBER 12 2026</p>
-
-        <div className="mt-5 flex flex-col gap-2">
-          {DETAILS.map((line) => (
-            <p key={line} className="tracking-wide">
-              {line}
-            </p>
+        <div className="mt-10 flex flex-col gap-3 max-w-sm">
+          {INTRO.map((para) => (
+            <p key={para}>{para}</p>
           ))}
         </div>
 
-        <div className="mt-12 flex flex-col items-center gap-6 w-full">
+        <div className="mt-10 flex flex-col items-center gap-6 w-full">
 
         <div className="w-full max-w-xs flex flex-col items-center gap-3">
             {status === "done" ? (
