@@ -71,7 +71,7 @@ export default function Sep12() {
         }
       `}</style>
 
-      <div className="my-auto flex flex-col items-center text-[#5c3317] text-xs text-center leading-relaxed w-full max-w-lg">
+      <div className="my-auto flex flex-col items-center text-[#5c3317] text-sm text-center leading-relaxed w-full max-w-lg">
         {/* brand lockup */}
         <div className="flex flex-col items-center gap-3 w-full">
           <div className="scene" role="img" aria-label="Fazenda farmhouse" />
@@ -86,7 +86,7 @@ export default function Sep12() {
           ))}
         </div>
 
-        <p className="mt-12 text-xl">SEPTEMBER 12 2026</p>
+        <p className="mt-12 text-2xl">SEPTEMBER 12 2026</p>
 
         <div className="mt-5 flex flex-col gap-2">
           {DETAILS.map((line) => (
