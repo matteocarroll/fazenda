@@ -1,25 +1,20 @@
 "use client"
 
 import { useState } from "react"
+import Storefront from "./Storefront"
 
 /* Tobacco, sampled from the wordmark artwork. */
 const LOGO_COLOUR = "#43150E"
 
-/* The event, date and address pair up under the wordmark, with a blank line
-   separating them from the details below. */
-const SPACED_LINE = "177 MOTT, 10012"
+const HEADLINE = "Opening Day Event"
 
-const HEAD = [
-  "OPENING DAY EVENT",
-  "SEPTEMBER 12 2026",
-  SPACED_LINE,
-  "VINYL DJ 5PM ONWARDS",
-  "MULTIBRAND MENSWEAR STORE",
-]
-const BODY = [
+const INTRO = [
   "Please join us for the Fazenda opening event on September 12th. We'll have some special guests and will be later joined by dj and vinyl. We hope to see you soon.",
   "It'll be a closed list starting 5pm so please make sure to rsvp. Please share to those interested!",
 ]
+
+/* Sits under the illustration, the way an invitation carries its details. */
+const DETAILS = ["VINYL DJ 5PM ONWARDS", "177 MOTT, 10012", "MULTIBRAND MENSWEAR STORE"]
 
 export default function Sep12() {
   const [form, setForm] = useState({ name: "", email: "", phone: "" })
@@ -76,28 +71,34 @@ export default function Sep12() {
         }
       `}</style>
 
-      <div className="my-auto flex flex-col items-center gap-10 text-[#5c3317] text-xs text-center leading-relaxed w-full max-w-sm">
-        <div className="flex flex-col items-center gap-4 w-full">
+      <div className="my-auto flex flex-col items-center text-[#5c3317] text-xs text-center leading-relaxed w-full max-w-lg">
+        {/* brand lockup */}
+        <div className="flex flex-col items-center gap-3 w-full">
           <div className="scene" role="img" aria-label="Fazenda farmhouse" />
           <div className="wordmark" role="img" aria-label="Fazenda" />
         </div>
 
-        <div className="flex flex-col items-center gap-6 w-full">
-          <div className="flex flex-col gap-1.5">
-            {HEAD.map((line) => (
-              <p
-                key={line}
-                className={`font-semibold text-base${line === SPACED_LINE ? " mb-4" : ""}`}
-              >
-                {line}
-              </p>
-            ))}
-          </div>
-          <div className="flex flex-col gap-4">
-            {BODY.map((para) => (
-              <p key={para}>{para}</p>
-            ))}
-          </div>
+        <h1 className="mt-12 text-2xl">{HEADLINE}</h1>
+
+        <div className="mt-6 flex flex-col gap-3 max-w-sm">
+          {INTRO.map((para) => (
+            <p key={para}>{para}</p>
+          ))}
+        </div>
+
+        <Storefront className="mt-12 w-full max-w-md h-auto" />
+
+        <p className="mt-12 text-xl">September 12 2026</p>
+
+        <div className="mt-5 flex flex-col gap-2">
+          {DETAILS.map((line) => (
+            <p key={line} className="tracking-wide">
+              {line}
+            </p>
+          ))}
+        </div>
+
+        <div className="mt-12 flex flex-col items-center gap-6 w-full">
 
         <div className="w-full max-w-xs flex flex-col items-center gap-3">
             {status === "done" ? (
