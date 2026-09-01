@@ -86,7 +86,7 @@ export default function Sep12() {
 
         <p className="mt-6 tracking-wide">{DESCRIPTOR}</p>
 
-        <h1 className="mt-12 text-3xl">{HEADLINE}</h1>
+        <h1 className="mt-7 text-[1.75rem]">{HEADLINE}</h1>
 
         <p className="mt-6 text-2xl">SATURDAY, SEPTEMBER 12 2026</p>
 
