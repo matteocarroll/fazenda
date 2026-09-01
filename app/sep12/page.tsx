@@ -12,9 +12,9 @@ const SPACED_LINE = "SEPTEMBER 12 2026"
 const HEAD = [
   "OPENING DAY EVENT",
   SPACED_LINE,
-  "MULTIBRAND MENSWEAR STORE",
   "STARTING 8AM CLOTHING, COFFEE, SNACKS",
   "VINYL DJ STARTING 5PM",
+  "MULTIBRAND MENSWEAR STORE",
 ]
 const BODY = [
   "Please join us for the Fazenda opening event on September 12th. We'll have some special guests and will be later joined by dj and vinyl. We hope to see you soon.",
