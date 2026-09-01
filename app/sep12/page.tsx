@@ -1,5 +1,6 @@
 "use client"
 
+import Image from "next/image"
 import { useState } from "react"
 
 /* Tobacco, sampled from the wordmark artwork. */
@@ -86,7 +87,16 @@ export default function Sep12() {
           ))}
         </div>
 
-        <p className="mt-12 text-2xl">SEPTEMBER 12 2026</p>
+        <Image
+          src="/storefront.png"
+          alt="The Fazenda storefront on Mott Street"
+          width={1200}
+          height={800}
+          priority
+          className="mt-10 w-full max-w-md h-auto"
+        />
+
+        <p className="mt-10 text-2xl">SEPTEMBER 12 2026</p>
 
         <div className="mt-5 flex flex-col gap-2">
           {DETAILS.map((line) => (
