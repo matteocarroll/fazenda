@@ -6,7 +6,11 @@ import { useState } from "react"
 /* Tobacco, sampled from the wordmark artwork. */
 const LOGO_COLOUR = "#43150E"
 
-const HEADLINE = "OPENING DAY EVENT"
+const HEADLINE = "OPENING DAY"
+
+/* Scales with the viewport so the longest of these lines stays on one line,
+   down to a 320px phone, and settles at 14px once there is room. */
+const ONE_LINE_SMALL = "clamp(0.66rem, 3.3vw, 0.875rem)"
 
 const INTRO = [
   "Please join us for the Fazenda opening. We'll be open starting 8:30am so stop by whenever suits.",
@@ -20,7 +24,7 @@ const SIGNOFF = "Spend your Saturday at Fazenda :)"
 /* Sits under the illustration, the way an invitation carries its details. */
 const DESCRIPTOR = "MULTIBRAND MENSWEAR STORE + COFFEE SHOP"
 
-const DETAILS = ["MUSIC, COFFEE, FOOD, DRINKS, CLOTHES, AND MORE", "177 MOTT, 10012"]
+const DETAILS = ["MUSIC, COFFEE, FOOD, DRINKS, CLOTHES & MORE", "177 MOTT, 10012"]
 
 export default function Sep12() {
   const [form, setForm] = useState({ name: "", email: "", phone: "" })
@@ -84,15 +88,19 @@ export default function Sep12() {
           <div className="wordmark" role="img" aria-label="Fazenda" />
         </div>
 
-        <p className="mt-6 tracking-wide">{DESCRIPTOR}</p>
+        <p className="mt-6 tracking-wide" style={{ fontSize: ONE_LINE_SMALL }}>
+          {DESCRIPTOR}
+        </p>
 
         <h1 className="mt-7 text-[1.75rem]">{HEADLINE}</h1>
 
-        <p className="mt-6 text-2xl">SATURDAY, SEPTEMBER 12 2026</p>
+        <p className="mt-6" style={{ fontSize: "clamp(1rem, 5.2vw, 1.5rem)" }}>
+          SATURDAY, SEPTEMBER 12 2026
+        </p>
 
         <div className="mt-5 flex flex-col gap-2">
           {DETAILS.map((line) => (
-            <p key={line} className="tracking-wide">
+            <p key={line} className="tracking-wide" style={{ fontSize: ONE_LINE_SMALL }}>
               {line}
             </p>
           ))}
