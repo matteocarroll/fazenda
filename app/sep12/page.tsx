@@ -19,7 +19,7 @@ const INTRO = [
 ]
 
 /* Sits under the RSVP button. */
-const SIGNOFF = "Spend your Saturday at Fazenda :)"
+const SIGNOFF = "Spend your Saturday at Fazenda"
 
 /* Sits under the illustration, the way an invitation carries its details. */
 const DESCRIPTOR = "MULTIBRAND MENSWEAR STORE + COFFEE SHOP"
