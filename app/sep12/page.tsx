@@ -5,12 +5,13 @@ import { useState } from "react"
 /* Tobacco, sampled from the wordmark artwork. */
 const LOGO_COLOUR = "#43150E"
 
-/* The event and its date pair up under the wordmark, with a blank line
+/* The event, date and address pair up under the wordmark, with a blank line
    separating them from the details below. */
-const SPACED_LINE = "SEPTEMBER 12 2026"
+const SPACED_LINE = "177 MOTT, 10012"
 
 const HEAD = [
   "OPENING DAY EVENT",
+  "SEPTEMBER 12 2026",
   SPACED_LINE,
   "COFFEE 8AM ONWARDS",
   "VINYL DJ 5PM ONWARDS",
