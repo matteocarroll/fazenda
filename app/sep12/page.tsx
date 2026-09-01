@@ -9,7 +9,7 @@ const HEADLINE = "OPENING DAY EVENT"
 
 const INTRO = [
   "Please join us for the Fazenda opening at 5pm, Sep 12. Food and drinks will be offered.",
-  "Please rsvp below as it is a listed event starting 5pm. We'll be open throughout the day as usual. We hope to see you soon!",
+  "Please rsvp below as it is a listed event starting 5pm. We'll be open throughout the day as usual so you're welcome to stop by earlier as well. We hope to see you soon!",
   "Start your Saturday evening at Fazenda :)",
 ]
 
