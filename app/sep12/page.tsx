@@ -183,6 +183,14 @@ export default function Sep12() {
         </div>
 
         <p className="mt-8">{SIGNOFF}</p>
+
+        <Image
+          src="/storefront.png"
+          alt="The Fazenda storefront on Mott Street"
+          width={1100}
+          height={733}
+          className="mt-10 w-full max-w-[16rem] h-auto"
+        />
       </div>
     </main>
   )
