@@ -1,0 +1,18 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Fazenda//Opening Day//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+BEGIN:VEVENT
+UID:opening-day-2026-09-12@fazendacompany.com
+DTSTAMP:20260902T120000Z
+DTSTART:20260912T123000Z
+DTEND:20260913T000000Z
+SUMMARY:Fazenda Opening Day
+LOCATION:177 Mott St\, New York\, NY 10012
+DESCRIPTION:Fazenda opening day. Open from 8:30am - stop by anytime throug
+ hout the day. Music\, coffee\, food\, drinks\, clothes and more.\n\nhttps
+ ://fazendacompany.com/sep12
+URL:https://fazendacompany.com/sep12
+END:VEVENT
+END:VCALENDAR

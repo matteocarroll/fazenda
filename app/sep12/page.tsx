@@ -182,6 +182,14 @@ export default function Sep12() {
         </div>
         </div>
 
+        <a
+          href="/fazenda-opening-day.ics"
+          download
+          className="mt-8 text-[#5c3317] text-xs tracking-wide font-semibold hover:opacity-70 transition-opacity"
+        >
+          ADD TO CALENDAR
+        </a>
+
         <p className="mt-8">{SIGNOFF}</p>
 
         <Image
