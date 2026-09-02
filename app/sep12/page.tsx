@@ -120,7 +120,7 @@ export default function Sep12() {
             src="/map.png"
             alt="Map showing Fazenda on Mott Street, between Spring and Broome"
             width={1100}
-            height={737}
+            height={801}
             priority
             className="w-full h-auto"
           />
