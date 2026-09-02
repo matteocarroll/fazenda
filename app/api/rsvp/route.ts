@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server"
+import { NextResponse, after } from "next/server"
 
 /* Google Sheet keeps a durable record regardless of whether Folk is wired up. */
 const SHEET_URL =
@@ -61,37 +61,46 @@ export async function POST(req: Request) {
     )
   }
 
-  /* Never let one destination failing lose the RSVP from the other. */
-  const [sheet, folk] = await Promise.allSettled([
+  const writeSheet = () =>
     fetch(SHEET_URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ name, email, phone, source: SOURCE }),
-    }),
-    addToFolk(name, email, phone),
-  ])
+    })
 
-  const folkOk = folk.status === "fulfilled" && folk.value.ok
-  if (!folkOk) {
-    console.error(
-      "RSVP: Folk sync failed —",
-      folk.status === "fulfilled" ? folk.value.reason : folk.reason,
-    )
+  /* Folk is the system of record and answers in a fraction of the time the
+     Apps Script webhook takes, so the guest waits only for this. */
+  let folk: { ok: boolean; reason?: string }
+  try {
+    folk = await addToFolk(name, email, phone)
+  } catch (err) {
+    folk = { ok: false, reason: String(err) }
   }
 
-  /* fetch only rejects on network errors, so an error status still needs checking. */
-  const sheetOk = sheet.status === "fulfilled" && sheet.value.ok
-  if (!sheetOk) {
-    console.error(
-      "RSVP: sheet write failed —",
-      sheet.status === "fulfilled" ? `HTTP ${sheet.value.status}` : sheet.reason,
-    )
+  if (folk.ok) {
+    /* The sheet is only a backup copy — let it finish after the response has
+       gone out rather than holding the guest on "SENDING...". */
+    after(async () => {
+      try {
+        const res = await writeSheet()
+        if (!res.ok) console.error("RSVP: sheet write failed —", `HTTP ${res.status}`)
+      } catch (err) {
+        console.error("RSVP: sheet write failed —", err)
+      }
+    })
+    return NextResponse.json({ success: true, folk: true })
   }
 
-  /* The guest is confirmed as long as one destination captured them. */
-  if (!sheetOk && !folkOk) {
-    return NextResponse.json({ error: "Could not save RSVP" }, { status: 502 })
+  /* Folk did not take it, so the sheet is now the safety net and is worth
+     waiting for. */
+  console.error("RSVP: Folk sync failed —", folk.reason)
+  try {
+    const res = await writeSheet()
+    if (res.ok) return NextResponse.json({ success: true, folk: false })
+    console.error("RSVP: sheet write failed —", `HTTP ${res.status}`)
+  } catch (err) {
+    console.error("RSVP: sheet write failed —", err)
   }
 
-  return NextResponse.json({ success: true, folk: folkOk })
+  return NextResponse.json({ error: "Could not save RSVP" }, { status: 502 })
 }
