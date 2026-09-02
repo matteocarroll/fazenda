@@ -26,6 +26,9 @@ const DESCRIPTOR = "MULTIBRAND MENSWEAR STORE + COFFEE SHOP"
 
 const DETAILS = ["MUSIC, COFFEE, FOOD, DRINKS, CLOTHES & MORE", "177 MOTT, 10012"]
 
+/* The map doubles as the directions link. */
+const MAPS_URL = "https://maps.app.goo.gl/BM4pyogg5gLuH4r7A"
+
 export default function Sep12() {
   const [form, setForm] = useState({ name: "", email: "", phone: "" })
   const [status, setStatus] = useState<"idle" | "sending" | "done" | "error">("idle")
@@ -106,14 +109,22 @@ export default function Sep12() {
           ))}
         </div>
 
-        <Image
-          src="/map.png"
-          alt="Map showing Fazenda on Mott Street, between Spring and Broome"
-          width={1100}
-          height={737}
-          priority
-          className="mt-10 w-full max-w-md h-auto"
-        />
+        <a
+          href={MAPS_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mt-10 w-full max-w-md hover:opacity-70 transition-opacity"
+          aria-label="Open 177 Mott Street in Google Maps"
+        >
+          <Image
+            src="/map.png"
+            alt="Map showing Fazenda on Mott Street, between Spring and Broome"
+            width={1100}
+            height={737}
+            priority
+            className="w-full h-auto"
+          />
+        </a>
 
         <div className="mt-10 flex flex-col gap-3 max-w-sm">
           {INTRO.map((para) => (
