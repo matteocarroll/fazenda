@@ -107,12 +107,12 @@ export default function Sep12() {
         </div>
 
         <Image
-          src="/storefront.png"
-          alt="The Fazenda storefront on Mott Street"
-          width={1200}
-          height={800}
+          src="/map.png"
+          alt="Map showing Fazenda on Mott Street, between Spring and Broome"
+          width={1100}
+          height={737}
           priority
-          className="mt-10 w-full max-w-[15rem] h-auto"
+          className="mt-10 w-full max-w-md h-auto"
         />
 
         <div className="mt-10 flex flex-col gap-3 max-w-sm">
