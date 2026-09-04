@@ -118,7 +118,7 @@ export default function Sep12() {
         >
           <Image
             src="/map.png"
-            alt="Map showing Fazenda on Mott Street, between Spring and Broome"
+            alt="Map showing Fazenda on Mott Street, between Kenmare and Broome"
             width={1100}
             height={779}
             priority
