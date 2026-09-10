@@ -1,5 +1,5 @@
 const TOBACCO = "#43150E"
-const GOLD = "#E0C991" // naples, the gold in the Fazenda palette
+const GOLD = "#FFD700" // true gold
 
 export default function Manifesto() {
   return (
