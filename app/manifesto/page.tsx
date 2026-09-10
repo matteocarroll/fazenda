@@ -1,5 +1,5 @@
 const TOBACCO = "#43150E"
-const INK = "#B78FAC" // wisteria, the pink in the Fazenda palette
+const INK = "#F7E5C0" // limestone
 
 export default function Manifesto() {
   return (
