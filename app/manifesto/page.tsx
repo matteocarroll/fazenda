@@ -1,5 +1,5 @@
 const TOBACCO = "#43150E"
-const GOLD = "#FFD700" // true gold
+const INK = "#B78FAC" // wisteria, the pink in the Fazenda palette
 
 export default function Manifesto() {
   return (
@@ -10,7 +10,7 @@ export default function Manifesto() {
       <h1
         className="text-center tracking-wide"
         style={{
-          color: GOLD,
+          color: INK,
           fontFamily: '"Times New Roman", Times, serif',
           fontSize: "clamp(2rem, 9vw, 3.5rem)",
         }}
