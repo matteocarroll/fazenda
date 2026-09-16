@@ -40,17 +40,25 @@ export default function Store() {
         className="relative w-full max-w-lg"
         style={{ height: "clamp(240px, 52vh, 460px)" }}
       >
+        {/* The fade lives on a wrapper, not on Image itself: a filled
+            next/image manages its own inline styles and overwrites an
+            opacity passed straight to it. */}
         {PHOTOS.map((photo, i) => (
-          <Image
+          <div
             key={photo.src}
-            src={photo.src}
-            alt={photo.alt}
-            fill
-            priority={i === 0}
-            sizes="(max-width: 768px) 100vw, 512px"
-            className="object-contain transition-opacity duration-300"
-            style={{ opacity: i === index ? 1 : 0 }}
-          />
+            aria-hidden={i !== index}
+            className="absolute inset-0 transition-opacity duration-300"
+            style={{ opacity: i === index ? 1 : 0, pointerEvents: "none" }}
+          >
+            <Image
+              src={photo.src}
+              alt={photo.alt}
+              fill
+              priority={i === 0}
+              sizes="(max-width: 768px) 100vw, 512px"
+              className="object-contain"
+            />
+          </div>
         ))}
       </div>
 
