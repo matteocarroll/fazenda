@@ -33,6 +33,16 @@ export default function Store() {
 
   return (
     <main className="min-h-screen bg-white flex flex-col items-center justify-center px-6 py-12">
+      <h1
+        className="mb-8 text-[#5c3317] text-center tracking-wide"
+        style={{
+          fontFamily: '"Times New Roman", Times, serif',
+          fontSize: "clamp(1.25rem, 4.5vw, 1.75rem)",
+        }}
+      >
+        Store Pictures
+      </h1>
+
       {/* Fixed-height frame with object-contain: the photos are a mix of
           portrait and landscape, so this keeps the arrows from jumping
           around as you step through them. */}
