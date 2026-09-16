@@ -37,7 +37,7 @@ export default function Store() {
         className="mb-8 text-[#5c3317] text-center tracking-wide"
         style={{
           fontFamily: '"Times New Roman", Times, serif',
-          fontSize: "clamp(1.25rem, 4.5vw, 1.75rem)",
+          fontSize: "clamp(0.75rem, 2vw, 0.875rem)",
         }}
       >
         Store Pictures
