@@ -1,29 +1,76 @@
+"use client"
+
 import Image from "next/image"
+import { useCallback, useEffect, useState } from "react"
 
 const PHOTOS = [
-  { src: "/store/store-1.jpg", width: 1800, height: 2700, alt: "The café bar at Fazenda" },
-  { src: "/store/store-2.jpg", width: 1800, height: 1200, alt: "Racks and shelving at Fazenda" },
-  { src: "/store/store-3.jpg", width: 1800, height: 1200, alt: "Jackets on the rail at Fazenda" },
-  { src: "/store/store-4.jpg", width: 1800, height: 1200, alt: "Counter seating at Fazenda" },
-  { src: "/store/store-5.jpg", width: 1800, height: 1200, alt: "The azulejo wall at Fazenda" },
+  { src: "/store/store-1.jpg", alt: "The café bar at Fazenda" },
+  { src: "/store/store-2.jpg", alt: "Racks and shelving at Fazenda" },
+  { src: "/store/store-3.jpg", alt: "Jackets on the rail at Fazenda" },
+  { src: "/store/store-4.jpg", alt: "Counter seating at Fazenda" },
+  { src: "/store/store-5.jpg", alt: "The azulejo wall at Fazenda" },
 ]
 
 export default function Store() {
+  const [index, setIndex] = useState(0)
+
+  const go = useCallback(
+    (step: number) => setIndex((i) => (i + step + PHOTOS.length) % PHOTOS.length),
+    [],
+  )
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "ArrowRight") go(1)
+      if (e.key === "ArrowLeft") go(-1)
+    }
+    window.addEventListener("keydown", onKey)
+    return () => window.removeEventListener("keydown", onKey)
+  }, [go])
+
   return (
-    <main className="min-h-screen bg-white py-12 px-6">
-      <div className="max-w-3xl mx-auto flex flex-col gap-6">
+    <main className="min-h-screen bg-white flex flex-col items-center justify-center px-6 py-12">
+      {/* Fixed-height frame with object-contain: the photos are a mix of
+          portrait and landscape, so this keeps the arrows from jumping
+          around as you step through them. */}
+      <div
+        className="relative w-full max-w-lg"
+        style={{ height: "clamp(240px, 52vh, 460px)" }}
+      >
         {PHOTOS.map((photo, i) => (
           <Image
             key={photo.src}
             src={photo.src}
             alt={photo.alt}
-            width={photo.width}
-            height={photo.height}
+            fill
             priority={i === 0}
-            sizes="(max-width: 768px) 100vw, 768px"
-            className="w-full h-auto"
+            sizes="(max-width: 768px) 100vw, 512px"
+            className="object-contain transition-opacity duration-300"
+            style={{ opacity: i === index ? 1 : 0 }}
           />
         ))}
+      </div>
+
+      <div className="mt-8 flex items-center gap-8 text-[#5c3317] text-xs tracking-wide">
+        <button
+          type="button"
+          onClick={() => go(-1)}
+          aria-label="Previous photo"
+          className="text-base leading-none hover:opacity-60 transition-opacity"
+        >
+          ←
+        </button>
+        <span className="tabular-nums">
+          {index + 1} / {PHOTOS.length}
+        </span>
+        <button
+          type="button"
+          onClick={() => go(1)}
+          aria-label="Next photo"
+          className="text-base leading-none hover:opacity-60 transition-opacity"
+        >
+          →
+        </button>
       </div>
     </main>
   )
