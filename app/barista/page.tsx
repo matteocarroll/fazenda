@@ -46,8 +46,8 @@ export default function Barista() {
           <div>
             <p className="font-semibold mb-1">To apply</p>
             <p>Send a short note about yourself and your experience to{" "}
-              <a href="mailto:matteo@fazendacompany.com" className="underline hover:opacity-70 transition-opacity">
-                matteo@fazendacompany.com
+              <a href="mailto:matteo@fazenda.com" className="underline hover:opacity-70 transition-opacity">
+                matteo@fazenda.com
               </a>.
             </p>
           </div>
@@ -97,8 +97,8 @@ export default function Barista() {
           <div>
             <p className="font-semibold mb-1">Para se candidatar</p>
             <p>Mande uma mensagem curta sobre você e sua experiência para{" "}
-              <a href="mailto:matteo@fazendacompany.com" className="underline hover:opacity-70 transition-opacity">
-                matteo@fazendacompany.com
+              <a href="mailto:matteo@fazenda.com" className="underline hover:opacity-70 transition-opacity">
+                matteo@fazenda.com
               </a>.
             </p>
           </div>
