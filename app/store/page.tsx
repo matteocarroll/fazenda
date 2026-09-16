@@ -4,11 +4,14 @@ import Image from "next/image"
 import { useCallback, useEffect, useState } from "react"
 
 const PHOTOS = [
+  { src: "/store/store-7.jpg", alt: "The Fazenda storefront on Mott Street" },
   { src: "/store/store-1.jpg", alt: "The café bar at Fazenda" },
   { src: "/store/store-2.jpg", alt: "Racks and shelving at Fazenda" },
   { src: "/store/store-3.jpg", alt: "Jackets on the rail at Fazenda" },
   { src: "/store/store-4.jpg", alt: "Counter seating at Fazenda" },
   { src: "/store/store-5.jpg", alt: "The azulejo wall at Fazenda" },
+  { src: "/store/store-6.jpg", alt: "Inside Fazenda on opening day" },
+  { src: "/store/store-8.jpg", alt: "The espresso bar at Fazenda" },
 ]
 
 export default function Store() {
