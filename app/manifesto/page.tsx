@@ -21,7 +21,7 @@ const MANIFESTO = [
 
 export default function Manifesto() {
   return (
-    <main className="manifesto min-h-screen px-6 py-20" style={{ backgroundColor: TOBACCO }}>
+    <main lang="en" className="manifesto min-h-screen px-6 py-20" style={{ backgroundColor: TOBACCO }}>
       <style>{`
         .manifesto { font-family: "Times New Roman", Times, serif; }
 
@@ -48,22 +48,46 @@ export default function Manifesto() {
           .gold { animation: none; }
         }
 
-        /* Long-form text in a solid soft gold: a moving gradient on every
-           line would look striking but tire the eye over sixteen paragraphs. */
-        .body-gold { color: #E6CF9A; }
+        /* The body gets the same moving sheen, but from a lighter range of
+           golds — the title's deepest tones are too dark to read against the
+           tobacco at text size. Set on the container, so the light sweeps
+           across the whole column in one pass rather than per paragraph. */
+        .gold-body {
+          background: linear-gradient(
+            110deg,
+            #c9a13b 0%, #f1dc9a 20%, #fff6d2 32%, #e2c46e 46%,
+            #c9a13b 60%, #f1dc9a 76%, #fff6d2 88%, #d9b95a 100%
+          );
+          background-size: 250% 100%;
+          -webkit-background-clip: text;
+          background-clip: text;
+          -webkit-text-fill-color: transparent;
+          color: transparent;
+          animation: gold-sheen 9s ease-in-out infinite alternate;
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .gold-body { animation: none; }
+        }
+
+        .justified p {
+          text-align: justify;
+          text-align-last: left;
+          hyphens: auto;
+          -webkit-hyphens: auto;
+        }
       `}</style>
 
       <article className="mx-auto w-full max-w-xl">
         <h1
           className="gold text-center tracking-wide"
-          style={{ fontSize: "clamp(2rem, 9vw, 3.5rem)", lineHeight: 1.1 }}
+          style={{ fontSize: "clamp(1.5rem, 6vw, 2.25rem)", lineHeight: 1.1 }}
         >
           Manifesto
         </h1>
 
         <div
-          className="body-gold mt-14 flex flex-col"
-          style={{ fontSize: "clamp(1rem, 2.4vw, 1.125rem)", lineHeight: 1.75, gap: "1.25em" }}
+          className="gold-body justified mt-12 flex flex-col"
+          style={{ fontSize: "clamp(0.8125rem, 2vw, 0.9375rem)", lineHeight: 1.75, gap: "1.2em" }}
         >
           {MANIFESTO.map((para) => (
             <p key={para}>{para}</p>
