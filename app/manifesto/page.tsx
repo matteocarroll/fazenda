@@ -1,4 +1,5 @@
-const TOBACCO = "#43150E"
+/* The brown used for text across the rest of the site. */
+const BROWN = "#5c3317"
 
 const MANIFESTO = [
   "We believe physical things and physical experiences will become more important, not less.",
@@ -21,53 +22,9 @@ const MANIFESTO = [
 
 export default function Manifesto() {
   return (
-    <main lang="en" className="manifesto min-h-screen px-6 py-20" style={{ backgroundColor: TOBACCO }}>
+    <main lang="en" className="manifesto min-h-screen px-6 py-20" style={{ backgroundColor: "#fff", color: BROWN }}>
       <style>{`
         .manifesto { font-family: "Times New Roman", Times, serif; }
-
-        /* Metallic gold: a gradient with bright highlights, clipped to the
-           letterforms, drifting slowly so the light appears to move across. */
-        .gold {
-          background: linear-gradient(
-            110deg,
-            #7a5a16 0%, #c9a13b 18%, #fff0b3 30%, #d4af37 42%,
-            #8f6b1e 58%, #d4af37 72%, #fff0b3 84%, #b8912e 100%
-          );
-          background-size: 250% 100%;
-          -webkit-background-clip: text;
-          background-clip: text;
-          -webkit-text-fill-color: transparent;
-          color: transparent;
-          animation: gold-sheen 9s ease-in-out infinite alternate;
-        }
-        @keyframes gold-sheen {
-          from { background-position: 0% 50%; }
-          to   { background-position: 100% 50%; }
-        }
-        @media (prefers-reduced-motion: reduce) {
-          .gold { animation: none; }
-        }
-
-        /* The body gets the same moving sheen, but from a lighter range of
-           golds — the title's deepest tones are too dark to read against the
-           tobacco at text size. Set on the container, so the light sweeps
-           across the whole column in one pass rather than per paragraph. */
-        .gold-body {
-          background: linear-gradient(
-            110deg,
-            #c9a13b 0%, #f1dc9a 20%, #fff6d2 32%, #e2c46e 46%,
-            #c9a13b 60%, #f1dc9a 76%, #fff6d2 88%, #d9b95a 100%
-          );
-          background-size: 250% 100%;
-          -webkit-background-clip: text;
-          background-clip: text;
-          -webkit-text-fill-color: transparent;
-          color: transparent;
-          animation: gold-sheen 9s ease-in-out infinite alternate;
-        }
-        @media (prefers-reduced-motion: reduce) {
-          .gold-body { animation: none; }
-        }
 
         .justified p {
           text-align: justify;
@@ -79,14 +36,14 @@ export default function Manifesto() {
 
       <article className="mx-auto w-full max-w-xl">
         <h1
-          className="gold text-center tracking-wide"
+          className="text-center tracking-wide"
           style={{ fontSize: "clamp(1.5rem, 6vw, 2.25rem)", lineHeight: 1.1 }}
         >
           Manifesto
         </h1>
 
         <div
-          className="gold-body justified mt-12 flex flex-col"
+          className="justified mt-12 flex flex-col"
           style={{ fontSize: "clamp(0.8125rem, 2vw, 0.9375rem)", lineHeight: 1.75, gap: "1.2em" }}
         >
           {MANIFESTO.map((para) => (
