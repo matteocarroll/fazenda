@@ -11,7 +11,7 @@ Most physical retail treats every visit almost independently. Someone walks in, 
 
 At Fazenda, we want to build the opposite.
 
-The goal is to combine the intimacy of a great neighborhood store — where the owner actually knows his customers — with technology that allows us to do that for hundreds or eventually thousands of people.
+The goal is to combine the intimacy of a great neighborhood store, where the owner actually knows his customers, with technology that allows us to do that for hundreds or eventually thousands of people.
 
 Every customer moves through a simple journey:
 
@@ -118,7 +118,7 @@ Instead of:
 
 It becomes:
 
-*Matteo — this jacket came in today and I immediately thought of you. Same fit as the Barena one you bought, but lighter. I put your size aside if you want to try it.*
+*Matteo, this jacket came in today and I immediately thought of you. Same fit as the Barena one you bought, but lighter. I put your size aside if you want to try it.*
 
 ## 4. Two or More Purchases
 
