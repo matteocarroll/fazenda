@@ -35,9 +35,6 @@ export default function About() {
           <p className="text-[#5c3317] text-xs text-center max-w-sm leading-relaxed">
             Fazenda is a multibrand menswear store featuring premium international brands, opening this summer.
           </p>
-          <p className="text-[#5c3317] text-xs text-center max-w-sm leading-relaxed">
-            Sign up below to get notified once we open.
-          </p>
 
           {submitted ? (
             <div className="flex flex-col items-center gap-3 text-center max-w-sm">
