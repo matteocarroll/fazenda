@@ -249,7 +249,12 @@ function Markdown({ source }: { source: string }) {
         const align = lines.length > 1 ? (block.includes("\u2193") ? "center" : "left") : "justify"
 
         return (
-          <p key={i} style={{ textAlign: align }}>
+          /* text-align-last also applies to lines ended by <br>, so it has to
+             follow the block's alignment or it drags every line back left. */
+          <p
+            key={i}
+            style={{ textAlign: align, textAlignLast: align === "justify" ? "left" : align }}
+          >
             {lines.map((line, j) => (
               <span key={j}>
                 {inline(line)}
@@ -268,7 +273,7 @@ export default function Manifesto() {
     <main lang="en" className="manifesto min-h-screen px-6 py-20" style={{ backgroundColor: "#fff", color: BROWN }}>
       <style>{`
         .manifesto { font-family: "Times New Roman", Times, serif; }
-        .prose p { text-align-last: left; hyphens: auto; -webkit-hyphens: auto; }
+        .prose p { hyphens: auto; -webkit-hyphens: auto; }
       `}</style>
 
       <article
@@ -285,7 +290,7 @@ export default function Manifesto() {
         </h1>
 
         {MANIFESTO.map((para) => (
-          <p key={para} style={{ textAlign: "justify" }}>
+          <p key={para} style={{ textAlign: "justify", textAlignLast: "left" }}>
             {para}
           </p>
         ))}
