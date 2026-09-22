@@ -249,11 +249,11 @@ function Markdown({ source }: { source: string }) {
   )
 }
 
-export default function Manifesto() {
+export default function Journey() {
   return (
-    <main lang="en" className="manifesto min-h-screen px-6 py-20" style={{ backgroundColor: "#fff", color: BROWN }}>
+    <main lang="en" className="journey min-h-screen px-6 py-20" style={{ backgroundColor: "#fff", color: BROWN }}>
       <style>{`
-        .manifesto { font-family: "Times New Roman", Times, serif; }
+        .journey { font-family: "Times New Roman", Times, serif; }
         .prose p { hyphens: auto; -webkit-hyphens: auto; }
       `}</style>
 
