@@ -43,8 +43,9 @@ export default function Home() {
           </a>
         </p>
       </div>
-      <footer className="pb-4">
+      <footer className="pb-4 flex flex-col items-center gap-2">
         <p className="text-[#5c3317] text-xs" >support@fazenda.com</p>
+        <p className="text-[#5c3317] text-xs tracking-wide">FAZENDA INC</p>
       </footer>
     </main>
   )
