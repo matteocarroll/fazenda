@@ -9,6 +9,7 @@ const PHOTOS = [
   { src: "/store/store-5.jpg", w: 1800, h: 1200, alt: "The azulejo wall at Fazenda" },
   { src: "/store/store-6.jpg", w: 1200, h: 1797, alt: "Inside Fazenda on opening day" },
   { src: "/store/store-8.jpg", w: 1024, h: 683, alt: "The espresso bar at Fazenda" },
+  { src: "/store/store-9.jpg", w: 1024, h: 683, alt: "The hand-painted azulejo tiles at Fazenda" },
 ]
 
 export default function Store() {
