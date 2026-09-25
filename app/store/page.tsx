@@ -10,6 +10,15 @@ const PHOTOS = [
   { src: "/store/store-6.jpg", w: 1200, h: 1797, alt: "Inside Fazenda on opening day" },
   { src: "/store/store-8.jpg", w: 1024, h: 683, alt: "The espresso bar at Fazenda" },
   { src: "/store/store-9.jpg", w: 1024, h: 683, alt: "The hand-painted azulejo tiles at Fazenda" },
+  { src: "/store/store-10.jpg", w: 1800, h: 1200, alt: "A Japanese-made jacket at Fazenda" },
+  { src: "/store/store-11.jpg", w: 1800, h: 1200, alt: "A corduroy jacket on the rail at Fazenda" },
+  { src: "/store/store-12.jpg", w: 1800, h: 1200, alt: "Shirts and jackets on the rail at Fazenda" },
+  { src: "/store/store-13.jpg", w: 1800, h: 1200, alt: "Outerwear on the rail at Fazenda" },
+  { src: "/store/store-14.jpg", w: 1200, h: 1800, alt: "A rail of shirts and denim at Fazenda" },
+  { src: "/store/store-15.jpg", w: 1800, h: 1200, alt: "Knitwear and tweed on the rail at Fazenda" },
+  { src: "/store/store-16.jpg", w: 1800, h: 1200, alt: "Striped shirting on the rail at Fazenda" },
+  { src: "/store/store-17.jpg", w: 1200, h: 1800, alt: "Shirts and jackets on the rail at Fazenda" },
+  { src: "/store/store-18.jpg", w: 1800, h: 1200, alt: "A Husbands knit with the Fazenda tag" },
 ]
 
 export default function Store() {
