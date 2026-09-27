@@ -15,7 +15,7 @@ export default function Home() {
         </Link>
       </div>
       <div className="flex-1 flex flex-col items-center justify-center gap-6">
-        <WalkingBuffalo className="w-full" sceneWidth={200} />
+        <WalkingBuffalo className="w-[160px] max-w-full" />
         <Image
           src="/fazenda_logo_w2.png"
           alt="FAZENDA"

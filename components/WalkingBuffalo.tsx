@@ -6,7 +6,7 @@
  * Assets: /public/buffalo/scene.png and /public/buffalo/herd.png (sprite sheet).
  * Respects prefers-reduced-motion (shows the herd standing still) and pauses when off-screen.
  */
-import { useEffect, useId, useRef, useState, type CSSProperties } from "react";
+import { useEffect, useId, useRef, type CSSProperties } from "react";
 
 type Piece = [number, number, number, number, number, number]; // x, y, w, h (local), sx, sy (sheet)
 type Leg = { hx: number; hy: number; ky: number; L: number; d0: number; ph: number; fore: boolean; u: Piece; l: Piece };
@@ -46,14 +46,9 @@ function foot(ph: number, S: number): [number, number, number] {
   return [-S / 2 + (S * (1 - Math.cos(Math.PI * u))) / 2, Math.sin(Math.PI * u), Math.sin(Math.PI * Math.min(1, u * 1.15))];
 }
 
-function pose(el: SVGGElement, b: Buffalo, t: number, span: number) {
-  // The strip is widened to the page, so start positions and speed scale with
-  // it; the art itself stays the size set by sceneWidth.
-  const k = span / VIEW_W;
-  const start = START;
-  const end = span + (END - VIEW_W);
-  const LP = end - start;
-  const x = ((((b.x0 * k - start + SPEED * k * t) % LP) + LP) % LP) + start;
+function pose(el: SVGGElement, b: Buffalo, t: number) {
+  const LP = END - START;
+  const x = ((((b.x0 - START + SPEED * t) % LP) + LP) % LP) + START;
   el.setAttribute("transform", `translate(${x.toFixed(2)} ${b.y}) scale(0.5)`);
   const g = t / b.T;
   const f0 = b.legs[2].ph, f1 = b.legs[3].ph;
@@ -86,35 +81,9 @@ function pose(el: SVGGElement, b: Buffalo, t: number, span: number) {
   });
 }
 
-export default function WalkingBuffalo({
-  className,
-  style,
-  sceneWidth = 220,
-}: {
-  className?: string;
-  style?: CSSProperties;
-  /** How wide the farmhouse scene should appear, in CSS pixels. The herd
-   *  walks the full width of the element regardless. */
-  sceneWidth?: number;
-}) {
+export default function WalkingBuffalo({ className, style }: { className?: string; style?: CSSProperties }) {
   const root = useRef<SVGSVGElement>(null);
   const id = useId().replace(/[^a-zA-Z0-9_-]/g, "");
-  const [span, setSpan] = useState(VIEW_W);
-  const spanRef = useRef(VIEW_W);
-  spanRef.current = span;
-
-  useEffect(() => {
-    const svg = root.current;
-    if (!svg) return;
-    const measure = () => {
-      const w = svg.getBoundingClientRect().width;
-      if (w > 0) setSpan(Math.max(VIEW_W, (VIEW_W * w) / sceneWidth));
-    };
-    measure();
-    const ro = new ResizeObserver(measure);
-    ro.observe(svg);
-    return () => ro.disconnect();
-  }, [sceneWidth]);
 
   useEffect(() => {
     const svg = root.current;
@@ -128,7 +97,7 @@ export default function WalkingBuffalo({
     const frame = (now: number) => {
       if (last !== null) t += Math.min(0.1, (now - last) / 1000);
       last = now;
-      els.forEach((el, i) => pose(el, HERD[i], t, spanRef.current));
+      els.forEach((el, i) => pose(el, HERD[i], t));
       raf = requestAnimationFrame(frame);
     };
     const run = () => {
@@ -153,27 +122,27 @@ export default function WalkingBuffalo({
   return (
     <svg
       ref={root}
-      viewBox={`0 0 ${span} ${VIEW_H}`}
+      viewBox={`0 0 ${VIEW_W} ${VIEW_H}`}
       className={className}
       style={{ display: "block", height: "auto", overflow: "hidden", ...style }}
       role="img"
       aria-label="Fazenda: a farmhouse under a tree, with three water buffalo walking past"
     >
       <defs>
-        <linearGradient id={`${id}-edge`} x1="0" x2={span} y1="0" y2="0" gradientUnits="userSpaceOnUse">
+        <linearGradient id={`${id}-edge`} x1="0" x2={VIEW_W} y1="0" y2="0" gradientUnits="userSpaceOnUse">
           <stop offset="0" stopColor="#fff" stopOpacity="0" />
           <stop offset="0.05" stopColor="#fff" />
           <stop offset="0.95" stopColor="#fff" />
           <stop offset="1" stopColor="#fff" stopOpacity="0" />
         </linearGradient>
-        <mask id={`${id}-fade`} maskUnits="userSpaceOnUse" x="0" y="0" width={span} height={VIEW_H}>
-          <rect width={span} height={VIEW_H} fill={`url(#${id}-edge)`} />
+        <mask id={`${id}-fade`} maskUnits="userSpaceOnUse" x="0" y="0" width={VIEW_W} height={VIEW_H}>
+          <rect width={VIEW_W} height={VIEW_H} fill={`url(#${id}-edge)`} />
         </mask>
       </defs>
-      <image href="/buffalo/scene.png" x={(span - VIEW_W) / 2} y="0" width={VIEW_W} height="460" />
+      <image href="/buffalo/scene.png" x="0" y="0" width={VIEW_W} height="460" />
       <g mask={`url(#${id}-fade)`}>
         {HERD.map((b) => (
-          <g key={b.name} className="buffalo" transform={`translate(${(b.x0 * span) / VIEW_W} ${b.y}) scale(0.5)`}>
+          <g key={b.name} className="buffalo" transform={`translate(${b.x0} ${b.y}) scale(0.5)`}>
             <g className="bob">
               <g className="tail"><Sprite p={b.tail.p} /></g>
               {b.legs.map((l, i) => (
