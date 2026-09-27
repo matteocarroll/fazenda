@@ -1,6 +1,8 @@
 import Image from "next/image"
 import Link from "next/link"
 
+import WalkingBuffalo from "@/components/WalkingBuffalo"
+
 export default function Home() {
   return (
     <main className="min-h-screen bg-white flex flex-col items-center justify-between py-8 relative">
@@ -13,14 +15,7 @@ export default function Home() {
         </Link>
       </div>
       <div className="flex-1 flex flex-col items-center justify-center gap-6">
-        <Image
-          src="/fazenda-scene-brazilwood.png"
-          alt="Fazenda"
-          width={400}
-          height={300}
-          className="w-auto h-auto max-w-[160px]"
-          priority
-        />
+        <WalkingBuffalo className="w-[160px] max-w-full" />
         <Image
           src="/fazenda_logo_w2.png"
           alt="FAZENDA"
