@@ -64,7 +64,7 @@ export default function Leaderboard() {
     >
       <style>{`
         .leaderboard {
-          font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+          font-family: "Times New Roman", Times, serif;
           text-transform: uppercase;
         }
         .row { border-top: 1px solid rgba(247, 229, 192, 0.15); }
