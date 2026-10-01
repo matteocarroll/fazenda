@@ -63,7 +63,10 @@ export default function Leaderboard() {
       style={{ backgroundColor: TOBACCO, color: LIMESTONE }}
     >
       <style>{`
-        .leaderboard { font-family: "Times New Roman", Times, serif; }
+        .leaderboard {
+          font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+          text-transform: uppercase;
+        }
         .row { border-top: 1px solid rgba(247, 229, 192, 0.15); }
         .row:last-child { border-bottom: 1px solid rgba(247, 229, 192, 0.15); }
       `}</style>
@@ -71,12 +74,11 @@ export default function Leaderboard() {
       <div className="mx-auto w-full max-w-md">
         <header className="text-center">
           <h1
-            className="tracking-wide"
-            style={{ fontSize: "clamp(1.125rem, 4vw, 1.5rem)", color: NAPLES }}
+            style={{ fontSize: "clamp(1rem, 3.4vw, 1.25rem)", letterSpacing: "0.1em", color: NAPLES }}
           >
             Coffee Leaderboard
           </h1>
-          <p className="mt-2 tracking-wide" style={{ fontSize: "0.625rem", opacity: 0.6 }}>
+          <p className="mt-2" style={{ fontSize: "0.5625rem", letterSpacing: "0.14em", opacity: 0.6 }}>
             MOST COFFEES AT FAZENDA
           </p>
         </header>
@@ -95,7 +97,7 @@ export default function Leaderboard() {
               >
                 {i + 1}
               </span>
-              <span style={{ fontSize: "0.8125rem", minWidth: "5.5em" }}>{p.name}</span>
+              <span style={{ fontSize: "0.75rem", letterSpacing: "0.04em", minWidth: "6em" }}>{p.name}</span>
               <span className="flex-1" style={{ color: i < 3 ? NAPLES : LIMESTONE, opacity: i < 3 ? 1 : 0.8 }}>
                 <Tally count={p.coffees} />
               </span>
