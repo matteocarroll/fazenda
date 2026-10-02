@@ -2,6 +2,8 @@
 
 import { useState } from "react"
 
+import WalkingBuffalo from "@/components/WalkingBuffalo"
+
 // ---- Edit these ----
 const EVENT_TITLE = "RSVP"
 const EVENT_NAME = "Fazenda's Wine Night - 1st Edition"
@@ -48,12 +50,14 @@ export default function Thursdays() {
           justify-content: center;
           padding: 96px 24px;
         }
-        .rsvp-inner { width: 100%; max-width: 420px; }
+        .rsvp-inner { width: 100%; max-width: 420px; text-align: center; }
+        .rsvp .buffalo { margin: 0 auto 28px; width: 160px; max-width: 100%; }
         .rsvp h1 { font-weight: inherit; font-size: 1.75rem; margin: 0 0 8px; }
         .rsvp .event-name { font-weight: inherit; font-size: 1rem; margin: 0 0 6px; }
         .rsvp .event-date { margin: 0 0 6px; }
         .rsvp p { margin: 0 0 40px; line-height: 1.5; }
         .rsvp label { display: block; font-size: 1rem; margin-bottom: 6px; }
+        .rsvp input { text-align: center; }
         .rsvp input {
           display: block;
           width: 100%;
@@ -85,6 +89,8 @@ export default function Thursdays() {
       `}</style>
 
       <div className="rsvp-inner">
+        <WalkingBuffalo className="buffalo" />
+
         <h1>{EVENT_TITLE}</h1>
         <h2 className="event-name">{EVENT_NAME}</h2>
         <p className="event-date">{EVENT_DATE}</p>
