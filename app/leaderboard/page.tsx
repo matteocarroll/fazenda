@@ -82,7 +82,7 @@ export default async function Leaderboard() {
 
         <ol className="mt-8">
           {ranked.map((p, i) => (
-            <li key={p.customerId} className="row flex items-center gap-3 py-2">
+            <li key={p.rank} className="row flex items-center gap-3 py-2">
               <span
                 style={{
                   fontSize: "0.75rem",

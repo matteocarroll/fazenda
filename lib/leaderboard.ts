@@ -1,6 +1,6 @@
 // Server-only: reads Valtrix with VALTRIX_API_KEY. Never import from a client component.
 
-export type LeaderboardEntry = { customerId: string; name: string; orders: number }
+export type LeaderboardEntry = { rank: number; name: string; orders: number }
 
 /* Guests are shown by phone number for now, masked to the last four digits
    since the page is public. */
@@ -20,31 +20,24 @@ export async function getLeaderboard(limit = 10): Promise<LeaderboardEntry[]> {
   }
 }
 
+/* Ranks guestbook guests by the visit count the point of sale keeps on each
+   guest. Guestbook entries sharing a phone number are one person, so their
+   visits are added together. Full numbers never leave this function, so
+   they stay out of the page and its payload. */
 async function readLeaderboard(limit: number): Promise<LeaderboardEntry[]> {
   const { valtrix } = await import("@/valtrix/client")
-  const counts = new Map<string, number>()
-  for await (const order of valtrix.records.order.iterate({
-    where: { customer_id: { not: null }, status: { neq: "cancelled" } },
-    select: ["customer_id"],
+  const visitsByPhone = new Map<string, number>()
+  for await (const guest of valtrix.records.customer.iterate({
+    where: { visit_count: { gt: 0 }, phone: { not: null } },
+    select: ["phone", "visit_count"],
     limit: 200,
   })) {
-    const id = order.customer_id!
-    counts.set(id, (counts.get(id) ?? 0) + 1)
+    const phone = guest.phone!.replace(/\D/g, "")
+    visitsByPhone.set(phone, (visitsByPhone.get(phone) ?? 0) + (guest.visit_count ?? 0))
   }
 
-  const top = [...counts.entries()].sort((a, b) => b[1] - a[1]).slice(0, limit)
-  if (top.length === 0) return []
-
-  const customers = await valtrix.records.customer.findMany({
-    where: { _record_id: { in: top.map(([id]) => id) } },
-    select: ["phone"],
-    limit: 200,
-  })
-  const phoneById = new Map(customers.map((c) => [c._record_id, c.phone]))
-
-  return top.map(([customerId, orders]) => ({
-    customerId,
-    name: maskPhone(phoneById.get(customerId)),
-    orders,
-  }))
+  return [...visitsByPhone.entries()]
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, limit)
+    .map(([phone, orders], i) => ({ rank: i + 1, name: maskPhone(phone), orders }))
 }

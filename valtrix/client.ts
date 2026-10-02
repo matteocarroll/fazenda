@@ -412,10 +412,16 @@ export interface CostRecord {
     paid_at?: string | null
     /** Purchase order number the cost was raised against, as the source prints it, for sources that match bills to purchase orders */
     po_number?: string | null
+    /** Valtrix record ID of the purchase order or contract the cost was raised against, for sources that sync their purchase orders as records; po_number keeps the number as the source prints it */
+    contract_id?: string | null
     /** Amount before tax, in currency, for sources that print it separately from the total */
     subtotal?: number | null
     /** Tax charged on the document, in currency, for sources that print it separately from the total */
     tax?: number | null
+    /** Tax the payer withholds from the payee and remits itself (the income tax and VAT retentions of a Mexican CFDI), in currency, for sources that print it; not part of tax */
+    tax_withheld?: number | null
+    /** Payment terms as the source states them (Net 30; on a Mexican CFDI the payment method, PUE for one payment or PPD for instalments or deferred payment); source-defined, pass it through */
+    payment_terms?: string | null
     /** Cost center, business unit, or organization the cost is booked to, as the source names it; source-defined, pass it through */
     cost_center?: string | null
     /** The source's own review or audit state of the supporting document (audited, awaiting upload, rejected, cancelled), as it labels it; source-defined, pass it through. Distinct from status, which is the normalized lifecycle */
@@ -590,6 +596,20 @@ export interface CustomerRecord {
     owner?: string | null
     /** Whether the customer accepts marketing email, as the source records the consent */
     email_opt_in?: boolean | null
+    /** Number of visits the source has counted for the customer, for sources that keep a running total on the guest or member (a point of sale guest book, a loyalty profile); the source's own count, not one derived from orders or bookings */
+    visit_count?: number | null
+    /**
+     * When the source recorded the customer's first visit
+     * ISO 8601 date string.
+     */
+    first_visit_at?: string | null
+    /**
+     * When the source recorded the customer's most recent visit
+     * ISO 8601 date string.
+     */
+    last_visit_at?: string | null
+    /** Lifetime amount the customer has spent across those visits as the source totals it, tax included and tips excluded, in the currency of the location */
+    total_spend?: number | null
 }
 
 /** A file kept in a source's document library or project folder and managed as a record in its own right: drawings, specifications, supplier quotes, submittals, photos, and correspondence filed under a project or the org itself. The file rides along as a record attachment; this record carries its name, folder path, type, size, uploader, and dates. A file attached to another record (an invoice PDF, a receipt image, a signed waiver) stays an attachment on that record and does not map here. Query via valtrix.records.document.findMany(), write via upsert(). */
@@ -1068,6 +1088,8 @@ export interface LineItemRecord {
     cost_code_id?: string | null
     /** Valtrix record ID of the general ledger account the line is coded to, for accounting sources */
     gl_account_id?: string | null
+    /** Ledger or charge account the line is coded to, as the source prints it, for sources that give the account as text rather than as a synced record; source-defined, pass it through */
+    gl_account?: string | null
     /** Cost type as the source names it (labor, materials, subcontract); source-defined, pass it through */
     cost_type?: string | null
     /** Accounting class or tracking category the line is coded to (QuickBooks class, location or department class), as the source names it; source-defined, pass it through */
@@ -1095,6 +1117,10 @@ export interface LineItemRecord {
     discount_code?: string | null
     /** Tax charged on the line, in currency */
     tax?: number | null
+    /** Catalog category of what the line sells, as the source names it on the line (a menu group, a product family), written the way item.category is so the two can be compared; source-defined, pass it through */
+    category?: string | null
+    /** One of: active, void. A line the source voided or removed after it was entered stays on its document with status void and no longer counts toward the document total; sources with no such state leave it empty */
+    status?: string | null
 }
 
 /** A standalone physical place record, such as a store, site, or warehouse. Only sources that model places as their own records produce these; address fields on another entity stay on that entity. Query via valtrix.records.location.findMany(), write via upsert(). */
@@ -1252,6 +1278,20 @@ export interface OrderRecord {
      * ISO 8601 date string.
      */
     placed_at?: string | null
+    /** Order amount before tax and tips, after discounts, for sources that break the total down */
+    subtotal?: number | null
+    /** Tax charged on the order */
+    tax?: number | null
+    /** Tips and gratuity the customer added to the order, for point-of-sale and delivery sources */
+    tip?: number | null
+    /** Discounts applied to the order, in currency, as a positive number */
+    discount?: number | null
+    /** Where the order was placed, as the source names it (in store, online, a third-party marketplace); source-defined, pass it through */
+    channel?: string | null
+    /** Staff member who took or owns the order (a server, cashier, or sales representative), for sources that record one */
+    employee_name?: string | null
+    /** Valtrix record ID of the staff member who took or owns the order */
+    employee_id?: string | null
 }
 
 /** An insurance carrier or plan the org bills on behalf of its customers: vision, medical, and dental insurers and the plans they offer all map here, discriminated by kind. A customer's own policy with the payer maps to coverage; the money the payer sends maps to payment. Query via valtrix.records.payer.findMany(), write via upsert(). */
@@ -1275,7 +1315,7 @@ export interface PayerRecord {
 export interface PaymentRecord {
     /** Payment number */
     number?: string | null
-    /** One of: issued, received. Issued to a vendor or received from a client */
+    /** One of: issued, received, settlement. Issued to a vendor or received from a client; settlement is a payment processor depositing the card payments it collected into the org's bank account, which is not new income, so a total of money received leaves it out */
     kind?: string | null
     /** Customer or vendor the payment settles with */
     counterparty?: string | null
@@ -1321,6 +1361,21 @@ export interface PaymentRecord {
     journal_entry_id?: string | null
     /** Valtrix record ID of the order the payment settles, for point-of-sale and e-commerce sources where a customer pays an order rather than an invoice */
     order_id?: string | null
+    /** Tips and gratuity included in the amount, for point-of-sale sources that record them on the payment */
+    tip?: number | null
+    /** Processing fee the payment processor charged on the payment, as a positive number */
+    fee?: number | null
+    /** Amount of the payment returned to the payer, as a positive number; null when nothing was refunded */
+    refunded_amount?: number | null
+    /**
+     * When the payment was refunded
+     * ISO 8601 date string.
+     */
+    refunded_at?: string | null
+    /** Card network as the source names it (Visa, Mastercard, Amex); source-defined, pass it through */
+    card_brand?: string | null
+    /** Last four digits of the card, never the full number */
+    card_last4?: string | null
 }
 
 /** One share of a payment applied to one document: the row that links a payment to each cost or invoice it settles, with the amount applied. A payment settling a single document still gets one allocation; a check covering several bills gets one per bill, and vendor credits applied against the payment carry negative amounts. The allocations of a payment sum to its amount. Query via valtrix.records.payment_allocation.findMany(), write via upsert(). */
@@ -1658,6 +1713,14 @@ export interface TimeEntryRecord {
     resource_id?: string | null
     /** Valtrix record ID of the maintenance work order the time was logged against */
     maintenance_order_id?: string | null
+    /** Tips and gratuity the employee earned on the entry, for restaurant and retail timecards */
+    tips?: number | null
+    /** Hourly wage the entry was paid at */
+    hourly_rate?: number | null
+    /** Hours of the entry paid as overtime */
+    overtime_hours?: number | null
+    /** Break time taken during the entry, paid and unpaid together, in hours */
+    break_hours?: number | null
 }
 
 /** A company the org buys from or subcontracts to, at the company-directory level. A vendor's assignment to a specific project maps to project_vendor; the agreement itself maps to contract. Query via valtrix.records.vendor.findMany(), write via upsert(). */
