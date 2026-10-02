@@ -25,7 +25,7 @@ export default function Thursdays() {
     e.preventDefault()
     setStatus("sending")
     try {
-      const res = await fetch("/api/thursdays", {
+      const res = await fetch("/api/events", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ ...form, event: EVENT_NAME }),
