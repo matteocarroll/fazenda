@@ -17,6 +17,7 @@ export default function ByNight() {
   useEffect(() => {
     let alive = true
     const load = async () => {
+      if (document.hidden) return
       try {
         const res = await fetch("/api/bynight", { cache: "no-store" })
         const data = await res.json()
@@ -26,7 +27,7 @@ export default function ByNight() {
       }
     }
     load()
-    const t = setInterval(load, 2500)
+    const t = setInterval(load, 1500)
     return () => {
       alive = false
       clearInterval(t)

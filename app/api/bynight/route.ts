@@ -1,11 +1,16 @@
 import { NextResponse } from "next/server"
-import { addDrink, getDrinkers, getGuests, type DrinkType } from "@/lib/bynight"
+import { addDrink, getDrinkers, type DrinkType } from "@/lib/bynight"
 
 export const dynamic = "force-dynamic"
 
 export async function GET() {
   try {
-    return NextResponse.json({ people: await getDrinkers() })
+    /* Every open leaderboard polls this; a one-second CDN cache keeps Redis
+       at about one read per second however many guests are watching. */
+    return NextResponse.json(
+      { people: await getDrinkers() },
+      { headers: { "Cache-Control": "public, s-maxage=1, stale-while-revalidate=1" } },
+    )
   } catch (err) {
     console.error("bynight: read failed", err)
     return NextResponse.json({ error: "Unavailable" }, { status: 503 })
@@ -33,12 +38,14 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Invalid amount" }, { status: 400 })
   }
 
+  /* Ids are checked by shape only, so a slow or flaky sheet read never
+     blocks a tap. A stray id is harmless: nothing displays it. */
+  if (typeof body.id !== "string" || !/^[0-9a-f]{10}$/.test(body.id)) {
+    return NextResponse.json({ error: "Unknown guest" }, { status: 404 })
+  }
+
   try {
-    const guests = await getGuests()
-    if (!guests.some((g) => g.id === body.id)) {
-      return NextResponse.json({ error: "Unknown guest" }, { status: 404 })
-    }
-    const count = await addDrink(body.id!, type, body.delta)
+    const count = await addDrink(body.id, type, body.delta)
     return NextResponse.json({ id: body.id, type, count })
   } catch (err) {
     console.error("bynight: write failed", err)

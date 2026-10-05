@@ -32,7 +32,9 @@ export default function Tally() {
   const load = useCallback(async () => {
     if (pending.current > 0) return
     try {
-      const res = await fetch("/api/bynight", { cache: "no-store" })
+      /* A unique query string skips the leaderboard's 1s CDN cache, so a
+         just-tapped count never flashes back to its old value. */
+      const res = await fetch(`/api/bynight?t=${Date.now()}`, { cache: "no-store" })
       const data = await res.json()
       if (data.people && pending.current === 0) setPeople(data.people)
     } catch {

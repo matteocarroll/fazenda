@@ -26,8 +26,11 @@ function idFor(full: string): string {
 /* Guests in sheet order, duplicate RSVPs folded into one. */
 export async function getGuests(): Promise<{ id: string; name: string }[]> {
   const res = await fetch(SHEET_CSV, { next: { revalidate: 30 } })
-  if (!res.ok) throw new Error(`sheet ${res.status}`)
-  const lines = (await res.text()).split("\n").slice(1)
+  const text = await res.text()
+  /* Google sometimes answers with an HTML page instead of CSV; treat that as
+     a failed read rather than an empty guest list. */
+  if (!res.ok || !text.startsWith('"Name"')) throw new Error(`sheet ${res.status}`)
+  const lines = text.split("\n").slice(1)
   const seen = new Set<string>()
   const guests: { id: string; name: string }[] = []
   for (const line of lines) {
