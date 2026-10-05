@@ -50,7 +50,7 @@ export default function ProductCard({ product }: { product: Product }) {
                 src={image.src}
                 alt={`${label} — image ${i + 1} of ${count}`}
                 fill
-                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 250px"
                 className="object-contain"
               />
             </div>

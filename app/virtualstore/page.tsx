@@ -27,7 +27,7 @@ export default function VirtualStore() {
         </a>
       </p>
 
-      <div className="mx-auto grid w-full max-w-6xl grid-cols-1 gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="mx-auto grid w-full max-w-5xl grid-cols-2 gap-x-4 gap-y-10 sm:grid-cols-3 lg:grid-cols-4">
         {PRODUCTS.map((product) => (
           <ProductCard key={product.id} product={product} />
         ))}
