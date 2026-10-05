@@ -17,7 +17,6 @@ export default function ByNight() {
   useEffect(() => {
     let alive = true
     const load = async () => {
-      if (document.hidden) return
       try {
         const res = await fetch("/api/bynight", { cache: "no-store" })
         const data = await res.json()
@@ -26,11 +25,15 @@ export default function ByNight() {
         /* keep showing the last board until the next poll */
       }
     }
+    /* Background tabs skip polls; coming back refreshes at once. */
+    const poll = () => !document.hidden && load()
     load()
-    const t = setInterval(load, 1500)
+    const t = setInterval(poll, 1500)
+    document.addEventListener("visibilitychange", poll)
     return () => {
       alive = false
       clearInterval(t)
+      document.removeEventListener("visibilitychange", poll)
     }
   }, [])
 
