@@ -1407,5 +1407,201 @@
       }
     ],
     "still": "original"
+  },
+  {
+    "id": "valstar-colin-bomber-jacket-cardamomo",
+    "brand": "Valstar",
+    "name": "Colin Bomber Jacket",
+    "color": "Cardamomo",
+    "style_code": "407A.D095",
+    "images": [
+      {
+        "src": "/virtualstore-products/valstar-colin-bomber-jacket-cardamomo/00-still.jpg",
+        "type": "still",
+        "generated": false
+      },
+      {
+        "src": "/virtualstore-products/valstar-colin-bomber-jacket-cardamomo/01-product.jpg",
+        "type": "product"
+      },
+      {
+        "src": "/virtualstore-products/valstar-colin-bomber-jacket-cardamomo/02-model.jpg",
+        "type": "model"
+      },
+      {
+        "src": "/virtualstore-products/valstar-colin-bomber-jacket-cardamomo/03-model.jpg",
+        "type": "model"
+      }
+    ],
+    "still": "original"
+  },
+  {
+    "id": "valstar-cudden-goose-down-aviator-jacket-caffe",
+    "brand": "Valstar",
+    "name": "Cudden Goose Down Aviator Jacket",
+    "color": "Caffè",
+    "style_code": "407A.I061",
+    "images": [
+      {
+        "src": "/virtualstore-products/valstar-cudden-goose-down-aviator-jacket-caffe/00-still.jpg",
+        "type": "still",
+        "generated": false
+      },
+      {
+        "src": "/virtualstore-products/valstar-cudden-goose-down-aviator-jacket-caffe/01-product.jpg",
+        "type": "product"
+      }
+    ],
+    "still": "original"
+  },
+  {
+    "id": "valstar-cudden-goose-down-aviator-jacket-liquirizia",
+    "brand": "Valstar",
+    "name": "Cudden Goose Down Aviator Jacket",
+    "color": "Liquirizia",
+    "style_code": "407A.I061",
+    "images": [
+      {
+        "src": "/virtualstore-products/valstar-cudden-goose-down-aviator-jacket-liquirizia/00-still.jpg",
+        "type": "still",
+        "generated": false
+      },
+      {
+        "src": "/virtualstore-products/valstar-cudden-goose-down-aviator-jacket-liquirizia/01-product.jpg",
+        "type": "product"
+      },
+      {
+        "src": "/virtualstore-products/valstar-cudden-goose-down-aviator-jacket-liquirizia/02-model.jpg",
+        "type": "model"
+      },
+      {
+        "src": "/virtualstore-products/valstar-cudden-goose-down-aviator-jacket-liquirizia/03-model.jpg",
+        "type": "model"
+      },
+      {
+        "src": "/virtualstore-products/valstar-cudden-goose-down-aviator-jacket-liquirizia/04-model.jpg",
+        "type": "model"
+      },
+      {
+        "src": "/virtualstore-products/valstar-cudden-goose-down-aviator-jacket-liquirizia/05-model.jpg",
+        "type": "model"
+      }
+    ],
+    "still": "original"
+  },
+  {
+    "id": "valstar-ian-suede-jacket-caffe",
+    "brand": "Valstar",
+    "name": "Ian Suede Jacket",
+    "color": "Caffè",
+    "style_code": "407A.I073",
+    "images": [
+      {
+        "src": "/virtualstore-products/valstar-ian-suede-jacket-caffe/00-still.jpg",
+        "type": "still",
+        "generated": false
+      }
+    ],
+    "still": "original"
+  },
+  {
+    "id": "valstar-ian-suede-jacket-basil",
+    "brand": "Valstar",
+    "name": "Ian Suede Jacket",
+    "color": "Basil",
+    "style_code": "407A.I073",
+    "images": [
+      {
+        "src": "/virtualstore-products/valstar-ian-suede-jacket-basil/00-still.jpg",
+        "type": "still",
+        "generated": false
+      },
+      {
+        "src": "/virtualstore-products/valstar-ian-suede-jacket-basil/01-product.jpg",
+        "type": "product"
+      },
+      {
+        "src": "/virtualstore-products/valstar-ian-suede-jacket-basil/02-model.jpg",
+        "type": "model"
+      },
+      {
+        "src": "/virtualstore-products/valstar-ian-suede-jacket-basil/03-model.jpg",
+        "type": "model"
+      }
+    ],
+    "still": "original"
+  },
+  {
+    "id": "valstar-ian-suede-jacket-liquirizia",
+    "brand": "Valstar",
+    "name": "Ian Suede Jacket",
+    "color": "Liquirizia",
+    "style_code": "407A.I073",
+    "images": [
+      {
+        "src": "/virtualstore-products/valstar-ian-suede-jacket-liquirizia/00-still.jpg",
+        "type": "still",
+        "generated": false
+      }
+    ],
+    "still": "original"
+  },
+  {
+    "id": "valstar-smith-aviator-leather-jacket-marrone",
+    "brand": "Valstar",
+    "name": "Smith Aviator Leather Jacket",
+    "color": "Marrone",
+    "style_code": "407A.I078",
+    "images": [
+      {
+        "src": "/virtualstore-products/valstar-smith-aviator-leather-jacket-marrone/00-still.jpg",
+        "type": "still",
+        "generated": false
+      },
+      {
+        "src": "/virtualstore-products/valstar-smith-aviator-leather-jacket-marrone/01-product.jpg",
+        "type": "product"
+      },
+      {
+        "src": "/virtualstore-products/valstar-smith-aviator-leather-jacket-marrone/02-model.jpg",
+        "type": "model"
+      },
+      {
+        "src": "/virtualstore-products/valstar-smith-aviator-leather-jacket-marrone/03-model.jpg",
+        "type": "model"
+      },
+      {
+        "src": "/virtualstore-products/valstar-smith-aviator-leather-jacket-marrone/04-model.jpg",
+        "type": "model"
+      },
+      {
+        "src": "/virtualstore-products/valstar-smith-aviator-leather-jacket-marrone/05-model.jpg",
+        "type": "model"
+      },
+      {
+        "src": "/virtualstore-products/valstar-smith-aviator-leather-jacket-marrone/06-model.jpg",
+        "type": "model"
+      }
+    ],
+    "still": "original"
+  },
+  {
+    "id": "valstar-alan-goose-down-suede-vest-sandal",
+    "brand": "Valstar",
+    "name": "Alan Goose Down Suede Vest",
+    "color": "Sandal",
+    "style_code": "407N.I005",
+    "images": [
+      {
+        "src": "/virtualstore-products/valstar-alan-goose-down-suede-vest-sandal/00-still.jpg",
+        "type": "still",
+        "generated": false
+      },
+      {
+        "src": "/virtualstore-products/valstar-alan-goose-down-suede-vest-sandal/01-product.jpg",
+        "type": "product"
+      }
+    ],
+    "still": "original"
   }
 ]
