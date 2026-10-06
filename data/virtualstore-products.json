@@ -470,11 +470,6 @@
     "color": "",
     "images": [
       {
-        "src": "/virtualstore-products/misci-calca-jose-linho-marrom/00-still.jpg",
-        "type": "still",
-        "generated": true
-      },
-      {
         "src": "/virtualstore-products/misci-calca-jose-linho-marrom/01-product.jpg",
         "type": "product"
       },
@@ -483,7 +478,7 @@
         "type": "product"
       }
     ],
-    "still": "generated"
+    "still": null
   },
   {
     "id": "misci-camisa-manga-curta-viscolinho-verde-militar",
@@ -491,11 +486,6 @@
     "name": "Camisa Manga Curta Viscolinho Verde Militar",
     "color": "",
     "images": [
-      {
-        "src": "/virtualstore-products/misci-camisa-manga-curta-viscolinho-verde-militar/00-still.jpg",
-        "type": "still",
-        "generated": true
-      },
       {
         "src": "/virtualstore-products/misci-camisa-manga-curta-viscolinho-verde-militar/01-product.jpg",
         "type": "product"
@@ -505,7 +495,7 @@
         "type": "product"
       }
     ],
-    "still": "generated"
+    "still": null
   },
   {
     "id": "misci-camiseta-bondinho",
@@ -513,11 +503,6 @@
     "name": "Camiseta Bondinho",
     "color": "",
     "images": [
-      {
-        "src": "/virtualstore-products/misci-camiseta-bondinho/00-still.jpg",
-        "type": "still",
-        "generated": true
-      },
       {
         "src": "/virtualstore-products/misci-camiseta-bondinho/01-product.jpg",
         "type": "product"
@@ -535,7 +520,7 @@
         "type": "product"
       }
     ],
-    "still": "generated"
+    "still": null
   },
   {
     "id": "misci-camiseta-caipirinha",
@@ -543,11 +528,6 @@
     "name": "Camiseta Caipirinha",
     "color": "",
     "images": [
-      {
-        "src": "/virtualstore-products/misci-camiseta-caipirinha/00-still.jpg",
-        "type": "still",
-        "generated": true
-      },
       {
         "src": "/virtualstore-products/misci-camiseta-caipirinha/01-product.jpg",
         "type": "product"
@@ -561,7 +541,7 @@
         "type": "product"
       }
     ],
-    "still": "generated"
+    "still": null
   },
   {
     "id": "misci-camiseta-jogo-do-bicho",
@@ -610,11 +590,6 @@
     "color": "",
     "images": [
       {
-        "src": "/virtualstore-products/misci-camiseta-maracana/00-still.jpg",
-        "type": "still",
-        "generated": true
-      },
-      {
         "src": "/virtualstore-products/misci-camiseta-maracana/01-product.jpg",
         "type": "product"
       },
@@ -627,7 +602,7 @@
         "type": "product"
       }
     ],
-    "still": "generated"
+    "still": null
   },
   {
     "id": "misci-camiseta-milho-verde",
@@ -695,11 +670,6 @@
     "color": "",
     "images": [
       {
-        "src": "/virtualstore-products/misci-camiseta-volei/00-still.jpg",
-        "type": "still",
-        "generated": true
-      },
-      {
         "src": "/virtualstore-products/misci-camiseta-volei/01-product.jpg",
         "type": "product"
       },
@@ -712,7 +682,7 @@
         "type": "product"
       }
     ],
-    "still": "generated"
+    "still": null
   },
   {
     "id": "misci-jaqueta-horizonte",
@@ -789,11 +759,6 @@
     "color": "",
     "images": [
       {
-        "src": "/virtualstore-products/misci-polo-tricot-canelada-cafe/00-still.jpg",
-        "type": "still",
-        "generated": true
-      },
-      {
         "src": "/virtualstore-products/misci-polo-tricot-canelada-cafe/01-product.jpg",
         "type": "product"
       },
@@ -802,7 +767,7 @@
         "type": "product"
       }
     ],
-    "still": "generated"
+    "still": null
   },
   {
     "id": "misci-polo-tricot-ponto-calado",
@@ -810,11 +775,6 @@
     "name": "Polo Tricot Ponto Calado",
     "color": "",
     "images": [
-      {
-        "src": "/virtualstore-products/misci-polo-tricot-ponto-calado/00-still.jpg",
-        "type": "still",
-        "generated": true
-      },
       {
         "src": "/virtualstore-products/misci-polo-tricot-ponto-calado/01-product.jpg",
         "type": "product"
@@ -828,7 +788,7 @@
         "type": "product"
       }
     ],
-    "still": "generated"
+    "still": null
   },
   {
     "id": "barena-gia-knit-scarf-ecru",
@@ -864,11 +824,6 @@
     "style_code": "CAU5665 2817",
     "images": [
       {
-        "src": "/virtualstore-products/barena-faziol-shirt-navy/00-still.jpg",
-        "type": "still",
-        "generated": true
-      },
-      {
         "src": "/virtualstore-products/barena-faziol-shirt-navy/01-model.jpg",
         "type": "model"
       },
@@ -893,7 +848,7 @@
         "type": "model"
       }
     ],
-    "still": "generated"
+    "still": null
   },
   {
     "id": "barena-genga-shirt-cielo",
@@ -902,11 +857,6 @@
     "color": "Cielo",
     "style_code": "CAU5668 2819",
     "images": [
-      {
-        "src": "/virtualstore-products/barena-genga-shirt-cielo/00-still.jpg",
-        "type": "still",
-        "generated": true
-      },
       {
         "src": "/virtualstore-products/barena-genga-shirt-cielo/01-model.jpg",
         "type": "model"
@@ -932,7 +882,7 @@
         "type": "model"
       }
     ],
-    "still": "generated"
+    "still": null
   },
   {
     "id": "barena-zaleto-coat-bruno",
@@ -941,11 +891,6 @@
     "color": "Bruno",
     "style_code": "CSU5610 2812",
     "images": [
-      {
-        "src": "/virtualstore-products/barena-zaleto-coat-bruno/00-still.jpg",
-        "type": "still",
-        "generated": true
-      },
       {
         "src": "/virtualstore-products/barena-zaleto-coat-bruno/01-model.jpg",
         "type": "model"
@@ -967,7 +912,7 @@
         "type": "model"
       }
     ],
-    "still": "generated"
+    "still": null
   },
   {
     "id": "barena-fondaco-jacket-notte",
@@ -976,11 +921,6 @@
     "color": "Notte",
     "style_code": "CSU5617 2820",
     "images": [
-      {
-        "src": "/virtualstore-products/barena-fondaco-jacket-notte/00-still.jpg",
-        "type": "still",
-        "generated": true
-      },
       {
         "src": "/virtualstore-products/barena-fondaco-jacket-notte/01-model.jpg",
         "type": "model"
@@ -1002,7 +942,7 @@
         "type": "model"
       }
     ],
-    "still": "generated"
+    "still": null
   },
   {
     "id": "barena-refuso-jacket-merlot",
@@ -1046,11 +986,6 @@
     "style_code": "GIU5640 0528",
     "images": [
       {
-        "src": "/virtualstore-products/barena-zener-jacket-fasser/00-still.jpg",
-        "type": "still",
-        "generated": true
-      },
-      {
         "src": "/virtualstore-products/barena-zener-jacket-fasser/01-model.jpg",
         "type": "model"
       },
@@ -1075,7 +1010,7 @@
         "type": "model"
       }
     ],
-    "still": "generated"
+    "still": null
   },
   {
     "id": "barena-pevaron-knit-polo-nero",
@@ -1124,11 +1059,6 @@
     "style_code": "KNU5682 0429",
     "images": [
       {
-        "src": "/virtualstore-products/barena-marco-knit-polo-merlot/00-still.jpg",
-        "type": "still",
-        "generated": true
-      },
-      {
         "src": "/virtualstore-products/barena-marco-knit-polo-merlot/01-model.jpg",
         "type": "model"
       },
@@ -1153,7 +1083,7 @@
         "type": "model"
       }
     ],
-    "still": "generated"
+    "still": null
   },
   {
     "id": "barena-marco-knit-polo-nero",
@@ -1162,11 +1092,6 @@
     "color": "Nero",
     "style_code": "KNU5682 0429",
     "images": [
-      {
-        "src": "/virtualstore-products/barena-marco-knit-polo-nero/00-still.jpg",
-        "type": "still",
-        "generated": true
-      },
       {
         "src": "/virtualstore-products/barena-marco-knit-polo-nero/01-model.jpg",
         "type": "model"
@@ -1192,7 +1117,7 @@
         "type": "model"
       }
     ],
-    "still": "generated"
+    "still": null
   },
   {
     "id": "barena-tablo-overshirt-fasser",
@@ -1201,11 +1126,6 @@
     "color": "Fasser",
     "style_code": "OSU5628 0528",
     "images": [
-      {
-        "src": "/virtualstore-products/barena-tablo-overshirt-fasser/00-still.jpg",
-        "type": "still",
-        "generated": true
-      },
       {
         "src": "/virtualstore-products/barena-tablo-overshirt-fasser/01-model.jpg",
         "type": "model"
@@ -1231,7 +1151,7 @@
         "type": "model"
       }
     ],
-    "still": "generated"
+    "still": null
   },
   {
     "id": "barena-zan-overshirt-avio",
@@ -1240,11 +1160,6 @@
     "color": "Avio",
     "style_code": "OSU5629 2814",
     "images": [
-      {
-        "src": "/virtualstore-products/barena-zan-overshirt-avio/00-still.jpg",
-        "type": "still",
-        "generated": true
-      },
       {
         "src": "/virtualstore-products/barena-zan-overshirt-avio/01-model.jpg",
         "type": "model"
@@ -1270,7 +1185,7 @@
         "type": "model"
       }
     ],
-    "still": "generated"
+    "still": null
   },
   {
     "id": "barena-bativoga-trousers-nero",
@@ -1358,11 +1273,6 @@
     "style_code": "PAU5654 2635",
     "images": [
       {
-        "src": "/virtualstore-products/barena-cordier-trousers-beige/00-still.jpg",
-        "type": "still",
-        "generated": true
-      },
-      {
         "src": "/virtualstore-products/barena-cordier-trousers-beige/01-model.jpg",
         "type": "model"
       },
@@ -1387,7 +1297,7 @@
         "type": "model"
       }
     ],
-    "still": "generated"
+    "still": null
   },
   {
     "id": "barena-cordier-trousers-merlot",
@@ -1396,11 +1306,6 @@
     "color": "Merlot",
     "style_code": "PAU5654 2820",
     "images": [
-      {
-        "src": "/virtualstore-products/barena-cordier-trousers-merlot/00-still.jpg",
-        "type": "still",
-        "generated": true
-      },
       {
         "src": "/virtualstore-products/barena-cordier-trousers-merlot/01-model.jpg",
         "type": "model"
@@ -1426,7 +1331,7 @@
         "type": "model"
       }
     ],
-    "still": "generated"
+    "still": null
   },
   {
     "id": "blue-blue-japan-double-cloth-sashiko-trucker-jacket-dark-black",
