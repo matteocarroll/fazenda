@@ -2,19 +2,78 @@
 
 import { useEffect, useState } from "react"
 
+import WalkingBuffalo from "@/components/WalkingBuffalo"
+
 const TOBACCO = "#43150E"
 const LIMESTONE = "#F7E5C0"
 const NAPLES = "#E0C991"
 
 type Drinker = { id: string; name: string; beer: number; wine: number }
 
+/* Thursday Oct 8, 7pm New York (EDT, UTC−4). Until then the page is a
+   countdown; at 7pm it turns into the leaderboard on its own. */
+const STARTS_AT = Date.parse("2026-10-08T19:00:00-04:00")
+
+function Countdown({ now }: { now: number }) {
+  const left = Math.max(0, Math.floor((STARTS_AT - now) / 1000))
+  const parts: [number, string][] = [
+    [Math.floor(left / 86400), "Days"],
+    [Math.floor((left % 86400) / 3600), "Hours"],
+    [Math.floor((left % 3600) / 60), "Min"],
+    [left % 60, "Sec"],
+  ]
+  return (
+    <div className="mt-10 flex flex-col items-center">
+      {/* The artwork is crimson; recolor it Naples so it reads on tobacco. */}
+      <svg width="0" height="0" aria-hidden className="absolute">
+        <filter id="bynight-tint">
+          <feFlood floodColor={NAPLES} />
+          <feComposite in2="SourceAlpha" operator="in" />
+        </filter>
+      </svg>
+      <WalkingBuffalo className="w-[240px] sm:w-[340px] lg:w-[480px] max-w-full" style={{ filter: "url(#bynight-tint)" }} />
+
+      <p className="mt-8" style={{ fontSize: "clamp(0.75rem, 1.6vw, 1.25rem)", letterSpacing: "0.16em" }}>
+        Thursday, October 8 · 7 PM
+      </p>
+
+      <div className="mt-6 flex gap-5 sm:gap-10">
+        {parts.map(([n, label]) => (
+          <div key={label} className="flex flex-col items-center">
+            <span className="tabular-nums" style={{ fontSize: "clamp(2rem, 7vw, 5.5rem)", lineHeight: 1, color: NAPLES }}>
+              {String(n).padStart(2, "0")}
+            </span>
+            <span className="mt-2" style={{ fontSize: "clamp(0.5625rem, 1.1vw, 0.875rem)", letterSpacing: "0.16em", opacity: 0.6 }}>
+              {label}
+            </span>
+          </div>
+        ))}
+      </div>
+
+      <p className="mt-10" style={{ fontSize: "clamp(0.625rem, 1.2vw, 0.9375rem)", letterSpacing: "0.14em", opacity: 0.6 }}>
+        177 Mott Street, New York
+      </p>
+    </div>
+  )
+}
+
 /* Rows are absolutely placed (by --row, which grows with the screen) so
    overtakes slide instead of jumping. */
 
 export default function ByNight() {
   const [people, setPeople] = useState<Drinker[] | null>(null)
+  /* Unknown until mounted, so the server render and first client render match. */
+  const [now, setNow] = useState<number | null>(null)
+  const live = now !== null && now >= STARTS_AT
 
   useEffect(() => {
+    setNow(Date.now())
+    const t = setInterval(() => setNow(Date.now()), 1000)
+    return () => clearInterval(t)
+  }, [])
+
+  useEffect(() => {
+    if (!live) return
     let alive = true
     const load = async () => {
       try {
@@ -35,7 +94,7 @@ export default function ByNight() {
       clearInterval(t)
       document.removeEventListener("visibilitychange", poll)
     }
-  }, [])
+  }, [live])
 
   const ranked = (people ?? [])
     .map((p) => ({ ...p, total: p.beer + p.wine }))
@@ -59,12 +118,16 @@ export default function ByNight() {
           <h1 style={{ fontSize: "clamp(1.5rem, 5vw, 4rem)", letterSpacing: "0.12em", color: NAPLES }}>
             Fazenda By Night
           </h1>
-          <p className="mt-2" style={{ fontSize: "clamp(0.625rem, 1.4vw, 1.125rem)", letterSpacing: "0.16em", opacity: 0.6 }}>
-            Most drinks tonight · Beer + Wine
-          </p>
+          {live && (
+            <p className="mt-2" style={{ fontSize: "clamp(0.625rem, 1.4vw, 1.125rem)", letterSpacing: "0.16em", opacity: 0.6 }}>
+              Most drinks tonight · Beer + Wine
+            </p>
+          )}
         </header>
 
-        {ranked.length > 0 && (
+        {now !== null && !live && <Countdown now={now} />}
+
+        {live && ranked.length > 0 && (
           <>
             <div
               className="mt-10 flex items-center gap-3 pb-2"
@@ -121,9 +184,11 @@ export default function ByNight() {
           </>
         )}
 
-        <footer className="mt-10 text-center" style={{ fontSize: "0.625rem", letterSpacing: "0.14em", opacity: 0.5 }}>
-          Live
-        </footer>
+        {live && (
+          <footer className="mt-10 text-center" style={{ fontSize: "0.625rem", letterSpacing: "0.14em", opacity: 0.5 }}>
+            Live
+          </footer>
+        )}
       </div>
     </main>
   )
