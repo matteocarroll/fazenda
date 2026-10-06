@@ -53,6 +53,17 @@ function Countdown({ now }: { now: number }) {
       <p className="mt-10" style={{ fontSize: "clamp(0.625rem, 1.2vw, 0.9375rem)", letterSpacing: "0.14em", opacity: 0.6 }}>
         177 Mott Street, New York
       </p>
+
+      <p className="mt-6" style={{ fontSize: "clamp(0.6875rem, 1.3vw, 1rem)", letterSpacing: "0.14em" }}>
+        Haven&apos;t RSVP&apos;d yet?{" "}
+        <a
+          href="/events"
+          className="underline underline-offset-4 hover:opacity-70 transition-opacity"
+          style={{ color: NAPLES }}
+        >
+          RSVP here
+        </a>
+      </p>
     </div>
   )
 }
