@@ -1254,5 +1254,70 @@
         "type": "model"
       }
     ]
+  },
+  {
+    "id": "blue-blue-japan-double-cloth-sashiko-trucker-jacket-dark-black",
+    "brand": "Blue Blue Japan",
+    "name": "Double Cloth Sashiko Trucker Jacket",
+    "color": "Dark Black",
+    "style_code": "J7079",
+    "images": [
+      {
+        "src": "/virtualstore-products/blue-blue-japan-double-cloth-sashiko-trucker-jacket-dark-black/01-product.jpg",
+        "type": "product"
+      }
+    ]
+  },
+  {
+    "id": "blue-blue-japan-kasezome-sashiko-cargo-pants-indigo",
+    "brand": "Blue Blue Japan",
+    "name": "Kasezome Sashiko Cargo Pants",
+    "color": "Indigo",
+    "style_code": "J7206",
+    "images": [
+      {
+        "src": "/virtualstore-products/blue-blue-japan-kasezome-sashiko-cargo-pants-indigo/01-product.jpg",
+        "type": "product"
+      }
+    ]
+  },
+  {
+    "id": "blue-blue-japan-yak-cashmere-crew-neck-pullover-oatmeal",
+    "brand": "Blue Blue Japan",
+    "name": "Yak Cashmere Crew Neck Pullover",
+    "color": "Oatmeal",
+    "style_code": "J7321",
+    "images": [
+      {
+        "src": "/virtualstore-products/blue-blue-japan-yak-cashmere-crew-neck-pullover-oatmeal/01-product.jpg",
+        "type": "product"
+      }
+    ]
+  },
+  {
+    "id": "blue-blue-japan-yak-cashmere-crew-neck-pullover-dark-navy",
+    "brand": "Blue Blue Japan",
+    "name": "Yak Cashmere Crew Neck Pullover",
+    "color": "Dark Navy",
+    "style_code": "J7321",
+    "images": [
+      {
+        "src": "/virtualstore-products/blue-blue-japan-yak-cashmere-crew-neck-pullover-dark-navy/01-product.jpg",
+        "type": "product"
+      }
+    ]
+  },
+  {
+    "id": "blue-blue-japan-yak-cashmere-haori-cardigan-dark-navy",
+    "brand": "Blue Blue Japan",
+    "name": "Yak Cashmere Haori Cardigan",
+    "color": "Dark Navy",
+    "style_code": "J7322",
+    "images": [
+      {
+        "src": "/virtualstore-products/blue-blue-japan-yak-cashmere-haori-cardigan-dark-navy/01-product.jpg",
+        "type": "product"
+      }
+    ]
   }
 ]
