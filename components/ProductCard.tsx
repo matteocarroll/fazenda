@@ -9,7 +9,16 @@ export type Product = {
   name: string
   color: string
   style_code?: string
-  images: { src: string; type: string }[]
+  still?: string | null
+  images: { src: string; type: string; generated?: boolean }[]
+}
+
+// The still is the thumbnail and the first slide. A handful of products have no
+// still yet, so fall back to whatever image comes first.
+function orderImages(images: Product["images"]) {
+  const still = images.find((image) => image.type === "still")
+  if (!still) return images
+  return [still, ...images.filter((image) => image !== still)]
 }
 
 const WHATSAPP = "19298408626"
@@ -17,7 +26,8 @@ const WHATSAPP = "19298408626"
 export default function ProductCard({ product }: { product: Product }) {
   const scroller = useRef<HTMLDivElement>(null)
   const [index, setIndex] = useState(0)
-  const count = product.images.length
+  const images = orderImages(product.images)
+  const count = images.length
 
   const goTo = (i: number) => {
     const el = scroller.current
@@ -44,7 +54,7 @@ export default function ProductCard({ product }: { product: Product }) {
           onScroll={onScroll}
           className="flex w-full snap-x snap-mandatory overflow-x-auto scroll-smooth [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
         >
-          {product.images.map((image, i) => (
+          {images.map((image, i) => (
             <div key={image.src} className="relative aspect-[2/3] w-full flex-none snap-center">
               <Image
                 src={image.src}
@@ -83,7 +93,7 @@ export default function ProductCard({ product }: { product: Product }) {
 
       {count > 1 && (
         <div className="mt-2 flex justify-center gap-1.5">
-          {product.images.map((image, i) => (
+          {images.map((image, i) => (
             <button
               key={image.src}
               type="button"

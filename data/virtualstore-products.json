@@ -6,8 +6,9 @@
     "color": "Light Blue",
     "images": [
       {
-        "src": "/virtualstore-products/kota-gushiken-bleach-dye-cable-knit-light-blue/01-product.jpg",
-        "type": "product"
+        "src": "/virtualstore-products/kota-gushiken-bleach-dye-cable-knit-light-blue/00-still.jpg",
+        "type": "still",
+        "generated": false
       },
       {
         "src": "/virtualstore-products/kota-gushiken-bleach-dye-cable-knit-light-blue/02-product.jpg",
@@ -25,7 +26,8 @@
         "src": "/virtualstore-products/kota-gushiken-bleach-dye-cable-knit-light-blue/05-styled.jpg",
         "type": "styled"
       }
-    ]
+    ],
+    "still": "original"
   },
   {
     "id": "kota-gushiken-pyramid-grid-cable-cardigan-pink",
@@ -34,8 +36,9 @@
     "color": "Pink",
     "images": [
       {
-        "src": "/virtualstore-products/kota-gushiken-pyramid-grid-cable-cardigan-pink/01-product.jpg",
-        "type": "product"
+        "src": "/virtualstore-products/kota-gushiken-pyramid-grid-cable-cardigan-pink/00-still.jpg",
+        "type": "still",
+        "generated": false
       },
       {
         "src": "/virtualstore-products/kota-gushiken-pyramid-grid-cable-cardigan-pink/02-styled.jpg",
@@ -45,7 +48,8 @@
         "src": "/virtualstore-products/kota-gushiken-pyramid-grid-cable-cardigan-pink/03-styled.jpg",
         "type": "styled"
       }
-    ]
+    ],
+    "still": "original"
   },
   {
     "id": "kota-gushiken-pyramid-grid-cable-cardigan-brown",
@@ -54,8 +58,9 @@
     "color": "Brown",
     "images": [
       {
-        "src": "/virtualstore-products/kota-gushiken-pyramid-grid-cable-cardigan-brown/01-product.jpg",
-        "type": "product"
+        "src": "/virtualstore-products/kota-gushiken-pyramid-grid-cable-cardigan-brown/00-still.jpg",
+        "type": "still",
+        "generated": false
       },
       {
         "src": "/virtualstore-products/kota-gushiken-pyramid-grid-cable-cardigan-brown/02-styled.jpg",
@@ -65,7 +70,8 @@
         "src": "/virtualstore-products/kota-gushiken-pyramid-grid-cable-cardigan-brown/03-styled.jpg",
         "type": "styled"
       }
-    ]
+    ],
+    "still": "original"
   },
   {
     "id": "kota-gushiken-jamieson-s-meet-mohair-light-gray",
@@ -74,8 +80,9 @@
     "color": "Light Gray",
     "images": [
       {
-        "src": "/virtualstore-products/kota-gushiken-jamieson-s-meet-mohair-light-gray/01-product.jpg",
-        "type": "product"
+        "src": "/virtualstore-products/kota-gushiken-jamieson-s-meet-mohair-light-gray/00-still.jpg",
+        "type": "still",
+        "generated": false
       },
       {
         "src": "/virtualstore-products/kota-gushiken-jamieson-s-meet-mohair-light-gray/02-product.jpg",
@@ -93,7 +100,8 @@
         "src": "/virtualstore-products/kota-gushiken-jamieson-s-meet-mohair-light-gray/05-styled.jpg",
         "type": "styled"
       }
-    ]
+    ],
+    "still": "original"
   },
   {
     "id": "kota-gushiken-jamieson-s-meet-mohair-beige",
@@ -102,8 +110,9 @@
     "color": "Beige",
     "images": [
       {
-        "src": "/virtualstore-products/kota-gushiken-jamieson-s-meet-mohair-beige/01-product.jpg",
-        "type": "product"
+        "src": "/virtualstore-products/kota-gushiken-jamieson-s-meet-mohair-beige/00-still.jpg",
+        "type": "still",
+        "generated": false
       },
       {
         "src": "/virtualstore-products/kota-gushiken-jamieson-s-meet-mohair-beige/02-product.jpg",
@@ -121,7 +130,8 @@
         "src": "/virtualstore-products/kota-gushiken-jamieson-s-meet-mohair-beige/05-styled.jpg",
         "type": "styled"
       }
-    ]
+    ],
+    "still": "original"
   },
   {
     "id": "labo-art-basica-ls-cocache-atlantic",
@@ -130,10 +140,12 @@
     "color": "Atlantic",
     "images": [
       {
-        "src": "/virtualstore-products/labo-art-basica-ls-cocache-atlantic/01-product.jpg",
-        "type": "product"
+        "src": "/virtualstore-products/labo-art-basica-ls-cocache-atlantic/00-still.jpg",
+        "type": "still",
+        "generated": false
       }
-    ]
+    ],
+    "still": "original"
   },
   {
     "id": "labo-art-camicia-mucca-grace-atlantic",
@@ -142,10 +154,12 @@
     "color": "Atlantic",
     "images": [
       {
-        "src": "/virtualstore-products/labo-art-camicia-mucca-grace-atlantic/01-product.jpg",
-        "type": "product"
+        "src": "/virtualstore-products/labo-art-camicia-mucca-grace-atlantic/00-still.jpg",
+        "type": "still",
+        "generated": false
       }
-    ]
+    ],
+    "still": "original"
   },
   {
     "id": "labo-art-giacca-kenzia-feltro-ferro",
@@ -154,10 +168,12 @@
     "color": "Ferro",
     "images": [
       {
-        "src": "/virtualstore-products/labo-art-giacca-kenzia-feltro-ferro/01-product.jpg",
-        "type": "product"
+        "src": "/virtualstore-products/labo-art-giacca-kenzia-feltro-ferro/00-still.jpg",
+        "type": "still",
+        "generated": false
       }
-    ]
+    ],
+    "still": "original"
   },
   {
     "id": "labo-art-panta-brace-grace-atlantic",
@@ -166,10 +182,12 @@
     "color": "Atlantic",
     "images": [
       {
-        "src": "/virtualstore-products/labo-art-panta-brace-grace-atlantic/01-product.jpg",
-        "type": "product"
+        "src": "/virtualstore-products/labo-art-panta-brace-grace-atlantic/00-still.jpg",
+        "type": "still",
+        "generated": false
       }
-    ]
+    ],
+    "still": "original"
   },
   {
     "id": "purple-mountain-observatory-dotair-dase-jacket-brown",
@@ -178,8 +196,9 @@
     "color": "Brown",
     "images": [
       {
-        "src": "/virtualstore-products/purple-mountain-observatory-dotair-dase-jacket-brown/01-product.jpg",
-        "type": "product"
+        "src": "/virtualstore-products/purple-mountain-observatory-dotair-dase-jacket-brown/00-still.jpg",
+        "type": "still",
+        "generated": false
       },
       {
         "src": "/virtualstore-products/purple-mountain-observatory-dotair-dase-jacket-brown/02-product.jpg",
@@ -193,7 +212,8 @@
         "src": "/virtualstore-products/purple-mountain-observatory-dotair-dase-jacket-brown/04-product.jpg",
         "type": "product"
       }
-    ]
+    ],
+    "still": "original"
   },
   {
     "id": "purple-mountain-observatory-stinger-jacket-olive",
@@ -202,8 +222,9 @@
     "color": "Olive",
     "images": [
       {
-        "src": "/virtualstore-products/purple-mountain-observatory-stinger-jacket-olive/01-product.jpg",
-        "type": "product"
+        "src": "/virtualstore-products/purple-mountain-observatory-stinger-jacket-olive/00-still.jpg",
+        "type": "still",
+        "generated": false
       },
       {
         "src": "/virtualstore-products/purple-mountain-observatory-stinger-jacket-olive/02-product.jpg",
@@ -213,7 +234,8 @@
         "src": "/virtualstore-products/purple-mountain-observatory-stinger-jacket-olive/03-model.jpg",
         "type": "model"
       }
-    ]
+    ],
+    "still": "original"
   },
   {
     "id": "purple-mountain-observatory-waves-puffer-brown",
@@ -222,14 +244,16 @@
     "color": "Brown",
     "images": [
       {
-        "src": "/virtualstore-products/purple-mountain-observatory-waves-puffer-brown/01-product.jpg",
-        "type": "product"
+        "src": "/virtualstore-products/purple-mountain-observatory-waves-puffer-brown/00-still.jpg",
+        "type": "still",
+        "generated": false
       },
       {
         "src": "/virtualstore-products/purple-mountain-observatory-waves-puffer-brown/02-product.jpg",
         "type": "product"
       }
-    ]
+    ],
+    "still": "original"
   },
   {
     "id": "purple-mountain-observatory-shield-puffer-chocolate",
@@ -238,8 +262,9 @@
     "color": "Chocolate",
     "images": [
       {
-        "src": "/virtualstore-products/purple-mountain-observatory-shield-puffer-chocolate/01-product.jpg",
-        "type": "product"
+        "src": "/virtualstore-products/purple-mountain-observatory-shield-puffer-chocolate/00-still.jpg",
+        "type": "still",
+        "generated": false
       },
       {
         "src": "/virtualstore-products/purple-mountain-observatory-shield-puffer-chocolate/02-product.jpg",
@@ -265,7 +290,8 @@
         "src": "/virtualstore-products/purple-mountain-observatory-shield-puffer-chocolate/07-product.jpg",
         "type": "product"
       }
-    ]
+    ],
+    "still": "original"
   },
   {
     "id": "purple-mountain-observatory-shield-puffer-olive",
@@ -274,8 +300,9 @@
     "color": "Olive",
     "images": [
       {
-        "src": "/virtualstore-products/purple-mountain-observatory-shield-puffer-olive/01-product.jpg",
-        "type": "product"
+        "src": "/virtualstore-products/purple-mountain-observatory-shield-puffer-olive/00-still.jpg",
+        "type": "still",
+        "generated": false
       },
       {
         "src": "/virtualstore-products/purple-mountain-observatory-shield-puffer-olive/02-product.jpg",
@@ -305,7 +332,8 @@
         "src": "/virtualstore-products/purple-mountain-observatory-shield-puffer-olive/08-model.jpg",
         "type": "model"
       }
-    ]
+    ],
+    "still": "original"
   },
   {
     "id": "purple-mountain-observatory-polartec-alpha-pullover-black",
@@ -314,14 +342,16 @@
     "color": "Black",
     "images": [
       {
-        "src": "/virtualstore-products/purple-mountain-observatory-polartec-alpha-pullover-black/01-product.jpg",
-        "type": "product"
+        "src": "/virtualstore-products/purple-mountain-observatory-polartec-alpha-pullover-black/00-still.jpg",
+        "type": "still",
+        "generated": false
       },
       {
         "src": "/virtualstore-products/purple-mountain-observatory-polartec-alpha-pullover-black/02-product.jpg",
         "type": "product"
       }
-    ]
+    ],
+    "still": "original"
   },
   {
     "id": "purple-mountain-observatory-axis-pant-black-brown",
@@ -330,8 +360,9 @@
     "color": "Black-Brown",
     "images": [
       {
-        "src": "/virtualstore-products/purple-mountain-observatory-axis-pant-black-brown/01-product.jpg",
-        "type": "product"
+        "src": "/virtualstore-products/purple-mountain-observatory-axis-pant-black-brown/00-still.jpg",
+        "type": "still",
+        "generated": false
       },
       {
         "src": "/virtualstore-products/purple-mountain-observatory-axis-pant-black-brown/02-product.jpg",
@@ -345,7 +376,8 @@
         "src": "/virtualstore-products/purple-mountain-observatory-axis-pant-black-brown/04-product.jpg",
         "type": "product"
       }
-    ]
+    ],
+    "still": "original"
   },
   {
     "id": "purple-mountain-observatory-deluge-pant-ripstop-black",
@@ -354,14 +386,16 @@
     "color": "Black",
     "images": [
       {
-        "src": "/virtualstore-products/purple-mountain-observatory-deluge-pant-ripstop-black/01-product.jpg",
-        "type": "product"
+        "src": "/virtualstore-products/purple-mountain-observatory-deluge-pant-ripstop-black/00-still.jpg",
+        "type": "still",
+        "generated": false
       },
       {
         "src": "/virtualstore-products/purple-mountain-observatory-deluge-pant-ripstop-black/02-product.jpg",
         "type": "product"
       }
-    ]
+    ],
+    "still": "original"
   },
   {
     "id": "purple-mountain-observatory-tech-air-cap-black",
@@ -370,14 +404,16 @@
     "color": "Black",
     "images": [
       {
-        "src": "/virtualstore-products/purple-mountain-observatory-tech-air-cap-black/01-product.jpg",
-        "type": "product"
+        "src": "/virtualstore-products/purple-mountain-observatory-tech-air-cap-black/00-still.jpg",
+        "type": "still",
+        "generated": false
       },
       {
         "src": "/virtualstore-products/purple-mountain-observatory-tech-air-cap-black/02-product.jpg",
         "type": "product"
       }
-    ]
+    ],
+    "still": "original"
   },
   {
     "id": "purple-mountain-observatory-ripstop-tech-air-cap-olive",
@@ -386,14 +422,16 @@
     "color": "Olive",
     "images": [
       {
-        "src": "/virtualstore-products/purple-mountain-observatory-ripstop-tech-air-cap-olive/01-product.jpg",
-        "type": "product"
+        "src": "/virtualstore-products/purple-mountain-observatory-ripstop-tech-air-cap-olive/00-still.jpg",
+        "type": "still",
+        "generated": false
       },
       {
         "src": "/virtualstore-products/purple-mountain-observatory-ripstop-tech-air-cap-olive/02-product.jpg",
         "type": "product"
       }
-    ]
+    ],
+    "still": "original"
   },
   {
     "id": "misci-bone-matria",
@@ -402,8 +440,9 @@
     "color": "",
     "images": [
       {
-        "src": "/virtualstore-products/misci-bone-matria/01-product.jpg",
-        "type": "product"
+        "src": "/virtualstore-products/misci-bone-matria/00-still.jpg",
+        "type": "still",
+        "generated": false
       },
       {
         "src": "/virtualstore-products/misci-bone-matria/02-product.jpg",
@@ -421,7 +460,8 @@
         "src": "/virtualstore-products/misci-bone-matria/05-product.jpg",
         "type": "product"
       }
-    ]
+    ],
+    "still": "original"
   },
   {
     "id": "misci-calca-jose-linho-marrom",
@@ -430,6 +470,11 @@
     "color": "",
     "images": [
       {
+        "src": "/virtualstore-products/misci-calca-jose-linho-marrom/00-still.jpg",
+        "type": "still",
+        "generated": true
+      },
+      {
         "src": "/virtualstore-products/misci-calca-jose-linho-marrom/01-product.jpg",
         "type": "product"
       },
@@ -437,7 +482,8 @@
         "src": "/virtualstore-products/misci-calca-jose-linho-marrom/02-product.jpg",
         "type": "product"
       }
-    ]
+    ],
+    "still": "generated"
   },
   {
     "id": "misci-camisa-manga-curta-viscolinho-verde-militar",
@@ -446,6 +492,11 @@
     "color": "",
     "images": [
       {
+        "src": "/virtualstore-products/misci-camisa-manga-curta-viscolinho-verde-militar/00-still.jpg",
+        "type": "still",
+        "generated": true
+      },
+      {
         "src": "/virtualstore-products/misci-camisa-manga-curta-viscolinho-verde-militar/01-product.jpg",
         "type": "product"
       },
@@ -453,7 +504,8 @@
         "src": "/virtualstore-products/misci-camisa-manga-curta-viscolinho-verde-militar/02-product.jpg",
         "type": "product"
       }
-    ]
+    ],
+    "still": "generated"
   },
   {
     "id": "misci-camiseta-bondinho",
@@ -461,6 +513,11 @@
     "name": "Camiseta Bondinho",
     "color": "",
     "images": [
+      {
+        "src": "/virtualstore-products/misci-camiseta-bondinho/00-still.jpg",
+        "type": "still",
+        "generated": true
+      },
       {
         "src": "/virtualstore-products/misci-camiseta-bondinho/01-product.jpg",
         "type": "product"
@@ -477,7 +534,8 @@
         "src": "/virtualstore-products/misci-camiseta-bondinho/04-product.jpg",
         "type": "product"
       }
-    ]
+    ],
+    "still": "generated"
   },
   {
     "id": "misci-camiseta-caipirinha",
@@ -485,6 +543,11 @@
     "name": "Camiseta Caipirinha",
     "color": "",
     "images": [
+      {
+        "src": "/virtualstore-products/misci-camiseta-caipirinha/00-still.jpg",
+        "type": "still",
+        "generated": true
+      },
       {
         "src": "/virtualstore-products/misci-camiseta-caipirinha/01-product.jpg",
         "type": "product"
@@ -497,7 +560,8 @@
         "src": "/virtualstore-products/misci-camiseta-caipirinha/03-product.jpg",
         "type": "product"
       }
-    ]
+    ],
+    "still": "generated"
   },
   {
     "id": "misci-camiseta-jogo-do-bicho",
@@ -506,14 +570,16 @@
     "color": "",
     "images": [
       {
-        "src": "/virtualstore-products/misci-camiseta-jogo-do-bicho/01-product.jpg",
-        "type": "product"
+        "src": "/virtualstore-products/misci-camiseta-jogo-do-bicho/00-still.jpg",
+        "type": "still",
+        "generated": false
       },
       {
         "src": "/virtualstore-products/misci-camiseta-jogo-do-bicho/02-product.jpg",
         "type": "product"
       }
-    ]
+    ],
+    "still": "original"
   },
   {
     "id": "misci-camiseta-manga-curta-viscolinho-azul",
@@ -522,8 +588,9 @@
     "color": "",
     "images": [
       {
-        "src": "/virtualstore-products/misci-camiseta-manga-curta-viscolinho-azul/01-product.jpg",
-        "type": "product"
+        "src": "/virtualstore-products/misci-camiseta-manga-curta-viscolinho-azul/00-still.jpg",
+        "type": "still",
+        "generated": false
       },
       {
         "src": "/virtualstore-products/misci-camiseta-manga-curta-viscolinho-azul/02-product.jpg",
@@ -533,7 +600,8 @@
         "src": "/virtualstore-products/misci-camiseta-manga-curta-viscolinho-azul/03-product.jpg",
         "type": "product"
       }
-    ]
+    ],
+    "still": "original"
   },
   {
     "id": "misci-camiseta-maracana",
@@ -541,6 +609,11 @@
     "name": "Camiseta Maracanã",
     "color": "",
     "images": [
+      {
+        "src": "/virtualstore-products/misci-camiseta-maracana/00-still.jpg",
+        "type": "still",
+        "generated": true
+      },
       {
         "src": "/virtualstore-products/misci-camiseta-maracana/01-product.jpg",
         "type": "product"
@@ -553,7 +626,8 @@
         "src": "/virtualstore-products/misci-camiseta-maracana/03-product.jpg",
         "type": "product"
       }
-    ]
+    ],
+    "still": "generated"
   },
   {
     "id": "misci-camiseta-milho-verde",
@@ -577,7 +651,8 @@
         "src": "/virtualstore-products/misci-camiseta-milho-verde/04-product.jpg",
         "type": "product"
       }
-    ]
+    ],
+    "still": null
   },
   {
     "id": "misci-camiseta-mureta",
@@ -585,6 +660,11 @@
     "name": "Camiseta Mureta",
     "color": "",
     "images": [
+      {
+        "src": "/virtualstore-products/misci-camiseta-mureta/00-still.jpg",
+        "type": "still",
+        "generated": false
+      },
       {
         "src": "/virtualstore-products/misci-camiseta-mureta/01-product.jpg",
         "type": "product"
@@ -598,10 +678,6 @@
         "type": "product"
       },
       {
-        "src": "/virtualstore-products/misci-camiseta-mureta/04-product.jpg",
-        "type": "product"
-      },
-      {
         "src": "/virtualstore-products/misci-camiseta-mureta/05-product.jpg",
         "type": "product"
       },
@@ -609,7 +685,8 @@
         "src": "/virtualstore-products/misci-camiseta-mureta/06-product.jpg",
         "type": "product"
       }
-    ]
+    ],
+    "still": "original"
   },
   {
     "id": "misci-camiseta-volei",
@@ -617,6 +694,11 @@
     "name": "Camiseta Volei",
     "color": "",
     "images": [
+      {
+        "src": "/virtualstore-products/misci-camiseta-volei/00-still.jpg",
+        "type": "still",
+        "generated": true
+      },
       {
         "src": "/virtualstore-products/misci-camiseta-volei/01-product.jpg",
         "type": "product"
@@ -629,7 +711,8 @@
         "src": "/virtualstore-products/misci-camiseta-volei/03-product.jpg",
         "type": "product"
       }
-    ]
+    ],
+    "still": "generated"
   },
   {
     "id": "misci-jaqueta-horizonte",
@@ -638,15 +721,16 @@
     "color": "",
     "images": [
       {
+        "src": "/virtualstore-products/misci-jaqueta-horizonte/00-still.jpg",
+        "type": "still",
+        "generated": false
+      },
+      {
         "src": "/virtualstore-products/misci-jaqueta-horizonte/01-product.jpg",
         "type": "product"
       },
       {
         "src": "/virtualstore-products/misci-jaqueta-horizonte/02-product.jpg",
-        "type": "product"
-      },
-      {
-        "src": "/virtualstore-products/misci-jaqueta-horizonte/03-product.jpg",
         "type": "product"
       },
       {
@@ -657,7 +741,8 @@
         "src": "/virtualstore-products/misci-jaqueta-horizonte/05-product.jpg",
         "type": "product"
       }
-    ]
+    ],
+    "still": "original"
   },
   {
     "id": "misci-jaqueta-irre-verde",
@@ -665,6 +750,11 @@
     "name": "Jaqueta Irré Verde",
     "color": "",
     "images": [
+      {
+        "src": "/virtualstore-products/misci-jaqueta-irre-verde/00-still.jpg",
+        "type": "still",
+        "generated": false
+      },
       {
         "src": "/virtualstore-products/misci-jaqueta-irre-verde/01-product.jpg",
         "type": "product"
@@ -682,10 +772,6 @@
         "type": "product"
       },
       {
-        "src": "/virtualstore-products/misci-jaqueta-irre-verde/05-product.jpg",
-        "type": "product"
-      },
-      {
         "src": "/virtualstore-products/misci-jaqueta-irre-verde/06-product.jpg",
         "type": "product"
       },
@@ -693,7 +779,8 @@
         "src": "/virtualstore-products/misci-jaqueta-irre-verde/07-product.jpg",
         "type": "product"
       }
-    ]
+    ],
+    "still": "original"
   },
   {
     "id": "misci-polo-tricot-canelada-cafe",
@@ -702,6 +789,11 @@
     "color": "",
     "images": [
       {
+        "src": "/virtualstore-products/misci-polo-tricot-canelada-cafe/00-still.jpg",
+        "type": "still",
+        "generated": true
+      },
+      {
         "src": "/virtualstore-products/misci-polo-tricot-canelada-cafe/01-product.jpg",
         "type": "product"
       },
@@ -709,7 +801,8 @@
         "src": "/virtualstore-products/misci-polo-tricot-canelada-cafe/02-product.jpg",
         "type": "product"
       }
-    ]
+    ],
+    "still": "generated"
   },
   {
     "id": "misci-polo-tricot-ponto-calado",
@@ -717,6 +810,11 @@
     "name": "Polo Tricot Ponto Calado",
     "color": "",
     "images": [
+      {
+        "src": "/virtualstore-products/misci-polo-tricot-ponto-calado/00-still.jpg",
+        "type": "still",
+        "generated": true
+      },
       {
         "src": "/virtualstore-products/misci-polo-tricot-ponto-calado/01-product.jpg",
         "type": "product"
@@ -729,7 +827,8 @@
         "src": "/virtualstore-products/misci-polo-tricot-ponto-calado/03-product.jpg",
         "type": "product"
       }
-    ]
+    ],
+    "still": "generated"
   },
   {
     "id": "barena-gia-knit-scarf-ecru",
@@ -754,7 +853,8 @@
         "src": "/virtualstore-products/barena-gia-knit-scarf-ecru/04-model.jpg",
         "type": "model"
       }
-    ]
+    ],
+    "still": null
   },
   {
     "id": "barena-faziol-shirt-navy",
@@ -763,6 +863,11 @@
     "color": "Navy",
     "style_code": "CAU5665 2817",
     "images": [
+      {
+        "src": "/virtualstore-products/barena-faziol-shirt-navy/00-still.jpg",
+        "type": "still",
+        "generated": true
+      },
       {
         "src": "/virtualstore-products/barena-faziol-shirt-navy/01-model.jpg",
         "type": "model"
@@ -787,7 +892,8 @@
         "src": "/virtualstore-products/barena-faziol-shirt-navy/06-model.jpg",
         "type": "model"
       }
-    ]
+    ],
+    "still": "generated"
   },
   {
     "id": "barena-genga-shirt-cielo",
@@ -796,6 +902,11 @@
     "color": "Cielo",
     "style_code": "CAU5668 2819",
     "images": [
+      {
+        "src": "/virtualstore-products/barena-genga-shirt-cielo/00-still.jpg",
+        "type": "still",
+        "generated": true
+      },
       {
         "src": "/virtualstore-products/barena-genga-shirt-cielo/01-model.jpg",
         "type": "model"
@@ -820,7 +931,8 @@
         "src": "/virtualstore-products/barena-genga-shirt-cielo/06-model.jpg",
         "type": "model"
       }
-    ]
+    ],
+    "still": "generated"
   },
   {
     "id": "barena-zaleto-coat-bruno",
@@ -829,6 +941,11 @@
     "color": "Bruno",
     "style_code": "CSU5610 2812",
     "images": [
+      {
+        "src": "/virtualstore-products/barena-zaleto-coat-bruno/00-still.jpg",
+        "type": "still",
+        "generated": true
+      },
       {
         "src": "/virtualstore-products/barena-zaleto-coat-bruno/01-model.jpg",
         "type": "model"
@@ -849,7 +966,8 @@
         "src": "/virtualstore-products/barena-zaleto-coat-bruno/05-model.jpg",
         "type": "model"
       }
-    ]
+    ],
+    "still": "generated"
   },
   {
     "id": "barena-fondaco-jacket-notte",
@@ -858,6 +976,11 @@
     "color": "Notte",
     "style_code": "CSU5617 2820",
     "images": [
+      {
+        "src": "/virtualstore-products/barena-fondaco-jacket-notte/00-still.jpg",
+        "type": "still",
+        "generated": true
+      },
       {
         "src": "/virtualstore-products/barena-fondaco-jacket-notte/01-model.jpg",
         "type": "model"
@@ -878,7 +1001,8 @@
         "src": "/virtualstore-products/barena-fondaco-jacket-notte/05-model.jpg",
         "type": "model"
       }
-    ]
+    ],
+    "still": "generated"
   },
   {
     "id": "barena-refuso-jacket-merlot",
@@ -911,7 +1035,8 @@
         "src": "/virtualstore-products/barena-refuso-jacket-merlot/06-model.jpg",
         "type": "model"
       }
-    ]
+    ],
+    "still": null
   },
   {
     "id": "barena-zener-jacket-fasser",
@@ -920,6 +1045,11 @@
     "color": "Fasser",
     "style_code": "GIU5640 0528",
     "images": [
+      {
+        "src": "/virtualstore-products/barena-zener-jacket-fasser/00-still.jpg",
+        "type": "still",
+        "generated": true
+      },
       {
         "src": "/virtualstore-products/barena-zener-jacket-fasser/01-model.jpg",
         "type": "model"
@@ -944,7 +1074,8 @@
         "src": "/virtualstore-products/barena-zener-jacket-fasser/06-model.jpg",
         "type": "model"
       }
-    ]
+    ],
+    "still": "generated"
   },
   {
     "id": "barena-pevaron-knit-polo-nero",
@@ -954,8 +1085,9 @@
     "style_code": "KNU4100 261 0429",
     "images": [
       {
-        "src": "/virtualstore-products/barena-pevaron-knit-polo-nero/01-product.jpg",
-        "type": "product"
+        "src": "/virtualstore-products/barena-pevaron-knit-polo-nero/00-still.jpg",
+        "type": "still",
+        "generated": false
       },
       {
         "src": "/virtualstore-products/barena-pevaron-knit-polo-nero/02-model.jpg",
@@ -981,7 +1113,8 @@
         "src": "/virtualstore-products/barena-pevaron-knit-polo-nero/07-model.jpg",
         "type": "model"
       }
-    ]
+    ],
+    "still": "original"
   },
   {
     "id": "barena-marco-knit-polo-merlot",
@@ -990,6 +1123,11 @@
     "color": "Merlot",
     "style_code": "KNU5682 0429",
     "images": [
+      {
+        "src": "/virtualstore-products/barena-marco-knit-polo-merlot/00-still.jpg",
+        "type": "still",
+        "generated": true
+      },
       {
         "src": "/virtualstore-products/barena-marco-knit-polo-merlot/01-model.jpg",
         "type": "model"
@@ -1014,7 +1152,8 @@
         "src": "/virtualstore-products/barena-marco-knit-polo-merlot/06-model.jpg",
         "type": "model"
       }
-    ]
+    ],
+    "still": "generated"
   },
   {
     "id": "barena-marco-knit-polo-nero",
@@ -1023,6 +1162,11 @@
     "color": "Nero",
     "style_code": "KNU5682 0429",
     "images": [
+      {
+        "src": "/virtualstore-products/barena-marco-knit-polo-nero/00-still.jpg",
+        "type": "still",
+        "generated": true
+      },
       {
         "src": "/virtualstore-products/barena-marco-knit-polo-nero/01-model.jpg",
         "type": "model"
@@ -1047,7 +1191,8 @@
         "src": "/virtualstore-products/barena-marco-knit-polo-nero/06-model.jpg",
         "type": "model"
       }
-    ]
+    ],
+    "still": "generated"
   },
   {
     "id": "barena-tablo-overshirt-fasser",
@@ -1056,6 +1201,11 @@
     "color": "Fasser",
     "style_code": "OSU5628 0528",
     "images": [
+      {
+        "src": "/virtualstore-products/barena-tablo-overshirt-fasser/00-still.jpg",
+        "type": "still",
+        "generated": true
+      },
       {
         "src": "/virtualstore-products/barena-tablo-overshirt-fasser/01-model.jpg",
         "type": "model"
@@ -1080,7 +1230,8 @@
         "src": "/virtualstore-products/barena-tablo-overshirt-fasser/06-model.jpg",
         "type": "model"
       }
-    ]
+    ],
+    "still": "generated"
   },
   {
     "id": "barena-zan-overshirt-avio",
@@ -1089,6 +1240,11 @@
     "color": "Avio",
     "style_code": "OSU5629 2814",
     "images": [
+      {
+        "src": "/virtualstore-products/barena-zan-overshirt-avio/00-still.jpg",
+        "type": "still",
+        "generated": true
+      },
       {
         "src": "/virtualstore-products/barena-zan-overshirt-avio/01-model.jpg",
         "type": "model"
@@ -1113,7 +1269,8 @@
         "src": "/virtualstore-products/barena-zan-overshirt-avio/06-model.jpg",
         "type": "model"
       }
-    ]
+    ],
+    "still": "generated"
   },
   {
     "id": "barena-bativoga-trousers-nero",
@@ -1123,8 +1280,9 @@
     "style_code": "PAU5400 0433",
     "images": [
       {
-        "src": "/virtualstore-products/barena-bativoga-trousers-nero/01-product.jpg",
-        "type": "product"
+        "src": "/virtualstore-products/barena-bativoga-trousers-nero/00-still.jpg",
+        "type": "still",
+        "generated": false
       },
       {
         "src": "/virtualstore-products/barena-bativoga-trousers-nero/02-model.jpg",
@@ -1150,7 +1308,8 @@
         "src": "/virtualstore-products/barena-bativoga-trousers-nero/07-model.jpg",
         "type": "model"
       }
-    ]
+    ],
+    "still": "original"
   },
   {
     "id": "barena-sesto-trousers-stone",
@@ -1160,8 +1319,9 @@
     "style_code": "PAU5650 2788",
     "images": [
       {
-        "src": "/virtualstore-products/barena-sesto-trousers-stone/01-product.jpg",
-        "type": "product"
+        "src": "/virtualstore-products/barena-sesto-trousers-stone/00-still.jpg",
+        "type": "still",
+        "generated": false
       },
       {
         "src": "/virtualstore-products/barena-sesto-trousers-stone/02-model.jpg",
@@ -1187,7 +1347,8 @@
         "src": "/virtualstore-products/barena-sesto-trousers-stone/07-model.jpg",
         "type": "model"
       }
-    ]
+    ],
+    "still": "original"
   },
   {
     "id": "barena-cordier-trousers-beige",
@@ -1196,6 +1357,11 @@
     "color": "Beige",
     "style_code": "PAU5654 2635",
     "images": [
+      {
+        "src": "/virtualstore-products/barena-cordier-trousers-beige/00-still.jpg",
+        "type": "still",
+        "generated": true
+      },
       {
         "src": "/virtualstore-products/barena-cordier-trousers-beige/01-model.jpg",
         "type": "model"
@@ -1220,7 +1386,8 @@
         "src": "/virtualstore-products/barena-cordier-trousers-beige/06-model.jpg",
         "type": "model"
       }
-    ]
+    ],
+    "still": "generated"
   },
   {
     "id": "barena-cordier-trousers-merlot",
@@ -1229,6 +1396,11 @@
     "color": "Merlot",
     "style_code": "PAU5654 2820",
     "images": [
+      {
+        "src": "/virtualstore-products/barena-cordier-trousers-merlot/00-still.jpg",
+        "type": "still",
+        "generated": true
+      },
       {
         "src": "/virtualstore-products/barena-cordier-trousers-merlot/01-model.jpg",
         "type": "model"
@@ -1253,7 +1425,8 @@
         "src": "/virtualstore-products/barena-cordier-trousers-merlot/06-model.jpg",
         "type": "model"
       }
-    ]
+    ],
+    "still": "generated"
   },
   {
     "id": "blue-blue-japan-double-cloth-sashiko-trucker-jacket-dark-black",
@@ -1263,10 +1436,12 @@
     "style_code": "J7079",
     "images": [
       {
-        "src": "/virtualstore-products/blue-blue-japan-double-cloth-sashiko-trucker-jacket-dark-black/01-product.jpg",
-        "type": "product"
+        "src": "/virtualstore-products/blue-blue-japan-double-cloth-sashiko-trucker-jacket-dark-black/00-still.jpg",
+        "type": "still",
+        "generated": false
       }
-    ]
+    ],
+    "still": "original"
   },
   {
     "id": "blue-blue-japan-kasezome-sashiko-cargo-pants-indigo",
@@ -1276,10 +1451,12 @@
     "style_code": "J7206",
     "images": [
       {
-        "src": "/virtualstore-products/blue-blue-japan-kasezome-sashiko-cargo-pants-indigo/01-product.jpg",
-        "type": "product"
+        "src": "/virtualstore-products/blue-blue-japan-kasezome-sashiko-cargo-pants-indigo/00-still.jpg",
+        "type": "still",
+        "generated": false
       }
-    ]
+    ],
+    "still": "original"
   },
   {
     "id": "blue-blue-japan-yak-cashmere-crew-neck-pullover-oatmeal",
@@ -1289,10 +1466,12 @@
     "style_code": "J7321",
     "images": [
       {
-        "src": "/virtualstore-products/blue-blue-japan-yak-cashmere-crew-neck-pullover-oatmeal/01-product.jpg",
-        "type": "product"
+        "src": "/virtualstore-products/blue-blue-japan-yak-cashmere-crew-neck-pullover-oatmeal/00-still.jpg",
+        "type": "still",
+        "generated": false
       }
-    ]
+    ],
+    "still": "original"
   },
   {
     "id": "blue-blue-japan-yak-cashmere-crew-neck-pullover-dark-navy",
@@ -1302,10 +1481,12 @@
     "style_code": "J7321",
     "images": [
       {
-        "src": "/virtualstore-products/blue-blue-japan-yak-cashmere-crew-neck-pullover-dark-navy/01-product.jpg",
-        "type": "product"
+        "src": "/virtualstore-products/blue-blue-japan-yak-cashmere-crew-neck-pullover-dark-navy/00-still.jpg",
+        "type": "still",
+        "generated": false
       }
-    ]
+    ],
+    "still": "original"
   },
   {
     "id": "blue-blue-japan-yak-cashmere-haori-cardigan-dark-navy",
@@ -1315,9 +1496,11 @@
     "style_code": "J7322",
     "images": [
       {
-        "src": "/virtualstore-products/blue-blue-japan-yak-cashmere-haori-cardigan-dark-navy/01-product.jpg",
-        "type": "product"
+        "src": "/virtualstore-products/blue-blue-japan-yak-cashmere-haori-cardigan-dark-navy/00-still.jpg",
+        "type": "still",
+        "generated": false
       }
-    ]
+    ],
+    "still": "original"
   }
 ]
