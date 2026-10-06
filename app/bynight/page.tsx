@@ -31,7 +31,7 @@ function Countdown({ now }: { now: number }) {
           <feComposite in2="SourceAlpha" operator="in" />
         </filter>
       </svg>
-      <WalkingBuffalo className="w-[240px] sm:w-[340px] lg:w-[480px] max-w-full" style={{ filter: "url(#bynight-tint)" }} />
+      <WalkingBuffalo className="w-[160px] sm:w-[200px] lg:w-[280px] max-w-full" style={{ filter: "url(#bynight-tint)" }} />
 
       <p className="mt-8" style={{ fontSize: "clamp(0.75rem, 1.6vw, 1.25rem)", letterSpacing: "0.16em" }}>
         Thursday, October 8 · 7 PM
