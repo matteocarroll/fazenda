@@ -529,6 +529,10 @@
     "color": "",
     "images": [
       {
+        "src": "/virtualstore-products/misci-camiseta-caipirinha/00-product.jpg",
+        "type": "product"
+      },
+      {
         "src": "/virtualstore-products/misci-camiseta-caipirinha/01-product.jpg",
         "type": "product"
       },
