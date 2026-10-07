@@ -514,6 +514,11 @@
     "color": "",
     "images": [
       {
+        "src": "/virtualstore-products/misci-camiseta-bondinho/00-still.jpg",
+        "type": "still",
+        "generated": false
+      },
+      {
         "src": "/virtualstore-products/misci-camiseta-bondinho/01-product.jpg",
         "type": "product"
       },
@@ -530,7 +535,7 @@
         "type": "product"
       }
     ],
-    "still": null
+    "still": "original"
   },
   {
     "id": "misci-camiseta-caipirinha",
