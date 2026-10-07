@@ -75,9 +75,12 @@ export default function ByNight() {
   const [people, setPeople] = useState<Drinker[] | null>(null)
   /* Unknown until mounted, so the server render and first client render match. */
   const [now, setNow] = useState<number | null>(null)
-  const live = now !== null && now >= STARTS_AT
+  /* ?preview shows the board before the event, for staff checks only. */
+  const [preview, setPreview] = useState(false)
+  const live = now !== null && (now >= STARTS_AT || preview)
 
   useEffect(() => {
+    setPreview(new URLSearchParams(window.location.search).has("preview"))
     setNow(Date.now())
     const t = setInterval(() => setNow(Date.now()), 1000)
     return () => clearInterval(t)
