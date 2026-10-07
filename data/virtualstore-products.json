@@ -699,6 +699,11 @@
     "color": "",
     "images": [
       {
+        "src": "/virtualstore-products/misci-camiseta-volei/00-still.jpg",
+        "type": "still",
+        "generated": false
+      },
+      {
         "src": "/virtualstore-products/misci-camiseta-volei/01-product.jpg",
         "type": "product"
       },
@@ -711,7 +716,7 @@
         "type": "product"
       }
     ],
-    "still": null
+    "still": "original"
   },
   {
     "id": "misci-jaqueta-horizonte",
