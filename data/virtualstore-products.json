@@ -793,6 +793,11 @@
     "color": "",
     "images": [
       {
+        "src": "/virtualstore-products/misci-polo-tricot-canelada-cafe/00-still.jpg",
+        "type": "still",
+        "generated": false
+      },
+      {
         "src": "/virtualstore-products/misci-polo-tricot-canelada-cafe/01-product.jpg",
         "type": "product"
       },
@@ -801,7 +806,7 @@
         "type": "product"
       }
     ],
-    "still": null
+    "still": "original"
   },
   {
     "id": "misci-polo-tricot-ponto-calado",
