@@ -635,6 +635,11 @@
     "color": "",
     "images": [
       {
+        "src": "/virtualstore-products/misci-camiseta-milho-verde/00-still.jpg",
+        "type": "still",
+        "generated": false
+      },
+      {
         "src": "/virtualstore-products/misci-camiseta-milho-verde/01-product.jpg",
         "type": "product"
       },
@@ -651,7 +656,7 @@
         "type": "product"
       }
     ],
-    "still": null
+    "still": "original"
   },
   {
     "id": "misci-camiseta-mureta",
