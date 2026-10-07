@@ -470,6 +470,11 @@
     "color": "",
     "images": [
       {
+        "src": "/virtualstore-products/misci-calca-jose-linho-marrom/00-still.jpg",
+        "type": "still",
+        "generated": false
+      },
+      {
         "src": "/virtualstore-products/misci-calca-jose-linho-marrom/01-product.jpg",
         "type": "product"
       },
@@ -478,7 +483,7 @@
         "type": "product"
       }
     ],
-    "still": null
+    "still": "original"
   },
   {
     "id": "misci-camisa-manga-curta-viscolinho-verde-militar",
