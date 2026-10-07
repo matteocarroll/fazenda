@@ -609,6 +609,11 @@
     "color": "",
     "images": [
       {
+        "src": "/virtualstore-products/misci-camiseta-maracana/00-still.jpg",
+        "type": "still",
+        "generated": false
+      },
+      {
         "src": "/virtualstore-products/misci-camiseta-maracana/01-product.jpg",
         "type": "product"
       },
@@ -621,7 +626,7 @@
         "type": "product"
       }
     ],
-    "still": null
+    "still": "original"
   },
   {
     "id": "misci-camiseta-milho-verde",
