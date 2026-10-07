@@ -4,7 +4,7 @@ import { useEffect, useState } from "react"
 
 import WalkingBuffalo from "@/components/WalkingBuffalo"
 
-const TOBACCO = "#43150E"
+const BLACK = "#000000"
 const LIMESTONE = "#F7E5C0"
 const NAPLES = "#E0C991"
 
@@ -120,9 +120,10 @@ export default function ByNight() {
   return (
     <main
       className="bynight min-h-screen px-4 py-12"
-      style={{ backgroundColor: TOBACCO, color: LIMESTONE }}
+      style={{ backgroundColor: BLACK, color: LIMESTONE }}
     >
       <style>{`
+        html, body { background: ${BLACK}; } /* no light flash on overscroll */
         .bynight { --row: clamp(52px, 8vh, 96px); font-family: "Times New Roman", Times, serif; text-transform: uppercase; }
         .row { border-top: 1px solid rgba(247, 229, 192, 0.15); transition: transform 600ms cubic-bezier(.2,.8,.2,1); }
       `}</style>
