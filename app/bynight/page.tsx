@@ -10,9 +10,9 @@ const NAPLES = "#E0C991"
 
 type Drinker = { id: string; name: string; beer: number; wine: number }
 
-/* Thursday Oct 8, 7pm New York (EDT, UTC−4). Until then the page is a
-   countdown; at 7pm it turns into the leaderboard on its own. */
-const STARTS_AT = Date.parse("2026-10-08T19:00:00-04:00")
+/* Event is Thursday Oct 8, 7pm New York, but the board opened early that
+   morning (EDT, UTC−4). Before STARTS_AT the page shows the countdown. */
+const STARTS_AT = Date.parse("2026-10-08T00:00:00-04:00")
 
 function Countdown({ now }: { now: number }) {
   const left = Math.max(0, Math.floor((STARTS_AT - now) / 1000))

@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server"
-import { addDrink, getDrinkers, type DrinkType } from "@/lib/bynight"
+import { addDrink, addWalkin, getDrinkers, type DrinkType } from "@/lib/bynight"
 
 export const dynamic = "force-dynamic"
 
@@ -17,9 +17,10 @@ export async function GET() {
   }
 }
 
-/* Staff tally: { id, type: "beer" | "wine", delta: 1 | -1, pin } */
+/* Staff tally: { id, type: "beer" | "wine", delta: 1 | -1, pin }
+   Door guest:  { action: "add", name, pin } */
 export async function POST(req: Request) {
-  let body: { id?: string; type?: string; delta?: number; pin?: string }
+  let body: { id?: string; type?: string; delta?: number; pin?: string; action?: string; name?: string }
   try {
     body = await req.json()
   } catch {
@@ -30,6 +31,19 @@ export async function POST(req: Request) {
   if (!pin || body.pin !== pin) {
     return NextResponse.json({ error: "Wrong PIN" }, { status: 401 })
   }
+  if (body.action === "add") {
+    const name = typeof body.name === "string" ? body.name.trim() : ""
+    if (name.length < 2 || name.length > 60) {
+      return NextResponse.json({ error: "Enter a name" }, { status: 400 })
+    }
+    try {
+      return NextResponse.json({ guest: await addWalkin(name) })
+    } catch (err) {
+      console.error("bynight: add guest failed", err)
+      return NextResponse.json({ error: "Unavailable" }, { status: 503 })
+    }
+  }
+
   const type = body.type as DrinkType
   if (type !== "beer" && type !== "wine") {
     return NextResponse.json({ error: "Invalid drink" }, { status: 400 })

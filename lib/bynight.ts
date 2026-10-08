@@ -10,6 +10,8 @@ const SHEET_CSV =
   "https://docs.google.com/spreadsheets/d/1ETM3X-rgNK3t0uDacpn7j_F-UwzSelsgYAiCOdWBPik/gviz/tq?tqx=out:csv&gid=584292939&tq=select%20B"
 
 const KEY: Record<DrinkType, string> = { beer: "bynight:beer", wine: "bynight:wine" }
+/* Guests added at the door by staff: id → full name. The sheet stays read-only. */
+const WALKINS = "bynight:walkins"
 
 function shortName(full: string): string {
   const [first, ...rest] = full.split(" ")
@@ -23,24 +25,44 @@ function idFor(full: string): string {
   return createHash("sha1").update(full.toLowerCase()).digest("hex").slice(0, 10)
 }
 
-/* Guests in sheet order, duplicate RSVPs folded into one. */
+function clean(full: string): string {
+  return full.trim().replace(/\s+/g, " ")
+}
+
+/* Guests in sheet order, then walk-ins, duplicates folded into one. A walk-in
+   who later RSVPs under the same name merges with their sheet entry. */
 export async function getGuests(): Promise<{ id: string; name: string }[]> {
-  const res = await fetch(SHEET_CSV, { next: { revalidate: 30 } })
-  const text = await res.text()
-  /* Google sometimes answers with an HTML page instead of CSV; treat that as
-     a failed read rather than an empty guest list. */
-  if (!res.ok || !text.startsWith('"Name"')) throw new Error(`sheet ${res.status}`)
-  const lines = text.split("\n").slice(1)
+  const [names, walkins] = await Promise.all([sheetNames(), redis<string[]>(["HVALS", WALKINS])])
   const seen = new Set<string>()
   const guests: { id: string; name: string }[] = []
-  for (const line of lines) {
-    const full = line.replace(/^"|"$/g, "").replace(/""/g, '"').trim().replace(/\s+/g, " ")
+  for (const full of [...names, ...walkins]) {
     const id = full && idFor(full)
     if (!id || seen.has(id)) continue
     seen.add(id)
     guests.push({ id, name: shortName(full) })
   }
   return guests
+}
+
+async function sheetNames(): Promise<string[]> {
+  const res = await fetch(SHEET_CSV, { next: { revalidate: 30 } })
+  const text = await res.text()
+  /* Google sometimes answers with an HTML page instead of CSV; treat that as
+     a failed read rather than an empty guest list. */
+  if (!res.ok || !text.startsWith('"Name"')) throw new Error(`sheet ${res.status}`)
+  return text
+    .split("\n")
+    .slice(1)
+    .map((line) => clean(line.replace(/^"|"$/g, "").replace(/""/g, '"')))
+}
+
+/* Adds a door guest and returns their id (the existing one if the name is
+   already on the sheet or was added before). */
+export async function addWalkin(full: string): Promise<{ id: string; name: string }> {
+  const name = clean(full)
+  const id = idFor(name)
+  await redis(["HSETNX", WALKINS, id, name])
+  return { id, name: shortName(name) }
 }
 
 async function redis<T>(command: (string | number)[]): Promise<T> {

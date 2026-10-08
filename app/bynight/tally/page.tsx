@@ -78,6 +78,32 @@ export default function Tally() {
     }
   }
 
+  /* Door guests who aren't on the RSVP sheet. Search shows the add button,
+     so staff check the list before creating someone new. */
+  const [adding, setAdding] = useState(false)
+  const addGuest = async () => {
+    const name = query.trim()
+    if (name.length < 2 || adding) return
+    setError("")
+    setAdding(true)
+    try {
+      const res = await fetch("/api/bynight", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "add", name, pin }),
+      })
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error)
+      const g = data.guest as { id: string; name: string }
+      setPeople((ps) => (ps.some((p) => p.id === g.id) ? ps : [...ps, { ...g, beer: 0, wine: 0 }]))
+      setQuery(g.name)
+    } catch {
+      setError("Couldn't add guest — check connection and try again")
+    } finally {
+      setAdding(false)
+    }
+  }
+
   const savePin = (e: React.FormEvent) => {
     e.preventDefault()
     const p = pinInput.trim()
@@ -140,6 +166,16 @@ export default function Tally() {
               onChange={(e) => setQuery(e.target.value)}
               className="mt-6 w-full px-3 py-2 text-base"
             />
+            {query.trim().length >= 2 && !shown.some((p) => p.name.toLowerCase() === query.trim().toLowerCase()) && (
+              <button
+                onClick={addGuest}
+                disabled={adding}
+                className="btn plus mt-3 w-full px-3 text-sm uppercase"
+                style={{ width: "100%", letterSpacing: "0.1em" }}
+              >
+                {adding ? "Adding…" : `+ Add “${query.trim()}” as new guest`}
+              </button>
+            )}
             <ul className="mt-4">
               {shown.map((p) => (
                 <li key={p.id} className="py-3" style={{ borderTop: "1px solid rgba(247,229,192,.15)" }}>
@@ -172,7 +208,7 @@ export default function Tally() {
             </ul>
             {people.length > 0 && shown.length === 0 && (
               <p className="mt-6 text-center text-sm" style={{ opacity: 0.6 }}>
-                No one matches “{query}”
+                No one matches “{query}”. Type their full name and add them above.
               </p>
             )}
           </>
