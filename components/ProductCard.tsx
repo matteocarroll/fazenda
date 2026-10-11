@@ -112,6 +112,9 @@ export default function ProductCard({ product }: { product: Product }) {
         <span className="block">{product.brand}</span>
         <span className="block opacity-70">{product.name}</span>
         {product.color && <span className="block opacity-70">{product.color}</span>}
+        {product.style_code && (
+          <span className="block text-[0.625rem] opacity-50">{product.style_code}</span>
+        )}
         <a
           href={href}
           target="_blank"
