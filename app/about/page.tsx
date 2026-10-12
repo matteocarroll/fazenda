@@ -33,7 +33,8 @@ export default function About() {
 
         <div className="flex flex-col items-center gap-10">
           <p className="text-[#5c3317] text-xs text-center max-w-sm leading-relaxed">
-            Fazenda is a multibrand menswear store featuring premium international brands, opening this summer.
+            Fazenda is a multibrand menswear store and coffee shop at 177 Mott Street, New
+            York, featuring premium international brands.
           </p>
 
           {submitted ? (
