@@ -4,9 +4,36 @@ import { GeistMono } from "geist/font/mono"
 import { Analytics } from "@vercel/analytics/react"
 import "./globals.css"
 
+const DESCRIPTION =
+  "A multibrand menswear store and coffee shop at 177 Mott Street, New York. Barena, Cale, Kota Gushiken, Misci, Valstar, Blue Blue Japan and more."
+
 export const metadata: Metadata = {
-  title: "FAZENDA",
-  description: "FAZENDA Company",
+  metadataBase: new URL("https://www.fazenda.com"),
+  title: {
+    default: "Fazenda — Multibrand Menswear Store, New York",
+    template: "%s | Fazenda",
+  },
+  description: DESCRIPTION,
+  alternates: { canonical: "./" },
+  // No title/description here on purpose: each page's own ones are used,
+  // so a shared link shows that page rather than always the homepage.
+  openGraph: {
+    type: "website",
+    siteName: "Fazenda",
+    locale: "en_US",
+    images: [
+      {
+        url: "/og.jpg",
+        width: 1200,
+        height: 630,
+        alt: "The Fazenda storefront on Mott Street, New York",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    images: ["/og.jpg"],
+  },
 }
 
 export default function RootLayout({

@@ -1,5 +1,13 @@
 import Image from "next/image"
 
+import type { Metadata } from "next"
+
+export const metadata: Metadata = {
+  title: "Store",
+  description:
+    "Photographs of the Fazenda store and cafe at 177 Mott Street, New York.",
+}
+
 const PHOTOS = [
   { src: "/store/store-7.jpg", w: 1200, h: 1797, alt: "The Fazenda storefront on Mott Street" },
   { src: "/store/store-1.jpg", w: 1200, h: 1800, alt: "The café bar at Fazenda" },

@@ -1,5 +1,13 @@
 import Link from "next/link"
 
+import type { Metadata } from "next"
+
+export const metadata: Metadata = {
+  title: "Brands",
+  description:
+    "The brands we carry at Fazenda, from Altea and Barena to Valstar and Wax London, plus what is arriving soon.",
+}
+
 const brands = [
   "Altea",
   "Barena",

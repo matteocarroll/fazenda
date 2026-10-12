@@ -1,6 +1,14 @@
 import ProductCard, { type Product } from "@/components/ProductCard"
 import products from "@/data/virtualstore-products.json"
 
+import type { Metadata } from "next"
+
+export const metadata: Metadata = {
+  title: "Virtual Store",
+  description:
+    "Browse what is on the rail at Fazenda: Barena, Cale, Kota Gushiken, Misci, Valstar, Blue Blue Japan, Labo Art and Purple Mountain Observatory. Message us on WhatsApp to buy or reserve.",
+}
+
 const PRODUCTS = products as Product[]
 
 export default function VirtualStore() {

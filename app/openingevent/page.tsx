@@ -1,5 +1,13 @@
 import Image from "next/image"
 
+import type { Metadata } from "next"
+
+export const metadata: Metadata = {
+  title: "Opening Day",
+  description:
+    "Photographs from the Fazenda opening day at 177 Mott Street, New York.",
+}
+
 const PHOTOS = [
   { src: "/event/event-01.jpg", w: 1100, h: 1647 },
   { src: "/event/event-02.jpg", w: 1100, h: 1647 },
