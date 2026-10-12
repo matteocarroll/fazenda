@@ -194,7 +194,7 @@ export const POSTS: Post[] = [
       { t: "h2", text: "What we stock" },
       {
         t: "p",
-        text: "Barena's Cordier, Sesto and Bativoga cuts cover most rises and weights, and Cale runs flannel, cotton gabardine, corduroy and silk-wool through the season. Come and try them on — it takes five minutes and saves a return.",
+        text: "Barena's Cordier, Sesto and Bativoga cuts cover most rises and weights, and Cale runs flannel, cotton gabardine, corduroy and silk-wool through the season. Come and try them on — it takes five minutes and settles all three questions at once.",
       },
     ],
   },

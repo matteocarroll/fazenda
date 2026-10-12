@@ -32,11 +32,19 @@ const FAQS: { q: string; a: string }[] = [
   },
   {
     q: "Can I buy online?",
-    a: "There is no checkout on the site yet. The virtual store shows what is currently on the rail, and the fastest way to buy or reserve something is to message us on WhatsApp — every product has a link that opens a message with the item already filled in.",
+    a: "No — we do not sell online, and there is no checkout on the site. The virtual store is there so you can see what is on the rail before you come in. First purchases happen in the store.",
+  },
+  {
+    q: "So how does buying work?",
+    a: "Come to Mott Street and buy in person. Once you have, you are a client, and from then on we can look after you remotely — we will find pieces for you, hold things back, and sort out a purchase over WhatsApp, iMessage or email without you coming in each time.",
   },
   {
     q: "Can you check whether something is in stock, or in my size?",
-    a: "Yes. Message us on WhatsApp with the piece you are after and we will check and reply. If we do not have your size we can usually tell you whether it is coming.",
+    a: "Yes, and you do not need to be a client to ask. Message us on WhatsApp with the piece you are after and we will check and reply. If we do not have your size we can usually tell you whether it is coming.",
+  },
+  {
+    q: "Do you accept returns?",
+    a: "We do not take returns, but we are happy to exchange. Bring the piece back unworn and with its tags, and we will swap it for another size or something else in the store. If you are unsure whether something qualifies, message us before you come in.",
   },
   {
     q: "Do you serve coffee?",
@@ -48,7 +56,7 @@ const FAQS: { q: string; a: string }[] = [
   },
   {
     q: "How do I get in touch?",
-    a: "WhatsApp is quickest, on +1 929 840 8626. For anything else, support@fazenda.com.",
+    a: "WhatsApp is quickest, on +1 929 840 8626. We are also on iMessage on the same number, and at support@fazenda.com.",
   },
 ]
 
