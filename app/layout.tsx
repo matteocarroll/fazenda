@@ -2,6 +2,9 @@ import type { Metadata } from "next"
 import { GeistSans } from "geist/font/sans"
 import { GeistMono } from "geist/font/mono"
 import { Analytics } from "@vercel/analytics/react"
+
+import JsonLd from "@/components/JsonLd"
+import { BRANDS } from "@/lib/brands"
 import "./globals.css"
 
 const DESCRIPTION =
@@ -49,6 +52,27 @@ export default function RootLayout({
         <link rel="apple-touch-icon" href="/favicon.png" />
       </head>
       <body>
+        <JsonLd
+          data={{
+            "@context": "https://schema.org",
+            "@type": "ClothingStore",
+            name: "Fazenda",
+            description: DESCRIPTION,
+            url: "https://www.fazenda.com",
+            image: "https://www.fazenda.com/og.jpg",
+            email: "support@fazenda.com",
+            telephone: "+1-929-840-8626",
+            address: {
+              "@type": "PostalAddress",
+              streetAddress: "177 Mott Street",
+              addressLocality: "New York",
+              addressRegion: "NY",
+              postalCode: "10012",
+              addressCountry: "US",
+            },
+            brand: BRANDS.map((name) => ({ "@type": "Brand", name })),
+          }}
+        />
         {children}
         <Analytics />
       </body>

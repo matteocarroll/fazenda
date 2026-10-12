@@ -1,5 +1,7 @@
 import Link from "next/link"
 
+import { BRANDS, COMING_SOON } from "@/lib/brands"
+
 import type { Metadata } from "next"
 
 export const metadata: Metadata = {
@@ -8,34 +10,6 @@ export const metadata: Metadata = {
     "The brands we carry at Fazenda, from Altea and Barena to Valstar and Wax London, plus what is arriving soon.",
 }
 
-const brands = [
-  "Altea",
-  "Barena",
-  "Blue Blue Japan",
-  "Cale",
-  "Ciota",
-  "Deadwood",
-  "Erevan",
-  "Handred",
-  "Husbands Paris",
-  "Kota Gushiken",
-  "Kuro",
-  "Labo Art",
-  "Massimo Alba",
-  "Misci",
-  "Osklen",
-  "Purple Mountain Observatory",
-  "Valstar",
-  "Wax London",
-]
-
-const comingSoon = [
-  "Baziszt",
-  "District Vision",
-  "RANRA",
-  "Sunflower",
-  "Suntosons",
-]
 
 export default function Brands() {
   return (
@@ -52,7 +26,7 @@ export default function Brands() {
         </div>
 
         <div className="flex flex-col items-center gap-1">
-          {brands.map((brand) => (
+          {BRANDS.map((brand) => (
             <p key={brand} className="text-[#5c3317] text-xs">
               {brand}
             </p>
@@ -62,7 +36,7 @@ export default function Brands() {
         <p className="text-[#5c3317] text-xs text-center mt-10 mb-4">Coming Soon</p>
 
         <div className="flex flex-col items-center gap-1">
-          {comingSoon.map((brand) => (
+          {COMING_SOON.map((brand) => (
             <p key={brand} className="text-[#5c3317] text-xs">
               {brand}
             </p>
