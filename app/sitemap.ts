@@ -4,8 +4,8 @@ import { POSTS } from "@/lib/journal"
 
 const BASE = "https://www.fazenda.com"
 
-// Public pages only. The internal and unlinked ones — /barista, /bynight,
-// /collection-1, /journey, /leaderboard, /visual — are deliberately left out.
+// Public pages only. The internal and unlinked ones — /barista, /collection-1,
+// /journey, /leaderboard, /visual — are deliberately left out.
 const ROUTES: { path: string; priority: number }[] = [
   { path: "/", priority: 1 },
   { path: "/virtualstore", priority: 0.9 },

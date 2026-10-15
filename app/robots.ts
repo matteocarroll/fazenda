@@ -8,7 +8,7 @@ export default function robots(): MetadataRoute.Robots {
       userAgent: "*",
       allow: "/",
       // Internal or unlinked pages, kept out of search results.
-      disallow: ["/barista", "/bynight", "/collection-1", "/journey", "/leaderboard", "/visual"],
+      disallow: ["/barista", "/collection-1", "/journey", "/leaderboard", "/visual"],
     },
     sitemap: `${BASE}/sitemap.xml`,
   }
