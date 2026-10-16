@@ -3,8 +3,11 @@
 import { useState } from "react"
 
 // ---- Edit these ----
-const EVENT_NAME = "Fazenda is excited to host Booch Bags on October 23rd"
-const EVENT_DATE = "Friday October 23rd, 7–10pm"
+const EVENT_INTRO = [
+  "Fazenda is excited to host a private preview of Booch Bags’ second collection on Friday, October 23rd.",
+  "Come for exclusive first access to the new collection before their pop-up this weekend.",
+]
+const EVENT_DATE = "7–10pm"
 const EVENT_DETAILS = "177 Mott Street, New York"
 /* Becomes the tab name in the RSVP sheet, so keep it stable once guests start replying. */
 const EVENT_KEY = "Booch X Fazenda Preview Night - Oct 23"
@@ -91,7 +94,9 @@ export default function BoochBags() {
         </div>
 
         <h1>RSVP</h1>
-        <p>{EVENT_NAME}</p>
+        {EVENT_INTRO.map((line) => (
+          <p key={line}>{line}</p>
+        ))}
         <p>{EVENT_DATE}</p>
         <p>{EVENT_DETAILS}</p>
 
