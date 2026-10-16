@@ -53,12 +53,12 @@ export default function BoochBags() {
         }
         .rsvp .logo-fazenda { height: 26px; width: auto; }
         .rsvp .logo-booch   { height: 56px; width: auto; }
-        .rsvp .x { font-size: 24px; }
+        .rsvp .sep { font-size: 24px; }
         @media (max-width: 480px) {
           .rsvp .collab { gap: 12px; }
           .rsvp .logo-fazenda { height: 18px; }
           .rsvp .logo-booch   { height: 40px; }
-          .rsvp .x { font-size: 18px; }
+          .rsvp .sep { font-size: 18px; }
         }
         .rsvp h1 { font-weight: 400; font-size: 24px; letter-spacing: 0.08em; margin: 34px 0 18px; }
         .rsvp p  { font-size: 20px; margin: 0 0 16px; }
@@ -84,10 +84,10 @@ export default function BoochBags() {
       <div className="rsvp-inner">
         <div className="collab">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img className="logo-fazenda" src="/boochbags/fazenda.png" alt="Fazenda" />
-          <span className="x">X</span>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img className="logo-booch" src="/boochbags/booch.png" alt="Booch" />
+          <span className="sep">at</span>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img className="logo-fazenda" src="/boochbags/fazenda.png" alt="Fazenda" />
         </div>
 
         <h1>RSVP</h1>
