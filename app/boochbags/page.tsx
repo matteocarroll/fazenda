@@ -3,7 +3,7 @@
 import { useState } from "react"
 
 // ---- Edit these ----
-const EVENT_NAME = "Booch X Fazenda Preview Night"
+const EVENT_NAME = "Fazenda is excited to host Booch Bags on October 23rd"
 const EVENT_DATE = "Friday October 23rd, 7–10pm"
 const EVENT_DETAILS = "177 Mott Street, New York"
 /* Becomes the tab name in the RSVP sheet, so keep it stable once guests start replying. */
