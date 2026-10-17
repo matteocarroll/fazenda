@@ -2,6 +2,7 @@ import Link from "next/link"
 import type { Metadata } from "next"
 
 import JsonLd from "@/components/JsonLd"
+import { BRANDS, COMING_SOON } from "@/lib/brands"
 
 const BROWN = "#5c3317"
 const WHATSAPP = "https://wa.me/19298408626"
@@ -10,6 +11,12 @@ export const metadata: Metadata = {
   title: "FAQ",
   description:
     "Questions we get asked at Fazenda: where we are, which brands we carry, how to buy, and how to reach us.",
+}
+
+/** "A, B and C" — so the brand answer is generated, never hand-maintained. */
+function list(items: string[]) {
+  if (items.length < 2) return items.join("")
+  return `${items.slice(0, -1).join(", ")} and ${items[items.length - 1]}`
 }
 
 /**
@@ -28,7 +35,7 @@ const FAQS: { q: string; a: string }[] = [
   },
   {
     q: "Which brands do you carry?",
-    a: "Altea, Barena, Blue Blue Japan, Cale, Ciota, Deadwood, Erevan, Handred, Husbands Paris, Kota Gushiken, Kuro, Labo Art, Massimo Alba, Misci, Osklen, Purple Mountain Observatory, Valstar and Wax London. Baziszt, District Vision, RANRA, Sunflower and Suntosons are arriving soon.",
+    a: `${list(BRANDS)}. ${list(COMING_SOON)} are arriving soon.`,
   },
   {
     q: "Can I buy online?",

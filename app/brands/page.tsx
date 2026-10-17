@@ -7,7 +7,7 @@ import type { Metadata } from "next"
 export const metadata: Metadata = {
   title: "Brands",
   description:
-    "The brands we carry at Fazenda, from Altea and Barena to Valstar and Wax London, plus what is arriving soon.",
+    "The brands we carry at Fazenda, from Adrian Cashmere and Barena to Valstar and Wax London, plus what is arriving soon.",
 }
 
 
