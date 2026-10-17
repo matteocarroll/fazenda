@@ -8,6 +8,7 @@ export const BRANDS = [
   "Ciota",
   "Deadwood",
   "Erevan",
+  "Fortela",
   "Handred",
   "Husbands Paris",
   "Kota Gushiken",
