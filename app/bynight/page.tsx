@@ -13,6 +13,7 @@ const EVENT_DETAILS = "177 Mott Street, New York"
 /* Becomes the tab name in the RSVP sheet, so keep it stable once guests start replying. */
 const EVENT_KEY = "DONAFLOR at Fazenda"
 const INK = "#000000"
+const PURPLE = "#5B2C87"
 // --------------------
 
 type Status = "idle" | "sending" | "done" | "error"
@@ -81,7 +82,7 @@ export default function ByNight() {
         .rsvp .track button {
           width: auto; height: auto; margin: 0 auto;
           display: inline-flex; align-items: baseline; gap: 10px;
-          background: none; color: ${INK}; border: 0; padding: 10px 8px;
+          background: none; color: ${PURPLE}; border: 0; padding: 10px 8px;
           font: inherit; font-size: 20px; cursor: pointer;
         }
         .rsvp .track button:hover { opacity: 0.6; }
@@ -140,7 +141,7 @@ export default function ByNight() {
           />
           <button type="button" onClick={toggleTrack}>
             <span className="glyph" aria-hidden="true">{playing ? "❚❚" : "▶"}</span>
-            <span className="title">{playing ? "Pause" : "Play"} Brasil</span>
+            <span className="title">Preview Donaflor tunes</span>
           </button>
         </div>
         {EVENT_INTRO.map((line) => (
