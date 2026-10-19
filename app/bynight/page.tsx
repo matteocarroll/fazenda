@@ -7,8 +7,8 @@ const EVENT_INTRO = [
   "Please join us for our wine night. We’re welcoming our dear friend Jay Diniz (Donaflor) who will be playing.",
   "This will be a private event. If you don’t RSVP you will not be allowed in.",
 ]
-/* Leave empty until the date is confirmed — the line is hidden while it is blank. */
-const EVENT_DATE = ""
+/* Shown large under the RSVP heading. Each entry is its own line. */
+const EVENT_DATE = ["Oct 23rd", "8pm"]
 const EVENT_DETAILS = "177 Mott Street, New York"
 /* Becomes the tab name in the RSVP sheet, so keep it stable once guests start replying. */
 const EVENT_KEY = "DONAFLOR at Fazenda"
@@ -67,6 +67,8 @@ export default function ByNight() {
           .rsvp .sep { font-size: 18px; }
         }
         .rsvp h1 { font-weight: 400; font-size: 24px; letter-spacing: 0.08em; margin: 34px 0 18px; }
+        .rsvp .date { margin: 0 0 28px; }
+        .rsvp .date span { display: block; font-size: 46px; line-height: 1.15; letter-spacing: 0.02em; }
         .rsvp p  { font-size: 20px; margin: 0 0 16px; }
         .rsvp form { margin-top: 50px; }
         .rsvp label { display: block; font-size: 20px; margin-bottom: 0; }
@@ -84,7 +86,10 @@ export default function ByNight() {
         }
         .rsvp button:disabled { opacity: 0.6; cursor: default; }
         .rsvp .msg { margin-top: 24px; font-size: 18px; }
-        @media (max-width: 480px) { .rsvp h1 { font-size: 20px; } }
+        @media (max-width: 480px) {
+          .rsvp h1 { font-size: 20px; }
+          .rsvp .date span { font-size: 34px; }
+        }
       `}</style>
 
       <div className="rsvp-inner">
@@ -100,10 +105,14 @@ export default function ByNight() {
         </div>
 
         <h1>RSVP</h1>
+        <div className="date">
+          {EVENT_DATE.map((line) => (
+            <span key={line}>{line}</span>
+          ))}
+        </div>
         {EVENT_INTRO.map((line) => (
           <p key={line}>{line}</p>
         ))}
-        {EVENT_DATE && <p>{EVENT_DATE}</p>}
         <p>{EVENT_DETAILS}</p>
 
         {status === "done" ? (
