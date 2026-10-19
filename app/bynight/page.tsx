@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 
 // ---- Edit these ----
 const EVENT_INTRO = [
@@ -20,6 +20,21 @@ type Status = "idle" | "sending" | "done" | "error"
 export default function ByNight() {
   const [form, setForm] = useState({ name: "", email: "", phone: "" })
   const [status, setStatus] = useState<Status>("idle")
+  const dancer = useRef<HTMLVideoElement>(null)
+
+  /* The loop is decoration — hold it still for anyone who asks for less motion. */
+  useEffect(() => {
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)")
+    const sync = () => {
+      const el = dancer.current
+      if (!el) return
+      if (reduce.matches) el.pause()
+      else void el.play().catch(() => {})
+    }
+    sync()
+    reduce.addEventListener("change", sync)
+    return () => reduce.removeEventListener("change", sync)
+  }, [])
 
   const update = (e: React.ChangeEvent<HTMLInputElement>) =>
     setForm({ ...form, [e.target.name]: e.target.value })
@@ -50,7 +65,7 @@ export default function ByNight() {
           min-height: 100vh;
           font-family: "Times New Roman", Times, serif;
         }
-        .rsvp-inner { max-width: 560px; margin: 0 auto; padding: 50px 16px 80px; text-align: center; text-transform: uppercase; }
+        .rsvp-inner { max-width: 560px; margin: 0 auto; padding: 50px 16px 80px; text-align: center; }
         .rsvp .flower { width: 260px; max-width: 80%; height: auto; display: block; margin: 0 auto 28px; }
         .rsvp .collab {
           display: flex; align-items: center; justify-content: center;
@@ -67,7 +82,8 @@ export default function ByNight() {
           .rsvp .sep { font-size: 18px; }
         }
         .rsvp h1 { font-weight: 400; font-size: 24px; letter-spacing: 0.08em; margin: 34px 0 18px; }
-        .rsvp .date { margin: 0 0 28px; }
+        .rsvp .date { margin: 0 0 28px; text-transform: uppercase; }
+        .rsvp .dancer { width: 200px; max-width: 60%; height: auto; display: block; margin: 0 auto 28px; }
         .rsvp .date span { display: block; font-size: 46px; line-height: 1.15; letter-spacing: 0.02em; }
         .rsvp p  { font-size: 20px; margin: 0 0 16px; }
         .rsvp form { margin-top: 50px; }
@@ -77,7 +93,7 @@ export default function ByNight() {
           height: 66px; margin-bottom: 40px;
           border: 0; border-bottom: 1px solid ${INK};
           background: transparent; color: ${INK};
-          font: inherit; font-size: 20px; text-align: center; outline: none; text-transform: none;
+          font: inherit; font-size: 20px; text-align: center; outline: none;
         }
         .rsvp button {
           width: 100%; height: 70px; margin-top: 8px;
@@ -89,6 +105,7 @@ export default function ByNight() {
         @media (max-width: 480px) {
           .rsvp h1 { font-size: 20px; }
           .rsvp .date span { font-size: 34px; }
+          .rsvp .dancer { width: 150px; }
         }
       `}</style>
 
@@ -110,6 +127,16 @@ export default function ByNight() {
             <span key={line}>{line}</span>
           ))}
         </div>
+        <video
+          ref={dancer}
+          className="dancer"
+          src="/bynight/dancer.mp4"
+          autoPlay
+          loop
+          muted
+          playsInline
+          aria-hidden="true"
+        />
         {EVENT_INTRO.map((line) => (
           <p key={line}>{line}</p>
         ))}
