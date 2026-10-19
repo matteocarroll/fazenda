@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
+import { useRef, useState } from "react"
 
 // ---- Edit these ----
 const EVENT_INTRO = [
@@ -20,21 +20,15 @@ type Status = "idle" | "sending" | "done" | "error"
 export default function ByNight() {
   const [form, setForm] = useState({ name: "", email: "", phone: "" })
   const [status, setStatus] = useState<Status>("idle")
-  const dancer = useRef<HTMLVideoElement>(null)
+  const audio = useRef<HTMLAudioElement>(null)
+  const [playing, setPlaying] = useState(false)
 
-  /* The loop is decoration — hold it still for anyone who asks for less motion. */
-  useEffect(() => {
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)")
-    const sync = () => {
-      const el = dancer.current
-      if (!el) return
-      if (reduce.matches) el.pause()
-      else void el.play().catch(() => {})
-    }
-    sync()
-    reduce.addEventListener("change", sync)
-    return () => reduce.removeEventListener("change", sync)
-  }, [])
+  function toggleTrack() {
+    const el = audio.current
+    if (!el) return
+    if (el.paused) void el.play().catch(() => {})
+    else el.pause()
+  }
 
   const update = (e: React.ChangeEvent<HTMLInputElement>) =>
     setForm({ ...form, [e.target.name]: e.target.value })
@@ -83,7 +77,16 @@ export default function ByNight() {
         }
         .rsvp h1 { font-weight: 400; font-size: 24px; letter-spacing: 0.08em; margin: 34px 0 18px; }
         .rsvp .date { margin: 0 0 28px; text-transform: uppercase; }
-        .rsvp .dancer { width: 200px; max-width: 60%; height: auto; display: block; margin: 0 auto 28px; }
+        .rsvp .track { margin: 0 0 28px; }
+        .rsvp .track button {
+          width: auto; height: auto; margin: 0 auto;
+          display: inline-flex; align-items: baseline; gap: 10px;
+          background: none; color: ${INK}; border: 0; padding: 10px 8px;
+          font: inherit; font-size: 20px; cursor: pointer;
+        }
+        .rsvp .track button:hover { opacity: 0.6; }
+        .rsvp .track .glyph { font-size: 15px; }
+        .rsvp .track .title { text-decoration: underline; text-underline-offset: 4px; }
         .rsvp .date span { display: block; font-size: 46px; line-height: 1.15; letter-spacing: 0.02em; }
         .rsvp p  { font-size: 20px; margin: 0 0 16px; }
         .rsvp form { margin-top: 50px; }
@@ -105,7 +108,6 @@ export default function ByNight() {
         @media (max-width: 480px) {
           .rsvp h1 { font-size: 20px; }
           .rsvp .date span { font-size: 34px; }
-          .rsvp .dancer { width: 150px; }
         }
       `}</style>
 
@@ -127,16 +129,20 @@ export default function ByNight() {
             <span key={line}>{line}</span>
           ))}
         </div>
-        <video
-          ref={dancer}
-          className="dancer"
-          src="/bynight/dancer.mp4"
-          autoPlay
-          loop
-          muted
-          playsInline
-          aria-hidden="true"
-        />
+        <div className="track">
+          <audio
+            ref={audio}
+            src="/bynight/brasil.m4a"
+            preload="none"
+            onPlay={() => setPlaying(true)}
+            onPause={() => setPlaying(false)}
+            onEnded={() => setPlaying(false)}
+          />
+          <button type="button" onClick={toggleTrack}>
+            <span className="glyph" aria-hidden="true">{playing ? "❚❚" : "▶"}</span>
+            <span className="title">{playing ? "Pause" : "Play"} Brasil</span>
+          </button>
+        </div>
         {EVENT_INTRO.map((line) => (
           <p key={line}>{line}</p>
         ))}
