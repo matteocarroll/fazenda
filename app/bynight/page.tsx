@@ -67,13 +67,13 @@ export default function ByNight() {
           gap: 22px; flex-wrap: nowrap; min-height: 90px;
         }
         .rsvp .logo-donaflor { height: 42px; width: auto; }
-        .rsvp .logo-fazenda  { height: 26px; width: auto; }
+        .rsvp .logo-fazenda  { height: 21px; width: auto; }
         .rsvp .sep { font-size: 24px; }
         @media (max-width: 480px) {
           .rsvp .flower { width: 190px; margin-bottom: 18px; }
           .rsvp .collab { gap: 12px; }
           .rsvp .logo-donaflor { height: 30px; }
-          .rsvp .logo-fazenda  { height: 18px; }
+          .rsvp .logo-fazenda  { height: 15px; }
           .rsvp .sep { font-size: 18px; }
         }
         .rsvp h1 { font-weight: 400; font-size: 24px; letter-spacing: 0.08em; margin: 34px 0 18px; }
