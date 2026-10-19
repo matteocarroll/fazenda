@@ -3,7 +3,10 @@
 import { useState } from "react"
 
 // ---- Edit these ----
-const EVENT_INTRO = ["DONAFLOR at Fazenda"]
+const EVENT_INTRO = [
+  "Please join us for our wine night. We’re welcoming our dear friend Jay Diniz (Donaflor) who will be playing.",
+  "This will be a private event. If you don’t RSVP you will not be allowed in.",
+]
 /* Leave empty until the date is confirmed — the line is hidden while it is blank. */
 const EVENT_DATE = ""
 const EVENT_DETAILS = "177 Mott Street, New York"
