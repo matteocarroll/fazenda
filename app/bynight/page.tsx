@@ -50,7 +50,7 @@ export default function ByNight() {
           min-height: 100vh;
           font-family: "Times New Roman", Times, serif;
         }
-        .rsvp-inner { max-width: 560px; margin: 0 auto; padding: 50px 16px 80px; text-align: center; }
+        .rsvp-inner { max-width: 560px; margin: 0 auto; padding: 50px 16px 80px; text-align: center; text-transform: uppercase; }
         .rsvp .flower { width: 260px; max-width: 80%; height: auto; display: block; margin: 0 auto 28px; }
         .rsvp .collab {
           display: flex; align-items: center; justify-content: center;
@@ -77,7 +77,7 @@ export default function ByNight() {
           height: 66px; margin-bottom: 40px;
           border: 0; border-bottom: 1px solid ${INK};
           background: transparent; color: ${INK};
-          font: inherit; font-size: 20px; text-align: center; outline: none;
+          font: inherit; font-size: 20px; text-align: center; outline: none; text-transform: none;
         }
         .rsvp button {
           width: 100%; height: 70px; margin-top: 8px;
