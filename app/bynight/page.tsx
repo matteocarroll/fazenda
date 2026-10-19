@@ -4,7 +4,7 @@ import { useRef, useState } from "react"
 
 // ---- Edit these ----
 const EVENT_INTRO = [
-  "Please join us for our wine night. We’re welcoming our dear friend Jay Diniz (Donaflor) who will be playing.",
+  "Please join us for our wine night. We’re welcoming our dear friend João Diniz (Donaflor) who will be playing.",
   "This will be a private event. If you don’t RSVP you will not be allowed in.",
 ]
 /* Shown large under the RSVP heading. Each entry is its own line. */
