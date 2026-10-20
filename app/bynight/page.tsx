@@ -88,7 +88,7 @@ export default function ByNight() {
         .rsvp .track button:hover { opacity: 0.6; }
         .rsvp .track .title { text-decoration: underline; text-underline-offset: 4px; }
         .rsvp .date span { display: block; font-size: 38px; line-height: 1.15; letter-spacing: 0.02em; }
-        .rsvp p  { font-size: 20px; margin: 0 0 16px; }
+        .rsvp p  { font-size: 17px; margin: 0 0 14px; }
         .rsvp form { margin-top: 50px; }
         .rsvp label { display: block; font-size: 20px; margin-bottom: 0; }
         .rsvp input {
@@ -104,7 +104,7 @@ export default function ByNight() {
           font: inherit; font-size: 20px; cursor: pointer;
         }
         .rsvp button:disabled { opacity: 0.6; cursor: default; }
-        .rsvp .msg { margin-top: 24px; font-size: 20px; font-weight: 700; }
+        .rsvp .msg { margin-top: 24px; font-size: 17px; font-weight: 700; }
         @media (max-width: 480px) {
           .rsvp h1 { font-size: 28px; }
           .rsvp .date span { font-size: 28px; }
