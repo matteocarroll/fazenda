@@ -83,7 +83,8 @@ export default function ByNight() {
           width: auto; height: auto; margin: 0 auto;
           display: inline-flex; align-items: baseline; gap: 10px;
           background: none; color: ${PURPLE}; border: 0; padding: 10px 8px;
-          font: inherit; font-size: 20px; font-weight: 700; cursor: pointer;
+          font: inherit; font-family: Arial, Helvetica, sans-serif;
+          font-size: 18px; font-weight: 700; letter-spacing: 0.01em; cursor: pointer;
         }
         .rsvp .track button:hover { opacity: 0.6; }
         .rsvp .track .glyph { font-size: 15px; }
