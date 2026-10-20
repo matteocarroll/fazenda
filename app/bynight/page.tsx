@@ -58,7 +58,7 @@ export default function ByNight() {
           background: #fff;
           color: ${INK};
           min-height: 100vh;
-          font-family: "Times New Roman", Times, serif;
+          font-family: var(--font-courier-prime), "Courier New", Courier, monospace;
         }
         .rsvp-inner { max-width: 560px; margin: 0 auto; padding: 50px 16px 80px; text-align: center; }
         .rsvp .flower { width: 260px; max-width: 80%; height: auto; display: block; margin: 0 auto 28px; }
