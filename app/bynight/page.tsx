@@ -83,7 +83,7 @@ export default function ByNight() {
           width: auto; height: auto; margin: 0 auto;
           display: inline-flex; align-items: baseline; gap: 10px;
           background: none; color: ${PURPLE}; border: 0; padding: 10px 8px;
-          font: inherit; font-size: 20px; cursor: pointer;
+          font: inherit; font-size: 20px; font-weight: 700; cursor: pointer;
         }
         .rsvp .track button:hover { opacity: 0.6; }
         .rsvp .track .glyph { font-size: 15px; }
@@ -141,7 +141,7 @@ export default function ByNight() {
           />
           <button type="button" onClick={toggleTrack}>
             <span className="glyph" aria-hidden="true">{playing ? "❚❚" : "▶"}</span>
-            <span className="title">Preview Donaflor tunes</span>
+            <span className="title">Listen to Donaflor</span>
           </button>
         </div>
         {EVENT_INTRO.map((line) => (
