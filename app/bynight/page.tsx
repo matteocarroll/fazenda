@@ -58,7 +58,7 @@ export default function ByNight() {
           background: #fff;
           color: ${INK};
           min-height: 100vh;
-          font-family: Arial, Helvetica, sans-serif;
+          font-family: "Times New Roman", Times, serif;
         }
         .rsvp-inner { max-width: 560px; margin: 0 auto; padding: 50px 16px 80px; text-align: center; }
         .rsvp .flower { width: 260px; max-width: 80%; height: auto; display: block; margin: 0 auto 28px; }
@@ -83,8 +83,7 @@ export default function ByNight() {
           width: auto; height: auto; margin: 0 auto;
           display: inline-block;
           background: none; color: ${PURPLE}; border: 0; padding: 10px 8px;
-          font: inherit; font-family: Arial, Helvetica, sans-serif;
-          font-size: 18px; font-weight: 700; letter-spacing: 0.01em; cursor: pointer;
+          font: inherit; font-size: 20px; font-weight: 700; cursor: pointer;
         }
         .rsvp .track button:hover { opacity: 0.6; }
         .rsvp .track .title { text-decoration: underline; text-underline-offset: 4px; }
@@ -105,10 +104,7 @@ export default function ByNight() {
           font: inherit; font-size: 20px; cursor: pointer;
         }
         .rsvp button:disabled { opacity: 0.6; cursor: default; }
-        .rsvp .msg {
-          margin-top: 24px; font-size: 20px; font-weight: 700;
-          font-family: Arial, Helvetica, sans-serif;
-        }
+        .rsvp .msg { margin-top: 24px; font-size: 20px; font-weight: 700; }
         @media (max-width: 480px) {
           .rsvp h1 { font-size: 26px; }
           .rsvp .date span { font-size: 28px; }
