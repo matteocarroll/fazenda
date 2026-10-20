@@ -4,7 +4,7 @@ import type { Metadata } from "next"
 export const metadata: Metadata = {
   title: "DONAFLOR at Fazenda",
   description:
-    "A private wine night at Fazenda with Jay Diniz (Donaflor) playing. RSVP required — 177 Mott Street, New York.",
+    "A private wine night at Fazenda on Thursday October 22nd with João Diniz (Donaflor) playing. RSVP required — 177 Mott Street, New York.",
 }
 
 export default function ByNightLayout({ children }: { children: React.ReactNode }) {
