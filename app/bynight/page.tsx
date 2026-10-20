@@ -8,7 +8,7 @@ const EVENT_INTRO = [
   "This will be a private event. If you don’t RSVP you will not be allowed in.",
 ]
 /* Shown large under the RSVP heading. Each entry is its own line. */
-const EVENT_DATE = ["Oct 22nd", "8pm"]
+const EVENT_DATE = ["Oct 22nd", "7pm"]
 const EVENT_DETAILS = "177 Mott Street, New York"
 /* Becomes the tab name in the RSVP sheet, so keep it stable once guests start replying. */
 const EVENT_KEY = "DONAFLOR at Fazenda"
