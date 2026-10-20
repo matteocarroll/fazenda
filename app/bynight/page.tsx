@@ -76,7 +76,7 @@ export default function ByNight() {
           .rsvp .logo-fazenda  { height: 15px; }
           .rsvp .sep { font-size: 18px; }
         }
-        .rsvp h1 { font-weight: 400; font-size: 32px; letter-spacing: 0.08em; margin: 34px 0 18px; }
+        .rsvp h1 { font-weight: 400; font-size: 38px; letter-spacing: 0.08em; margin: 34px 0 18px; }
         .rsvp .date { margin: 0 0 28px; text-transform: uppercase; }
         .rsvp .track { margin: 0 0 28px; }
         .rsvp .track button {
@@ -106,7 +106,7 @@ export default function ByNight() {
         .rsvp button:disabled { opacity: 0.6; cursor: default; }
         .rsvp .msg { margin-top: 24px; font-size: 20px; font-weight: 700; }
         @media (max-width: 480px) {
-          .rsvp h1 { font-size: 26px; }
+          .rsvp h1 { font-size: 28px; }
           .rsvp .date span { font-size: 28px; }
         }
       `}</style>
