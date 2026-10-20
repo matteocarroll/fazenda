@@ -105,6 +105,12 @@ export default function ByNight() {
         }
         .rsvp button:disabled { opacity: 0.6; cursor: default; }
         .rsvp .msg { margin-top: 24px; font-size: 17px; font-weight: 700; }
+        .rsvp .cal {
+          display: inline-block; margin-top: 18px; padding: 10px 8px;
+          color: ${INK}; font-size: 17px; font-weight: 700;
+          text-decoration: underline; text-underline-offset: 4px;
+        }
+        .rsvp .cal:hover { opacity: 0.6; }
         @media (max-width: 480px) {
           .rsvp h1 { font-size: 28px; }
           .rsvp .date span { font-size: 28px; }
@@ -148,9 +154,14 @@ export default function ByNight() {
         <p>{EVENT_DETAILS}</p>
 
         {status === "done" ? (
-          <p className="msg">
-            Thank you, {form.name.split(" ")[0]}. You&rsquo;re on the list — see you there.
-          </p>
+          <>
+            <p className="msg">
+              Thank you, {form.name.split(" ")[0]}. You&rsquo;re on the list — see you there.
+            </p>
+            <a className="cal" href="/bynight/donaflor.ics" download="donaflor-at-fazenda.ics">
+              Add to calendar
+            </a>
+          </>
         ) : (
           <form onSubmit={handleSubmit}>
             <label htmlFor="name">Name</label>

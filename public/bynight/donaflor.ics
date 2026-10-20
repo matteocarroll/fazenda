@@ -1,0 +1,22 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Fazenda//DONAFLOR at Fazenda//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+BEGIN:VEVENT
+UID:donaflor-20261022@fazenda.com
+DTSTAMP:20261020T221242Z
+DTSTART:20261022T230000Z
+DTEND:20261023T020000Z
+SUMMARY:DONAFLOR at Fazenda
+LOCATION:Fazenda\, 177 Mott Street\, New York\, NY 10012
+DESCRIPTION:A private wine night at Fazenda with Joao Diniz (Donaflor) pla
+ ying. RSVP required. https://www.fazenda.com/bynight
+URL:https://www.fazenda.com/bynight
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:DONAFLOR at Fazenda tonight
+TRIGGER:-PT2H
+END:VALARM
+END:VEVENT
+END:VCALENDAR
