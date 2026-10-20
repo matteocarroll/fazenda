@@ -76,20 +76,19 @@ export default function ByNight() {
           .rsvp .logo-fazenda  { height: 15px; }
           .rsvp .sep { font-size: 18px; }
         }
-        .rsvp h1 { font-weight: 400; font-size: 24px; letter-spacing: 0.08em; margin: 34px 0 18px; }
+        .rsvp h1 { font-weight: 400; font-size: 32px; letter-spacing: 0.08em; margin: 34px 0 18px; }
         .rsvp .date { margin: 0 0 28px; text-transform: uppercase; }
         .rsvp .track { margin: 0 0 28px; }
         .rsvp .track button {
           width: auto; height: auto; margin: 0 auto;
-          display: inline-flex; align-items: baseline; gap: 10px;
+          display: inline-block;
           background: none; color: ${PURPLE}; border: 0; padding: 10px 8px;
           font: inherit; font-family: Arial, Helvetica, sans-serif;
           font-size: 18px; font-weight: 700; letter-spacing: 0.01em; cursor: pointer;
         }
         .rsvp .track button:hover { opacity: 0.6; }
-        .rsvp .track .glyph { font-size: 15px; }
         .rsvp .track .title { text-decoration: underline; text-underline-offset: 4px; }
-        .rsvp .date span { display: block; font-size: 46px; line-height: 1.15; letter-spacing: 0.02em; }
+        .rsvp .date span { display: block; font-size: 38px; line-height: 1.15; letter-spacing: 0.02em; }
         .rsvp p  { font-size: 20px; margin: 0 0 16px; }
         .rsvp form { margin-top: 50px; }
         .rsvp label { display: block; font-size: 20px; margin-bottom: 0; }
@@ -108,8 +107,8 @@ export default function ByNight() {
         .rsvp button:disabled { opacity: 0.6; cursor: default; }
         .rsvp .msg { margin-top: 24px; font-size: 18px; }
         @media (max-width: 480px) {
-          .rsvp h1 { font-size: 20px; }
-          .rsvp .date span { font-size: 34px; }
+          .rsvp h1 { font-size: 26px; }
+          .rsvp .date span { font-size: 28px; }
         }
       `}</style>
 
@@ -140,8 +139,7 @@ export default function ByNight() {
             onPause={() => setPlaying(false)}
             onEnded={() => setPlaying(false)}
           />
-          <button type="button" onClick={toggleTrack}>
-            <span className="glyph" aria-hidden="true">{playing ? "❚❚" : "▶"}</span>
+          <button type="button" onClick={toggleTrack} aria-pressed={playing}>
             <span className="title">Listen to Donaflor</span>
           </button>
         </div>
