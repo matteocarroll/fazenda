@@ -105,7 +105,7 @@ export default function ByNight() {
           font: inherit; font-size: 20px; cursor: pointer;
         }
         .rsvp button:disabled { opacity: 0.6; cursor: default; }
-        .rsvp .msg { margin-top: 24px; font-size: 18px; }
+        .rsvp .msg { margin-top: 24px; font-size: 20px; font-weight: 700; }
         @media (max-width: 480px) {
           .rsvp h1 { font-size: 26px; }
           .rsvp .date span { font-size: 28px; }
