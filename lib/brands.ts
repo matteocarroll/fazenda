@@ -26,6 +26,7 @@ export const BRANDS = [
 export const COMING_SOON = [
   "Baziszt",
   "District Vision",
+  "President’s",
   "RANRA",
   "Sunflower",
   "Suntosons",
