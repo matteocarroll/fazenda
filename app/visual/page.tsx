@@ -100,27 +100,33 @@ export default function VisualPage() {
       {/* Filter rows */}
       <div className="vb-filters">
         <div className="vb-filters-inner">
-          <div className="vb-pills">
-            {TYPE_ORDER.filter((t) => t === "All" || items.some((i) => i.type === t)).map((opt) => (
-              <button
-                key={opt}
-                onClick={() => setTypeFilter(opt)}
-                className={`vb-pill${typeFilter === opt ? " active" : ""}`}
-              >
-                {opt}
-              </button>
-            ))}
+          <div className="vb-filter-row">
+            <span className="vb-filter-label">Type</span>
+            <div className="vb-pills">
+              {TYPE_ORDER.filter((t) => t === "All" || items.some((i) => i.type === t)).map((opt) => (
+                <button
+                  key={opt}
+                  onClick={() => setTypeFilter(opt)}
+                  className={`vb-pill${typeFilter === opt ? " active" : ""}`}
+                >
+                  {opt}
+                </button>
+              ))}
+            </div>
           </div>
-          <div className="vb-pills">
-            {brands.map((opt) => (
-              <button
-                key={opt}
-                onClick={() => setBrandFilter(opt)}
-                className={`vb-pill${brandFilter === opt ? " active" : ""}`}
-              >
-                {opt}
-              </button>
-            ))}
+          <div className="vb-filter-row">
+            <span className="vb-filter-label">Brand</span>
+            <div className="vb-pills">
+              {brands.map((opt) => (
+                <button
+                  key={opt}
+                  onClick={() => setBrandFilter(opt)}
+                  className={`vb-pill${brandFilter === opt ? " active" : ""}`}
+                >
+                  {opt}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
       </div>

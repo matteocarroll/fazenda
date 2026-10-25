@@ -35,6 +35,8 @@ body {
 .vb-counts strong { font-weight: 600; color: #1c1917; }
 .vb-filters { border-bottom: 1px solid #f5f5f4; background: #fafaf9; padding: 0.75rem 1.5rem; }
 .vb-filters-inner { margin: 0 auto; max-width: 1280px; display: flex; flex-direction: column; gap: 0.5rem; }
+.vb-filter-row { display: flex; align-items: center; gap: 0.75rem; }
+.vb-filter-label { font-size: 0.625rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: #a8a29e; white-space: nowrap; min-width: 2.5rem; }
 .vb-pills { display: flex; flex-wrap: wrap; gap: 0.375rem; }
 .vb-pill { border-radius: 9999px; border: 1px solid #d6d3d1; padding: 0.25rem 0.75rem; font-size: 0.75rem; cursor: pointer; background: transparent; color: #78716c; transition: all 0.15s; }
 .vb-pill.active { border-color: #1c1917; background: #1c1917; color: #fff; }
