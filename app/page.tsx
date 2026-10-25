@@ -24,7 +24,7 @@ export default function Home() {
           className="w-auto h-auto max-w-[180px]"
           priority
         />
-        <p className="text-[#5c3317] text-xs">Multibrand menswear store</p>
+        <p className="text-[#5c3317] text-xs">Curated Menswear Store</p>
         <p className="text-[#5c3317] text-xs" >177 Mott Street, 10012, New York</p>
         <p className="text-[#5c3317] text-xs" >
           For product requests/help, please{" "}
@@ -35,6 +35,17 @@ export default function Home() {
             className="underline hover:opacity-70 transition-opacity"
           >
             send us a WhatsApp
+          </a>
+        </p>
+        <p className="text-[#5c3317] text-xs">
+          To schedule an appointment, please use{" "}
+          <a
+            href="https://calendar.notion.com/meet/matteocarroll/fazenda"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline hover:opacity-70 transition-opacity"
+          >
+            this link
           </a>
         </p>
       </div>
