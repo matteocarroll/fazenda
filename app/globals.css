@@ -5,6 +5,11 @@
 body {
   font-family: "Times New Roman", Times, serif;
 }
+/* virtual store */
+.vs-grid { grid-template-columns: repeat(2, 1fr) !important; }
+@media (min-width: 640px)  { .vs-grid { grid-template-columns: repeat(3, 1fr) !important; } }
+@media (min-width: 1024px) { .vs-grid { grid-template-columns: repeat(4, 1fr) !important; } }
+
 /* visual board */
 .vb-grid {
   display: grid;

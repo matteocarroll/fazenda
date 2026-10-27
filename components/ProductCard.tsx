@@ -13,8 +13,6 @@ export type Product = {
   images: { src: string; type: string; generated?: boolean }[]
 }
 
-// The still is the thumbnail and the first slide. A handful of products have no
-// still yet, so fall back to whatever image comes first.
 function orderImages(images: Product["images"]) {
   const still = images.find((image) => image.type === "still")
   if (!still) return images
@@ -47,81 +45,120 @@ export default function ProductCard({ product }: { product: Product }) {
   const href = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(message)}`
 
   return (
-    <figure className="flex flex-col">
-      <div className="relative">
-        <div
-          ref={scroller}
-          onScroll={onScroll}
-          className="flex w-full snap-x snap-mandatory overflow-x-auto scroll-smooth [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-        >
-          {images.map((image, i) => (
-            <div key={image.src} className="relative aspect-[2/3] w-full flex-none snap-center">
-              <Image
-                src={image.src}
-                alt={`${label} — image ${i + 1} of ${count}`}
-                fill
-                sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 250px"
-                className="object-contain"
-              />
-            </div>
-          ))}
-        </div>
-
-        {count > 1 && (
+    <figure style={{ margin: 0, display: "flex", flexDirection: "column" }}>
+      <div style={{ position: "relative", background: "#f5f5f5" }}>
+        {count === 0 ? (
+          /* Placeholder for products with no images */
+          <div style={{
+            aspectRatio: "3/4",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            background: "#f5f5f5",
+            padding: "1.5rem",
+          }}>
+            <span style={{ fontSize: "0.625rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "#999", textAlign: "center", lineHeight: 1.6 }}>
+              {product.brand}<br />
+              <span style={{ color: "#bbb" }}>{product.name}</span>
+            </span>
+          </div>
+        ) : (
           <>
-            <button
-              type="button"
-              onClick={() => goTo(index - 1)}
-              disabled={index === 0}
-              aria-label="Previous image"
-              className="absolute left-1 top-1/2 hidden -translate-y-1/2 px-2 py-1 text-[#5c3317] text-xs hover:opacity-70 disabled:opacity-20 sm:block"
+            <div
+              ref={scroller}
+              onScroll={onScroll}
+              style={{
+                display: "flex",
+                overflowX: "auto",
+                scrollSnapType: "x mandatory",
+                scrollBehavior: "smooth",
+                scrollbarWidth: "none",
+              }}
             >
-              &#8592;
-            </button>
-            <button
-              type="button"
-              onClick={() => goTo(index + 1)}
-              disabled={index === count - 1}
-              aria-label="Next image"
-              className="absolute right-1 top-1/2 hidden -translate-y-1/2 px-2 py-1 text-[#5c3317] text-xs hover:opacity-70 disabled:opacity-20 sm:block"
-            >
-              &#8594;
-            </button>
+              {images.map((image, i) => (
+                <div key={image.src} style={{ position: "relative", aspectRatio: "3/4", width: "100%", flexShrink: 0, scrollSnapAlign: "center" }}>
+                  <Image
+                    src={image.src}
+                    alt={`${label} — image ${i + 1} of ${count}`}
+                    fill
+                    sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 280px"
+                    style={{ objectFit: "cover" }}
+                  />
+                </div>
+              ))}
+            </div>
+
+            {count > 1 && (
+              <>
+                <button
+                  type="button"
+                  onClick={() => goTo(index - 1)}
+                  disabled={index === 0}
+                  aria-label="Previous image"
+                  style={{
+                    position: "absolute", left: 6, top: "50%", transform: "translateY(-50%)",
+                    background: "rgba(255,255,255,0.85)", border: "none", cursor: "pointer",
+                    padding: "4px 8px", fontSize: "0.75rem", color: "#111", opacity: index === 0 ? 0.2 : 1,
+                  }}
+                >
+                  ←
+                </button>
+                <button
+                  type="button"
+                  onClick={() => goTo(index + 1)}
+                  disabled={index === count - 1}
+                  aria-label="Next image"
+                  style={{
+                    position: "absolute", right: 6, top: "50%", transform: "translateY(-50%)",
+                    background: "rgba(255,255,255,0.85)", border: "none", cursor: "pointer",
+                    padding: "4px 8px", fontSize: "0.75rem", color: "#111", opacity: index === count - 1 ? 0.2 : 1,
+                  }}
+                >
+                  →
+                </button>
+              </>
+            )}
           </>
         )}
       </div>
 
       {count > 1 && (
-        <div className="mt-2 flex justify-center gap-1.5">
+        <div style={{ display: "flex", justifyContent: "center", gap: 5, marginTop: 8 }}>
           {images.map((image, i) => (
             <button
               key={image.src}
               type="button"
               onClick={() => goTo(i)}
               aria-label={`Go to image ${i + 1}`}
-              aria-current={i === index}
-              className={`h-1.5 w-1.5 rounded-full bg-[#5c3317] transition-opacity ${
-                i === index ? "opacity-100" : "opacity-25"
-              }`}
+              style={{
+                width: 5, height: 5, borderRadius: "50%", border: "none", cursor: "pointer",
+                background: "#111", opacity: i === index ? 1 : 0.2, padding: 0,
+              }}
             />
           ))}
         </div>
       )}
 
-      <figcaption className="mt-2 text-center text-[#5c3317] text-xs">
-        <span className="block">{product.brand}</span>
-        <span className="block opacity-70">{product.name}</span>
-        {product.color && <span className="block opacity-70">{product.color}</span>}
-        {product.style_code && (
-          <span className="block text-[0.625rem] opacity-50">{product.style_code}</span>
+      <figcaption style={{ marginTop: 10, textAlign: "left" }}>
+        <span style={{ display: "block", fontSize: "0.625rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "#999", marginBottom: 2 }}>
+          {product.brand}
+        </span>
+        <span style={{ display: "block", fontSize: "0.8125rem", color: "#111", lineHeight: 1.3 }}>
+          {product.name}
+        </span>
+        {product.color && (
+          <span style={{ display: "block", fontSize: "0.75rem", color: "#999", marginTop: 2 }}>
+            {product.color}
+          </span>
         )}
         <a
           href={href}
           target="_blank"
           rel="noopener noreferrer"
-          className="mt-1 inline-block underline hover:opacity-70 transition-opacity"
+          style={{ display: "inline-block", marginTop: 6, fontSize: "0.6875rem", color: "#111", textDecoration: "underline", letterSpacing: "0.04em" }}
         >
-          Ask on WhatsApp
+          Ask on WhatsApp →
         </a>
       </figcaption>
     </figure>
