@@ -1,84 +1,119 @@
 "use client"
 
 import { useState, useMemo } from "react"
-import ProductCard, { type Product } from "@/components/ProductCard"
-import products from "@/data/virtualstore-products.json"
-
-const PRODUCTS = products as Product[]
+import ProductCard from "@/components/ProductCard"
+import { CATEGORIES, PRODUCTS } from "@/lib/virtualstore"
 
 export default function VirtualStore() {
+  const [category, setCategory] = useState("All")
   const [brandFilter, setBrandFilter] = useState("All")
 
+  // Only show tabs that have something in them.
+  const tabs = useMemo(
+    () => ["All", ...CATEGORIES.filter((c) => PRODUCTS.some((p) => p.category === c))],
+    []
+  )
+
+  const inCategory = useMemo(
+    () => (category === "All" ? PRODUCTS : PRODUCTS.filter((p) => p.category === category)),
+    [category]
+  )
+
+  // Brands follow the tab, so the list never offers an empty combination.
   const brands = useMemo(() => {
-    const set = new Set(PRODUCTS.map((p) => p.brand).filter(Boolean))
+    const set = new Set(inCategory.map((p) => p.brand).filter(Boolean))
     return ["All", ...Array.from(set).sort()]
-  }, [])
+  }, [inCategory])
+
+  // Keep the brand across tabs when the new tab has it, otherwise drop it.
+  const selectCategory = (next: string) => {
+    setCategory(next)
+    const stocked = next === "All" || PRODUCTS.some((p) => p.category === next && p.brand === brandFilter)
+    if (!stocked) setBrandFilter("All")
+  }
 
   const filtered = useMemo(
-    () => brandFilter === "All" ? PRODUCTS : PRODUCTS.filter((p) => p.brand === brandFilter),
-    [brandFilter]
+    () => (brandFilter === "All" ? inCategory : inCategory.filter((p) => p.brand === brandFilter)),
+    [inCategory, brandFilter]
   )
 
   return (
-    <div style={{ minHeight: "100vh", background: "#fff", fontFamily: "Arial, Helvetica, sans-serif" }}>
+    <main className="min-h-screen bg-white text-[#5c3317]">
+      <header className="mx-auto max-w-6xl px-4 pt-10 sm:px-8">
+        <h1
+          className="text-center"
+          style={{
+            fontFamily: '"Times New Roman", Times, serif',
+            fontSize: "clamp(1.25rem, 3vw, 1.75rem)",
+          }}
+        >
+          Virtual Store
+        </h1>
+        <p className="mt-2 text-center text-xs opacity-70">
+          What&rsquo;s on the rail at 177 Mott Street. See something you like?{" "}
+          <a
+            href="https://wa.me/19298408626"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline hover:opacity-70 transition-opacity"
+          >
+            Send us a WhatsApp
+          </a>
+        </p>
+      </header>
 
-      {/* Page header */}
-      <div style={{ borderBottom: "1px solid #e5e5e5", padding: "2rem 1.5rem 0" }}>
-        <div style={{ maxWidth: 1200, margin: "0 auto" }}>
-          <p style={{ fontSize: "0.6875rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "#999", marginBottom: "1.25rem", textAlign: "center" }}>
-            177 Mott Street, New York ·{" "}
-            <a href="https://wa.me/19298408626" target="_blank" rel="noopener noreferrer" style={{ color: "#999", textDecoration: "underline" }}>
-              WhatsApp
-            </a>
-          </p>
-
-          {/* Brand filter tabs */}
-          <div style={{ display: "flex", gap: 0, overflowX: "auto", scrollbarWidth: "none" }}>
-            {brands.map((b) => (
+      <div className="sticky top-0 z-10 mt-8 border-b border-[#5c3317]/10 bg-white/95 backdrop-blur">
+        <div className="mx-auto flex max-w-6xl items-center gap-4 px-4 sm:px-8">
+          {/* Category tabs */}
+          <nav
+            aria-label="Categories"
+            className="-mb-px flex flex-1 gap-6 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+          >
+            {tabs.map((tab) => (
               <button
-                key={b}
-                onClick={() => setBrandFilter(b)}
-                style={{
-                  background: "none",
-                  border: "none",
-                  borderBottom: brandFilter === b ? "2px solid #111" : "2px solid transparent",
-                  padding: "0.5rem 1.25rem",
-                  fontSize: "0.6875rem",
-                  letterSpacing: "0.08em",
-                  textTransform: "uppercase",
-                  cursor: "pointer",
-                  color: brandFilter === b ? "#111" : "#999",
-                  whiteSpace: "nowrap",
-                  fontWeight: brandFilter === b ? 600 : 400,
-                  transition: "all 0.15s",
-                }}
+                key={tab}
+                type="button"
+                onClick={() => selectCategory(tab)}
+                aria-current={category === tab}
+                className={`whitespace-nowrap border-b-2 py-3.5 text-sm transition-colors ${
+                  category === tab
+                    ? "border-[#5c3317] text-[#5c3317]"
+                    : "border-transparent text-[#5c3317]/50 hover:text-[#5c3317]"
+                }`}
               >
-                {b}
+                {tab}
               </button>
             ))}
-          </div>
+          </nav>
+
+          {/* Brand filter */}
+          <label className="flex shrink-0 items-center gap-2 text-xs">
+            <span className="hidden opacity-60 sm:inline">Brand</span>
+            <select
+              value={brandFilter}
+              onChange={(e) => setBrandFilter(e.target.value)}
+              className="max-w-[9rem] rounded-full border border-[#5c3317]/20 bg-transparent px-3 py-1.5 text-xs text-[#5c3317] focus:border-[#5c3317] focus:outline-none sm:max-w-none"
+            >
+              {brands.map((b) => (
+                <option key={b} value={b}>
+                  {b === "All" ? "All brands" : b}
+                </option>
+              ))}
+            </select>
+          </label>
         </div>
       </div>
 
-      {/* Grid */}
-      <div style={{ maxWidth: 1200, margin: "0 auto", padding: "2.5rem 1.5rem" }}>
-        <div style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(2, 1fr)",
-          gap: "2rem 1rem",
-        }}
-          className="vs-grid"
-        >
+      <section className="mx-auto max-w-6xl px-4 py-8 sm:px-8">
+        <p className="mb-6 text-xs opacity-60">
+          {filtered.length} {filtered.length === 1 ? "piece" : "pieces"}
+        </p>
+        <div className="grid grid-cols-2 gap-x-4 gap-y-10 sm:grid-cols-3 sm:gap-x-6 lg:grid-cols-4">
           {filtered.map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}
         </div>
-        {filtered.length === 0 && (
-          <p style={{ textAlign: "center", color: "#999", fontSize: "0.875rem", padding: "4rem 0" }}>
-            No products found.
-          </p>
-        )}
-      </div>
-    </div>
+      </section>
+    </main>
   )
 }

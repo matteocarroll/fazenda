@@ -1,30 +1,20 @@
 "use client"
 
-import Image from "next/image"
+import Image, { type ImageLoader } from "next/image"
 import { useRef, useState } from "react"
+import type { Product } from "@/lib/virtualstore"
 
-export type Product = {
-  id: string
-  brand: string
-  name: string
-  color: string
-  style_code?: string
-  still?: string | null
-  images: { src: string; type: string; generated?: boolean }[]
-}
-
-function orderImages(images: Product["images"]) {
-  const still = images.find((image) => image.type === "still")
-  if (!still) return images
-  return [still, ...images.filter((image) => image !== still)]
-}
+// Shopify's CDN resizes on its own, so skip Next's optimiser and ask it for the width.
+// Our own photos in /public still go through Next.
+const shopifyLoader: ImageLoader = ({ src, width }) =>
+  `${src}${src.includes("?") ? "&" : "?"}width=${width}`
 
 const WHATSAPP = "19298408626"
 
 export default function ProductCard({ product }: { product: Product }) {
   const scroller = useRef<HTMLDivElement>(null)
   const [index, setIndex] = useState(0)
-  const images = orderImages(product.images)
+  const { images } = product
   const count = images.length
 
   const goTo = (i: number) => {
@@ -45,120 +35,84 @@ export default function ProductCard({ product }: { product: Product }) {
   const href = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(message)}`
 
   return (
-    <figure style={{ margin: 0, display: "flex", flexDirection: "column" }}>
-      <div style={{ position: "relative", background: "#f5f5f5" }}>
+    <figure className="group flex flex-col">
+      <div className="relative overflow-hidden rounded-sm bg-[#f4f1ec]">
         {count === 0 ? (
-          /* Placeholder for products with no images */
-          <div style={{
-            aspectRatio: "3/4",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            background: "#f5f5f5",
-            padding: "1.5rem",
-          }}>
-            <span style={{ fontSize: "0.625rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "#999", textAlign: "center", lineHeight: 1.6 }}>
-              {product.brand}<br />
-              <span style={{ color: "#bbb" }}>{product.name}</span>
-            </span>
+          // No photos in Shopify yet: same footprint, just the brand and name.
+          <div className="flex aspect-[4/5] w-full flex-col items-center justify-center gap-1.5 px-4 text-center text-[#5c3317]">
+            <span className="text-[0.625rem] uppercase tracking-[0.18em] opacity-60">{product.brand}</span>
+            <span className="text-sm leading-snug">{product.name}</span>
           </div>
         ) : (
+          <div
+            ref={scroller}
+            onScroll={onScroll}
+            className="flex w-full snap-x snap-mandatory overflow-x-auto scroll-smooth [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+          >
+            {images.map((src, i) => (
+              <div key={src} className="relative aspect-[4/5] w-full flex-none snap-center">
+                <Image
+                  loader={src.startsWith("https://") ? shopifyLoader : undefined}
+                  src={src}
+                  alt={`${label} — image ${i + 1} of ${count}`}
+                  fill
+                  sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 300px"
+                  className="object-cover"
+                />
+              </div>
+            ))}
+          </div>
+        )}
+
+        {count > 1 && (
           <>
-            <div
-              ref={scroller}
-              onScroll={onScroll}
-              style={{
-                display: "flex",
-                overflowX: "auto",
-                scrollSnapType: "x mandatory",
-                scrollBehavior: "smooth",
-                scrollbarWidth: "none",
-              }}
+            <button
+              type="button"
+              onClick={() => goTo(index - 1)}
+              disabled={index === 0}
+              aria-label="Previous image"
+              className="absolute left-1.5 top-1/2 hidden h-7 w-7 -translate-y-1/2 items-center justify-center rounded-full bg-white/80 text-[#5c3317] text-xs opacity-0 transition-opacity group-hover:opacity-100 disabled:!opacity-0 sm:flex"
             >
-              {images.map((image, i) => (
-                <div key={image.src} style={{ position: "relative", aspectRatio: "3/4", width: "100%", flexShrink: 0, scrollSnapAlign: "center" }}>
-                  <Image
-                    src={image.src}
-                    alt={`${label} — image ${i + 1} of ${count}`}
-                    fill
-                    sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 280px"
-                    style={{ objectFit: "cover" }}
-                  />
-                </div>
+              &#8592;
+            </button>
+            <button
+              type="button"
+              onClick={() => goTo(index + 1)}
+              disabled={index === count - 1}
+              aria-label="Next image"
+              className="absolute right-1.5 top-1/2 hidden h-7 w-7 -translate-y-1/2 items-center justify-center rounded-full bg-white/80 text-[#5c3317] text-xs opacity-0 transition-opacity group-hover:opacity-100 disabled:!opacity-0 sm:flex"
+            >
+              &#8594;
+            </button>
+            <div className="pointer-events-none absolute inset-x-0 bottom-2 flex justify-center gap-1.5">
+              {images.map((src, i) => (
+                <button
+                  key={src}
+                  type="button"
+                  onClick={() => goTo(i)}
+                  aria-label={`Go to image ${i + 1}`}
+                  aria-current={i === index}
+                  className={`pointer-events-auto h-1.5 w-1.5 rounded-full bg-[#5c3317] transition-opacity ${
+                    i === index ? "opacity-90" : "opacity-25"
+                  }`}
+                />
               ))}
             </div>
-
-            {count > 1 && (
-              <>
-                <button
-                  type="button"
-                  onClick={() => goTo(index - 1)}
-                  disabled={index === 0}
-                  aria-label="Previous image"
-                  style={{
-                    position: "absolute", left: 6, top: "50%", transform: "translateY(-50%)",
-                    background: "rgba(255,255,255,0.85)", border: "none", cursor: "pointer",
-                    padding: "4px 8px", fontSize: "0.75rem", color: "#111", opacity: index === 0 ? 0.2 : 1,
-                  }}
-                >
-                  ←
-                </button>
-                <button
-                  type="button"
-                  onClick={() => goTo(index + 1)}
-                  disabled={index === count - 1}
-                  aria-label="Next image"
-                  style={{
-                    position: "absolute", right: 6, top: "50%", transform: "translateY(-50%)",
-                    background: "rgba(255,255,255,0.85)", border: "none", cursor: "pointer",
-                    padding: "4px 8px", fontSize: "0.75rem", color: "#111", opacity: index === count - 1 ? 0.2 : 1,
-                  }}
-                >
-                  →
-                </button>
-              </>
-            )}
           </>
         )}
       </div>
 
-      {count > 1 && (
-        <div style={{ display: "flex", justifyContent: "center", gap: 5, marginTop: 8 }}>
-          {images.map((image, i) => (
-            <button
-              key={image.src}
-              type="button"
-              onClick={() => goTo(i)}
-              aria-label={`Go to image ${i + 1}`}
-              style={{
-                width: 5, height: 5, borderRadius: "50%", border: "none", cursor: "pointer",
-                background: "#111", opacity: i === index ? 1 : 0.2, padding: 0,
-              }}
-            />
-          ))}
-        </div>
-      )}
-
-      <figcaption style={{ marginTop: 10, textAlign: "left" }}>
-        <span style={{ display: "block", fontSize: "0.625rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "#999", marginBottom: 2 }}>
-          {product.brand}
-        </span>
-        <span style={{ display: "block", fontSize: "0.8125rem", color: "#111", lineHeight: 1.3 }}>
-          {product.name}
-        </span>
-        {product.color && (
-          <span style={{ display: "block", fontSize: "0.75rem", color: "#999", marginTop: 2 }}>
-            {product.color}
-          </span>
-        )}
+      <figcaption className="mt-3 flex flex-col gap-0.5 text-[#5c3317]">
+        <span className="text-[0.625rem] uppercase tracking-[0.18em] opacity-60">{product.brand}</span>
+        <span className="text-sm leading-snug">{product.name}</span>
+        {product.color && <span className="text-xs opacity-60">{product.color}</span>}
         <a
           href={href}
           target="_blank"
           rel="noopener noreferrer"
-          style={{ display: "inline-block", marginTop: 6, fontSize: "0.6875rem", color: "#111", textDecoration: "underline", letterSpacing: "0.04em" }}
+          className="mt-1.5 self-start text-xs underline underline-offset-2 hover:opacity-70 transition-opacity"
         >
-          Ask on WhatsApp →
+          Ask on WhatsApp
         </a>
       </figcaption>
     </figure>
