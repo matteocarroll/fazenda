@@ -19,9 +19,11 @@ export async function POST(req: Request) {
     return NextResponse.json({ ok: false, error: "Invalid request" }, { status: 400 })
   }
 
-  if (!name.trim() || !email.trim() || !phone.trim()) {
+  /* Phone is optional: some event pages ask for it, some do not. The pages that
+     want it mark their own field required. */
+  if (!name.trim() || !email.trim()) {
     return NextResponse.json(
-      { ok: false, error: "Name, email and phone are required" },
+      { ok: false, error: "Name and email are required" },
       { status: 400 },
     )
   }
