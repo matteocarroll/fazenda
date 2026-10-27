@@ -47,19 +47,9 @@ export default function VirtualStore() {
             fontSize: "clamp(1.25rem, 3vw, 1.75rem)",
           }}
         >
-          Virtual Store
+          Fazenda Online Store
         </h1>
-        <p className="mt-2 text-center text-xs opacity-70">
-          What&rsquo;s on the rail at 177 Mott Street. See something you like?{" "}
-          <a
-            href="https://wa.me/19298408626"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="underline hover:opacity-70 transition-opacity"
-          >
-            Send us a WhatsApp
-          </a>
-        </p>
+        <p className="mt-2 text-center text-xs opacity-70">For existing clients only.</p>
       </header>
 
       <div className="sticky top-0 z-10 mt-8 border-b border-[#5c3317]/10 bg-white/95 backdrop-blur">
