@@ -1,21 +1,16 @@
-import snapshot from "@/data/shopify-products.json"
 import localPhotos from "@/data/local-photos.json"
 import { BRANDS } from "@/lib/brands"
+import type { ShopifyProduct } from "@/lib/shopify"
 
 /**
- * The Virtual Store reads a snapshot of the Shopify catalogue: every active
- * product with inventory above zero. The snapshot is exported through the
- * Shopify MCP (Admin API query `status:active AND inventory_total:>0`) and
- * committed as data/shopify-products.json, so refresh it the same way.
+ * Turns Shopify products (see lib/shopify.ts) into Virtual Store cards.
  *
- * data/local-photos.json maps Shopify handles to our own shoots in
- * public/virtualstore-products. Those win whenever there are more of them
- * than Shopify has, including when Shopify has none.
+ * Shopify is the image source. data/local-photos.json maps Shopify handles to
+ * our own shoots in public/virtualstore-products, used only for a product
+ * that has no images in Shopify.
  */
 
 const LOCAL_PHOTOS: Record<string, string[]> = localPhotos
-
-const CDN = "https://cdn.shopify.com/s/files/1/0781/2762/8515/files/"
 
 export const CATEGORIES = [
   "Outerwear",
@@ -94,17 +89,17 @@ function parseTitle(title: string) {
   return { name: tidy(name.trim()), color: tidy(color.trim()), style_code }
 }
 
-export const PRODUCTS: Product[] = snapshot.products.map((product) => {
-  const { name, color, style_code } = parseTitle(product.title)
-  const shopify = product.images.map((path) => CDN + path)
-  const local = LOCAL_PHOTOS[product.handle] ?? []
-  return {
-    id: product.handle,
-    brand: brandName(product.vendor),
-    name,
-    color,
-    style_code,
-    category: categorise(product.handle, name),
-    images: local.length > shopify.length ? local : shopify,
-  }
-})
+export function toProducts(products: ShopifyProduct[]): Product[] {
+  return products.map((product) => {
+    const { name, color, style_code } = parseTitle(product.title)
+    return {
+      id: product.handle,
+      brand: brandName(product.vendor),
+      name,
+      color,
+      style_code,
+      category: categorise(product.handle, name),
+      images: product.images.length > 0 ? product.images : LOCAL_PHOTOS[product.handle] ?? [],
+    }
+  })
+}
