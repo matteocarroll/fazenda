@@ -3,14 +3,15 @@ import localPhotos from "@/data/local-photos.json"
 import { BRANDS } from "@/lib/brands"
 
 /**
- * The Virtual Store reads a snapshot of the Shopify catalogue: every active
- * product with inventory above zero. The snapshot is exported through the
- * Shopify MCP (Admin API query `status:active AND inventory_total:>0`) and
- * committed as data/shopify-products.json, so refresh it the same way.
+ * The Virtual Store reads the Shopify catalogue: every active product with
+ * inventory above zero. lib/shopify.ts fetches it live (cached, refreshed by
+ * the Shopify product webhooks hitting /api/revalidate). If that isn't
+ * configured or fails, the page falls back to the committed snapshot in
+ * data/shopify-products.json.
  *
- * data/local-photos.json maps Shopify handles to our own shoots in
- * public/virtualstore-products. Those win whenever there are more of them
- * than Shopify has, including when Shopify has none.
+ * Shopify's photos come first, so the lead image is whatever is first in
+ * Shopify admin. data/local-photos.json maps handles to our own shoots in
+ * public/virtualstore-products; those are only used when Shopify has none.
  */
 
 const LOCAL_PHOTOS: Record<string, string[]> = localPhotos
@@ -94,17 +95,30 @@ function parseTitle(title: string) {
   return { name: tidy(name.trim()), color: tidy(color.trim()), style_code }
 }
 
-export const PRODUCTS: Product[] = snapshot.products.map((product) => {
-  const { name, color, style_code } = parseTitle(product.title)
-  const shopify = product.images.map((path) => CDN + path)
-  const local = LOCAL_PHOTOS[product.handle] ?? []
-  return {
-    id: product.handle,
-    brand: brandName(product.vendor),
-    name,
-    color,
-    style_code,
-    category: categorise(product.handle, name),
-    images: local.length > shopify.length ? local : shopify,
-  }
-})
+// A product as it comes from Shopify. Images are either full CDN URLs (live)
+// or paths relative to the store's CDN folder (snapshot).
+export type ShopifyProduct = {
+  handle: string
+  vendor: string
+  title: string
+  images: string[]
+}
+
+export function toProducts(raw: ShopifyProduct[]): Product[] {
+  return raw.map((product) => {
+    const { name, color, style_code } = parseTitle(product.title)
+    const shopify = product.images.map((src) => (src.startsWith("https://") ? src : CDN + src))
+    const local = LOCAL_PHOTOS[product.handle] ?? []
+    return {
+      id: product.handle,
+      brand: brandName(product.vendor),
+      name,
+      color,
+      style_code,
+      category: categorise(product.handle, name),
+      images: shopify.length > 0 ? shopify : local,
+    }
+  })
+}
+
+export const SNAPSHOT_PRODUCTS: Product[] = toProducts(snapshot.products)
