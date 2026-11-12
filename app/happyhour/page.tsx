@@ -6,10 +6,11 @@ import { useState } from "react"
 const KICKER = "Invite Only"
 const INVITATION =
   "We’d love for you to join happy hour Friday November 12 with our friends and family."
+const HOSTS = "Hosted by Clayton Chambers, Kirk Chambers, and Zac Chambers at Fazenda"
 const EVENT_TIME = "5 – 7PM"
 const EVENT_ADDRESS = "177 Mott Street, New York"
 /* Becomes the tab name in the RSVP sheet, so keep it stable once guests start replying. */
-const EVENT_KEY = "Happy Hour with Clayton, Zac and Kirk - Nov 12"
+const EVENT_KEY = "Happy Hour with Clayton, Kirk and Zac Chambers - Nov 12"
 const INK = "#000000"
 // --------------------
 
@@ -91,6 +92,10 @@ export default function HappyHour() {
         .invitation {
           font-size: 13px; line-height: 20px; margin: 20px auto 0; max-width: 23rem;
         }
+        .hosts {
+          font-size: 12px; line-height: 20px; margin: 16px auto 0; max-width: 23rem;
+          opacity: 0.65;
+        }
         .details {
           font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase;
           line-height: 20px; margin: 32px 0 0;
@@ -132,6 +137,7 @@ export default function HappyHour() {
 
         <p className="kicker">{KICKER}</p>
         <p className="invitation">{INVITATION}</p>
+        <p className="hosts">{HOSTS}</p>
 
         <p className="details">
           {EVENT_TIME}
