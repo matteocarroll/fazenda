@@ -2,6 +2,8 @@
 
 import { useState } from "react"
 
+import WalkingBuffalo from "@/components/WalkingBuffalo"
+
 // ---- Edit these ----
 const KICKER = "Invite Only"
 const INVITATION =
@@ -61,23 +63,21 @@ export default function HappyHour() {
         }
         .hh-inner { width: 100%; max-width: 27rem; text-align: center; }
 
-        /* The artwork is painted as a background colour showing through its own
-           alpha, so the mark renders in black from a single asset. */
-        .scene, .wordmark {
+        /* The herd artwork is burgundy (#5D0A21); brightness(0) takes it to
+           black while leaving its alpha and edge fade intact. */
+        .scene {
+          width: 100%; max-width: 210px; margin-inline: auto;
+          filter: brightness(0);
+        }
+        /* The wordmark is painted as a background colour showing through its own
+           alpha, so it renders in black from a single asset. */
+        .wordmark {
           width: 100%;
           background-color: ${INK};
           -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
           -webkit-mask-position: center; mask-position: center;
           -webkit-mask-size: contain; mask-size: contain;
           margin-inline: auto;
-        }
-        .scene {
-          max-width: 210px;
-          aspect-ratio: 1101 / 460;
-          -webkit-mask-image: url(/fazenda-scene-mask.png);
-          mask-image: url(/fazenda-scene-mask.png);
-        }
-        .wordmark {
           max-width: 132px;
           aspect-ratio: 1446 / 182;
           margin-top: 14px;
@@ -132,7 +132,7 @@ export default function HappyHour() {
       `}</style>
 
       <div className="hh-inner">
-        <div className="scene" role="img" aria-label="Fazenda farmhouse" />
+        <WalkingBuffalo className="scene" />
         <div className="wordmark" role="img" aria-label="Fazenda" />
 
         <p className="kicker">{KICKER}</p>
