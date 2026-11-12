@@ -3,14 +3,14 @@
 import { useState } from "react"
 
 // ---- Edit these ----
-const HEADLINE = "Happy Hour"
-const HOSTS = "with Clayton, Zac and Kirk"
-const EVENT_DATE = "THURSDAY, NOVEMBER 12 2026"
+const KICKER = "Invite Only"
+const INVITATION =
+  "We’d love for you to join happy hour Friday November 12 with our friends and family."
 const EVENT_TIME = "5 – 7PM"
 const EVENT_ADDRESS = "177 Mott Street, New York"
 /* Becomes the tab name in the RSVP sheet, so keep it stable once guests start replying. */
 const EVENT_KEY = "Happy Hour with Clayton, Zac and Kirk - Nov 12"
-const BROWN = "#5c3317"
+const INK = "#000000"
 // --------------------
 
 type Status = "idle" | "sending" | "done" | "error"
@@ -42,98 +42,102 @@ export default function HappyHour() {
   return (
     <main className="hh">
       <style>{`
-        /* Set on the inputs and button too — browsers give form controls their
-           own font otherwise. */
+        /* Neue Haas Unica is licensed, so this is the chain Bode's own stack
+           falls back to — near-identical on Mac and iOS. */
         .hh, .hh input, .hh button {
-          font-family: "Times New Roman", Times, serif;
+          font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
         }
+        /* Set on the document too, so iOS overscroll does not reveal grey. */
+        html, body { background: #fff; }
         .hh {
           background: #fff;
-          color: ${BROWN};
+          color: ${INK};
           min-height: 100vh;
           display: flex;
           justify-content: center;
-          padding: 56px 16px 80px;
+          padding: 72px 20px 96px;
+          -webkit-font-smoothing: antialiased;
         }
-        .hh-inner { width: 100%; max-width: 32rem; text-align: center; }
+        .hh-inner { width: 100%; max-width: 27rem; text-align: center; }
 
         /* The artwork is painted as a background colour showing through its own
-           alpha, so the mark renders from a single asset in the brand colour. */
+           alpha, so the mark renders in black from a single asset. */
         .scene, .wordmark {
           width: 100%;
-          background-color: ${BROWN};
+          background-color: ${INK};
           -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
           -webkit-mask-position: center; mask-position: center;
           -webkit-mask-size: contain; mask-size: contain;
           margin-inline: auto;
         }
         .scene {
-          max-width: 270px;
+          max-width: 210px;
           aspect-ratio: 1101 / 460;
           -webkit-mask-image: url(/fazenda-scene-mask.png);
           mask-image: url(/fazenda-scene-mask.png);
         }
         .wordmark {
-          max-width: 180px;
+          max-width: 132px;
           aspect-ratio: 1446 / 182;
-          margin-top: 12px;
+          margin-top: 14px;
           -webkit-mask-image: url(/fazenda-w2-mask.png);
           mask-image: url(/fazenda-w2-mask.png);
         }
 
-        .hh h1 {
-          font-weight: 400; font-size: clamp(1.75rem, 7vw, 2.5rem);
-          letter-spacing: 0.02em; margin: 44px 0 0;
+        .kicker {
+          font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase;
+          margin: 56px 0 0;
         }
-        .hosts { font-size: clamp(1rem, 4vw, 1.25rem); margin: 10px 0 0; }
-        .when { font-size: clamp(0.875rem, 3.4vw, 1rem); letter-spacing: 0.06em; margin: 36px 0 0; }
-        .time { font-size: clamp(1.25rem, 5.5vw, 1.75rem); letter-spacing: 0.04em; margin: 8px 0 0; }
-        .address { font-size: clamp(0.875rem, 3.4vw, 1rem); margin: 20px 0 0; }
+        .invitation {
+          font-size: 13px; line-height: 20px; margin: 20px auto 0; max-width: 23rem;
+        }
+        .details {
+          font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase;
+          line-height: 20px; margin: 32px 0 0;
+        }
 
-        .rsvp { margin-top: 56px; }
+        .rsvp { margin-top: 56px; text-align: left; }
         .rsvp h2 {
-          font-weight: 400; font-size: 1.25rem; letter-spacing: 0.14em;
-          text-transform: uppercase; margin: 0 0 24px;
+          font-weight: 400; font-size: 11px; letter-spacing: 0.22em;
+          text-transform: uppercase; margin: 0 0 20px; text-align: center;
         }
-        .hh form { max-width: 20rem; margin: 0 auto; text-align: left; }
-        .field { margin-bottom: 26px; }
+        .field { margin-bottom: 20px; }
         .hh label {
-          display: block; font-size: 0.6875rem; letter-spacing: 0.16em;
-          text-transform: uppercase; opacity: 0.5; margin-bottom: 2px;
+          display: block; font-size: 11px; letter-spacing: 0.08em; margin-bottom: 4px;
         }
         .hh input {
           display: block; width: 100%; box-sizing: border-box;
-          height: 40px; padding: 0;
-          border: 0; border-bottom: 1px solid rgba(92, 51, 23, 0.25); border-radius: 0;
-          background: transparent; color: ${BROWN};
-          font: inherit; font-size: 1.0625rem; text-align: left; outline: none;
-          transition: border-color 0.2s ease;
+          height: 32px; padding: 0;
+          border: 0; border-bottom: 1px solid ${INK}; border-radius: 0;
+          background: transparent; color: ${INK};
+          font: inherit; font-size: 13px; text-align: left; outline: none;
         }
-        .hh input:focus { border-bottom-color: ${BROWN}; }
-        .hh input:-webkit-autofill { -webkit-text-fill-color: ${BROWN}; transition: background-color 9999s; }
+        .hh input:focus { border-bottom-width: 2px; }
+        .hh input:-webkit-autofill { -webkit-text-fill-color: ${INK}; transition: background-color 9999s; }
         .hh button {
-          width: 100%; height: 52px; margin-top: 14px;
-          border: 1px solid ${BROWN}; border-radius: 0;
-          background: ${BROWN}; color: #fff;
-          font: inherit; font-size: 0.8125rem; letter-spacing: 0.2em;
-          text-transform: uppercase; cursor: pointer;
-          transition: background-color 0.2s ease, color 0.2s ease;
+          width: 100%; height: 40px; margin-top: 28px;
+          border: 1px solid ${INK}; border-radius: 0;
+          background: ${INK}; color: #fff;
+          font: inherit; font-size: 11px; letter-spacing: 0.08em;
+          cursor: pointer; transition: background-color 0.15s, color 0.15s;
         }
-        .hh button:hover { background: transparent; color: ${BROWN}; }
-        .hh button:disabled { opacity: 0.45; cursor: default; background: ${BROWN}; color: #fff; }
-        .msg { font-size: 1rem; line-height: 1.5; margin-top: 20px; }
+        .hh button:hover { background: #fff; color: ${INK}; }
+        .hh button:disabled { opacity: 0.45; cursor: default; background: ${INK}; color: #fff; }
+        .msg { font-size: 13px; line-height: 20px; margin-top: 20px; text-align: center; }
       `}</style>
 
       <div className="hh-inner">
         <div className="scene" role="img" aria-label="Fazenda farmhouse" />
         <div className="wordmark" role="img" aria-label="Fazenda" />
 
-        <h1>{HEADLINE}</h1>
-        <p className="hosts">{HOSTS}</p>
+        <p className="kicker">{KICKER}</p>
+        <p className="invitation">{INVITATION}</p>
 
-        <p className="when">{EVENT_DATE}</p>
-        <p className="time">{EVENT_TIME}</p>
-        <p className="address">{EVENT_ADDRESS}</p>
+        <p className="details">
+          {EVENT_TIME}
+          <br />
+          {EVENT_ADDRESS}
+        </p>
 
         <section className="rsvp">
           <h2>RSVP</h2>
@@ -183,7 +187,7 @@ export default function HappyHour() {
               </div>
 
               <button type="submit" disabled={status === "sending"}>
-                {status === "sending" ? "Sending..." : "RSVP"}
+                {status === "sending" ? "Sending…" : "RSVP"}
               </button>
 
               {status === "error" && (
