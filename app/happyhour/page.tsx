@@ -95,24 +95,32 @@ export default function HappyHour() {
           font-weight: 400; font-size: 1.25rem; letter-spacing: 0.14em;
           text-transform: uppercase; margin: 0 0 24px;
         }
-        .hh form { max-width: 24rem; margin: 0 auto; }
-        .hh label { display: block; font-size: 1rem; margin-bottom: 4px; }
+        .hh form { max-width: 20rem; margin: 0 auto; text-align: left; }
+        .field { margin-bottom: 26px; }
+        .hh label {
+          display: block; font-size: 0.6875rem; letter-spacing: 0.16em;
+          text-transform: uppercase; opacity: 0.5; margin-bottom: 2px;
+        }
         .hh input {
           display: block; width: 100%; box-sizing: border-box;
-          height: 54px; margin-bottom: 28px;
-          border: 0; border-bottom: 1px solid ${BROWN}; border-radius: 0;
+          height: 40px; padding: 0;
+          border: 0; border-bottom: 1px solid rgba(92, 51, 23, 0.25); border-radius: 0;
           background: transparent; color: ${BROWN};
-          font: inherit; font-size: 1rem; text-align: center; outline: none;
+          font: inherit; font-size: 1.0625rem; text-align: left; outline: none;
+          transition: border-color 0.2s ease;
         }
-        .hh input:focus { border-bottom-width: 2px; }
+        .hh input:focus { border-bottom-color: ${BROWN}; }
+        .hh input:-webkit-autofill { -webkit-text-fill-color: ${BROWN}; transition: background-color 9999s; }
         .hh button {
-          width: 100%; height: 56px; margin-top: 8px;
-          border: 0; border-radius: 0; background: ${BROWN}; color: #fff;
-          font: inherit; font-size: 1rem; letter-spacing: 0.14em;
+          width: 100%; height: 52px; margin-top: 14px;
+          border: 1px solid ${BROWN}; border-radius: 0;
+          background: ${BROWN}; color: #fff;
+          font: inherit; font-size: 0.8125rem; letter-spacing: 0.2em;
           text-transform: uppercase; cursor: pointer;
+          transition: background-color 0.2s ease, color 0.2s ease;
         }
-        .hh button:hover { opacity: 0.9; }
-        .hh button:disabled { opacity: 0.6; cursor: default; }
+        .hh button:hover { background: transparent; color: ${BROWN}; }
+        .hh button:disabled { opacity: 0.45; cursor: default; background: ${BROWN}; color: #fff; }
         .msg { font-size: 1rem; line-height: 1.5; margin-top: 20px; }
       `}</style>
 
@@ -136,37 +144,43 @@ export default function HappyHour() {
             </p>
           ) : (
             <form onSubmit={handleSubmit}>
-              <label htmlFor="name">Name</label>
-              <input
-                id="name"
-                name="name"
-                type="text"
-                autoComplete="name"
-                required
-                value={form.name}
-                onChange={update}
-              />
+              <div className="field">
+                <label htmlFor="name">Name</label>
+                <input
+                  id="name"
+                  name="name"
+                  type="text"
+                  autoComplete="name"
+                  required
+                  value={form.name}
+                  onChange={update}
+                />
+              </div>
 
-              <label htmlFor="email">Email</label>
-              <input
-                id="email"
-                name="email"
-                type="email"
-                autoComplete="email"
-                required
-                value={form.email}
-                onChange={update}
-              />
+              <div className="field">
+                <label htmlFor="email">Email</label>
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  autoComplete="email"
+                  required
+                  value={form.email}
+                  onChange={update}
+                />
+              </div>
 
-              <label htmlFor="phone">Phone</label>
-              <input
-                id="phone"
-                name="phone"
-                type="tel"
-                autoComplete="tel"
-                value={form.phone}
-                onChange={update}
-              />
+              <div className="field">
+                <label htmlFor="phone">Phone</label>
+                <input
+                  id="phone"
+                  name="phone"
+                  type="tel"
+                  autoComplete="tel"
+                  value={form.phone}
+                  onChange={update}
+                />
+              </div>
 
               <button type="submit" disabled={status === "sending"}>
                 {status === "sending" ? "Sending..." : "RSVP"}
