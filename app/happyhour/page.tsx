@@ -7,12 +7,12 @@ import WalkingBuffalo from "@/components/WalkingBuffalo"
 // ---- Edit these ----
 const KICKER = "Invite Only"
 const INVITATION =
-  "We’d love for you to join happy hour Friday November 12 with our friends and family."
+  "We’d love for you to join happy hour Friday November 13 with our friends and family."
 const HOSTS = "Hosted by Clayton Chambers, Kirk Chambers, and Zac Chambers at Fazenda"
 const EVENT_TIME = "5 – 7PM"
 const EVENT_ADDRESS = "177 Mott Street, New York"
 /* Becomes the tab name in the RSVP sheet, so keep it stable once guests start replying. */
-const EVENT_KEY = "Happy Hour with Clayton, Kirk and Zac Chambers - Nov 12"
+const EVENT_KEY = "Happy Hour with Clayton, Kirk and Zac Chambers - Nov 13"
 const INK = "#000000"
 // --------------------
 
