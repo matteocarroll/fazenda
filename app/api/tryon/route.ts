@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server"
-import OpenAI from "openai"
-import { toFile } from "openai"
+import OpenAI, { toFile } from "openai"
 
 export const runtime = "nodejs"
 export const maxDuration = 60
@@ -20,47 +19,54 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Missing userPhoto or productImageUrl" }, { status: 400 })
   }
 
-  const openai = new OpenAI({ apiKey })
+  try {
+    const openai = new OpenAI({ apiKey })
 
-  // Fetch product image and convert to File for OpenAI
-  const productRes = await fetch(productImageUrl)
-  if (!productRes.ok) {
-    return NextResponse.json({ error: "Failed to fetch product image" }, { status: 400 })
+    const userFile = await toFile(
+      new Blob([await userPhoto.arrayBuffer()], { type: userPhoto.type || "image/jpeg" }),
+      "person.jpg",
+      { type: userPhoto.type || "image/jpeg" }
+    )
+
+    // Fetch product image
+    const productRes = await fetch(productImageUrl)
+    if (!productRes.ok) {
+      return NextResponse.json({ error: "Could not fetch product image" }, { status: 400 })
+    }
+    const productBlob = await productRes.blob()
+    const productFile = await toFile(productBlob, "product.jpg", { type: "image/jpeg" })
+
+    const prompt = `You are given a photo of a person and a product garment image. Generate a photorealistic image showing that exact person wearing the garment. The garment is: ${productDescription || "the clothing item shown"}. Keep the person's face, skin tone, hair, and body proportions exactly the same. Only change the clothing.`
+
+    // Try multi-image edit (gpt-image-1 supports array of images)
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const response = await (openai.images.edit as any)({
+      model: "gpt-image-1",
+      image: [userFile, productFile],
+      prompt,
+      n: 1,
+      size: "1024x1024",
+    })
+
+    const imageData = response.data?.[0]
+    if (!imageData) {
+      return NextResponse.json({ error: "No image returned" }, { status: 500 })
+    }
+
+    if (imageData.b64_json) {
+      return NextResponse.json({ image: `data:image/png;base64,${imageData.b64_json}` })
+    }
+    if (imageData.url) {
+      return NextResponse.json({ image: imageData.url })
+    }
+
+    return NextResponse.json({ error: "Unexpected response format" }, { status: 500 })
+  } catch (err: unknown) {
+    const msg = err instanceof Error ? err.message : String(err)
+    // Also try to extract OpenAI API error details
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const apiErr = (err as any)?.error?.message || (err as any)?.message || msg
+    console.error("Try-on error:", apiErr)
+    return NextResponse.json({ error: apiErr }, { status: 500 })
   }
-  const productBlob = await productRes.blob()
-  const productFile = await toFile(productBlob, "product.jpg", { type: "image/jpeg" })
-
-  const userFile = await toFile(
-    new Blob([await userPhoto.arrayBuffer()], { type: userPhoto.type }),
-    "person.jpg",
-    { type: userPhoto.type }
-  )
-
-  const prompt = productDescription
-    ? `Show the person in the first image wearing this garment: ${productDescription}. Keep the person's face, hairstyle, and body proportions identical. Only change the clothing to show them wearing the described item. Maintain a natural, photorealistic result.`
-    : `Show the person wearing the garment from the reference image. Keep the person's face, hairstyle, and body proportions identical. Only change the clothing. Maintain a natural, photorealistic result.`
-
-  const response = await openai.images.edit({
-    model: "gpt-image-1",
-    image: [userFile, productFile],
-    prompt,
-    n: 1,
-    size: "1024x1024",
-  })
-
-  const imageData = response.data?.[0]
-  if (!imageData) {
-    return NextResponse.json({ error: "No image returned from OpenAI" }, { status: 500 })
-  }
-
-  // gpt-image-1 returns b64_json
-  const b64 = imageData.b64_json
-  if (b64) {
-    return NextResponse.json({ image: `data:image/png;base64,${b64}` })
-  }
-  if (imageData.url) {
-    return NextResponse.json({ image: imageData.url })
-  }
-
-  return NextResponse.json({ error: "Unexpected response format from OpenAI" }, { status: 500 })
 }
