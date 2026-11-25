@@ -85,7 +85,7 @@ export default function VirtualStore({ products }: { products: Product[] }) {
 
       {/* Grid */}
       <section className="px-4 py-6 sm:px-6">
-        <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-4">
+        <div className="grid grid-cols-3 gap-4 sm:grid-cols-4 lg:grid-cols-5">
           {filtered.map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}
