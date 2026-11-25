@@ -3,9 +3,9 @@ import { NextRequest, NextResponse } from "next/server"
 export const runtime = "nodejs"
 export const maxDuration = 60
 
-async function toBase64(blob: Blob): Promise<string> {
+async function toBase64DataUri(blob: Blob, mime = "image/jpeg"): Promise<string> {
   const buf = await blob.arrayBuffer()
-  return Buffer.from(buf).toString("base64")
+  return `data:${mime};base64,${Buffer.from(buf).toString("base64")}`
 }
 
 export async function POST(req: NextRequest) {
@@ -17,14 +17,14 @@ export async function POST(req: NextRequest) {
   const form = await req.formData()
   const userPhoto = form.get("userPhoto") as File | null
   const productImageUrl = form.get("productImageUrl") as string | null
-  const category = (form.get("category") as string | null) || "tops"
+  const category = (form.get("category") as string | null) || "auto"
 
   if (!userPhoto || !productImageUrl) {
     return NextResponse.json({ error: "Missing userPhoto or productImageUrl" }, { status: 400 })
   }
 
   try {
-    // Convert user photo to JPEG if HEIC (iPhone format)
+    // Convert user photo — handle HEIC (iPhone default)
     const userBuffer = await userPhoto.arrayBuffer()
     const mime = userPhoto.type || ""
     let userBlob: Blob
@@ -35,43 +35,47 @@ export async function POST(req: NextRequest) {
     } else {
       userBlob = new Blob([userBuffer], { type: mime || "image/jpeg" })
     }
-
-    const modelImage = `data:image/jpeg;base64,${await toBase64(userBlob)}`
+    const modelImage = await toBase64DataUri(userBlob)
 
     // Fetch garment image
     const garmentRes = await fetch(productImageUrl)
     if (!garmentRes.ok) return NextResponse.json({ error: "Could not fetch product image" }, { status: 400 })
     const garmentBlob = await garmentRes.blob()
-    const garmentImage = `data:image/jpeg;base64,${await toBase64(garmentBlob)}`
+    const garmentImage = await toBase64DataUri(garmentBlob)
 
-    // Submit try-on job to Fashn.ai
+    // Submit to Fashn.ai — correct format per docs
     const runRes = await fetch("https://api.fashn.ai/v1/run", {
       method: "POST",
       headers: {
-        "Authorization": `Bearer ${apiKey}`,
+        Authorization: `Bearer ${apiKey}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model_image: modelImage,
-        garment_image: garmentImage,
-        category, // "tops" | "bottoms" | "one-pieces"
+        model_name: "tryon-v1.6",
+        inputs: {
+          model_image: modelImage,
+          garment_image: garmentImage,
+          category, // "auto" | "tops" | "bottoms" | "one-pieces"
+          mode: "balanced",
+        },
       }),
     })
 
-    if (!runRes.ok) {
-      const err = await runRes.json().catch(() => ({}))
-      return NextResponse.json({ error: err.detail || err.error || "Fashn.ai request failed" }, { status: 500 })
+    const runBody = await runRes.json()
+    if (!runRes.ok || runBody.error) {
+      const msg = runBody?.error?.message || runBody?.detail || JSON.stringify(runBody)
+      return NextResponse.json({ error: msg }, { status: 500 })
     }
 
-    const { id, error: runError } = await runRes.json()
-    if (runError) return NextResponse.json({ error: runError }, { status: 500 })
+    const { id } = runBody
+    if (!id) return NextResponse.json({ error: "No job ID returned" }, { status: 500 })
 
-    // Poll for result (max ~50s)
+    // Poll until completed or failed (max ~50s)
     for (let i = 0; i < 25; i++) {
       await new Promise((r) => setTimeout(r, 2000))
 
       const statusRes = await fetch(`https://api.fashn.ai/v1/status/${id}`, {
-        headers: { "Authorization": `Bearer ${apiKey}` },
+        headers: { Authorization: `Bearer ${apiKey}` },
       })
       if (!statusRes.ok) continue
 
@@ -81,11 +85,13 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ image: output[0] })
       }
       if (status === "failed") {
-        return NextResponse.json({ error: statusError || "Try-on generation failed" }, { status: 500 })
+        const msg = statusError?.message || statusError || "Generation failed"
+        return NextResponse.json({ error: msg }, { status: 500 })
       }
+      // starting | in_queue | processing → keep polling
     }
 
-    return NextResponse.json({ error: "Timed out waiting for result" }, { status: 504 })
+    return NextResponse.json({ error: "Timed out — try again" }, { status: 504 })
   } catch (err: unknown) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const msg = (err as any)?.message || String(err)
