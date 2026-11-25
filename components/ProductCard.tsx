@@ -28,11 +28,14 @@ export default function ProductCard({ product }: { product: Product }) {
     setTryOnError(null)
     setTryOnResult(null)
     try {
+      // Map product category to Fashn.ai category
+      const fashnCategory =
+        product.category === "Trousers" ? "bottoms" : "tops"
+
       const form = new FormData()
       form.append("userPhoto", file)
       form.append("productImageUrl", images[0])
-      const desc = [product.brand, product.name, product.color].filter(Boolean).join(" ")
-      form.append("productDescription", desc)
+      form.append("category", fashnCategory)
 
       const res = await fetch("/api/tryon", { method: "POST", body: form })
       if (!res.ok) {

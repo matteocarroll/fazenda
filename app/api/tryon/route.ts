@@ -1,28 +1,30 @@
 import { NextRequest, NextResponse } from "next/server"
-import OpenAI, { toFile } from "openai"
 
 export const runtime = "nodejs"
 export const maxDuration = 60
 
+async function toBase64(blob: Blob): Promise<string> {
+  const buf = await blob.arrayBuffer()
+  return Buffer.from(buf).toString("base64")
+}
+
 export async function POST(req: NextRequest) {
-  const apiKey = process.env.OPENAI_API_KEY
+  const apiKey = process.env.FASHN_API_KEY
   if (!apiKey) {
-    return NextResponse.json({ error: "OpenAI API key not configured" }, { status: 500 })
+    return NextResponse.json({ error: "FASHN_API_KEY not configured" }, { status: 500 })
   }
 
   const form = await req.formData()
   const userPhoto = form.get("userPhoto") as File | null
   const productImageUrl = form.get("productImageUrl") as string | null
-  const productDescription = form.get("productDescription") as string | null
+  const category = (form.get("category") as string | null) || "tops"
 
   if (!userPhoto || !productImageUrl) {
     return NextResponse.json({ error: "Missing userPhoto or productImageUrl" }, { status: 400 })
   }
 
   try {
-    const openai = new OpenAI({ apiKey })
-
-    // Convert user photo to JPEG (handles HEIC from iPhone)
+    // Convert user photo to JPEG if HEIC (iPhone format)
     const userBuffer = await userPhoto.arrayBuffer()
     const mime = userPhoto.type || ""
     let userBlob: Blob
@@ -34,39 +36,59 @@ export async function POST(req: NextRequest) {
       userBlob = new Blob([userBuffer], { type: mime || "image/jpeg" })
     }
 
-    // Convert to square 1024x1024 PNG with alpha for DALL-E edit
-    const { default: sharp } = await import("sharp")
-    const squarePng = await sharp(Buffer.from(await userBlob.arrayBuffer()))
-      .resize(1024, 1024, { fit: "cover" })
-      .png()
-      .toBuffer()
-    const squareFile = await toFile(new Blob([new Uint8Array(squarePng)], { type: "image/png" }), "person.png", { type: "image/png" })
+    const modelImage = `data:image/jpeg;base64,${await toBase64(userBlob)}`
 
-    const desc = productDescription || "the garment"
-    const prompt = `Photorealistic image of this person wearing ${desc}. Preserve the person's face, skin tone, hair, and body. Only change the outfit.`
+    // Fetch garment image
+    const garmentRes = await fetch(productImageUrl)
+    if (!garmentRes.ok) return NextResponse.json({ error: "Could not fetch product image" }, { status: 400 })
+    const garmentBlob = await garmentRes.blob()
+    const garmentImage = `data:image/jpeg;base64,${await toBase64(garmentBlob)}`
 
-    const response = await openai.images.edit({
-      model: "dall-e-2",
-      image: squareFile,
-      prompt,
-      n: 1,
-      size: "1024x1024",
+    // Submit try-on job to Fashn.ai
+    const runRes = await fetch("https://api.fashn.ai/v1/run", {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${apiKey}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        model_image: modelImage,
+        garment_image: garmentImage,
+        category, // "tops" | "bottoms" | "one-pieces"
+      }),
     })
 
-    const imageData = response.data?.[0]
-    if (!imageData) return NextResponse.json({ error: "No image returned" }, { status: 500 })
-
-    if (imageData.b64_json) {
-      return NextResponse.json({ image: `data:image/png;base64,${imageData.b64_json}` })
-    }
-    if (imageData.url) {
-      return NextResponse.json({ image: imageData.url })
+    if (!runRes.ok) {
+      const err = await runRes.json().catch(() => ({}))
+      return NextResponse.json({ error: err.detail || err.error || "Fashn.ai request failed" }, { status: 500 })
     }
 
-    return NextResponse.json({ error: "Unexpected response format" }, { status: 500 })
+    const { id, error: runError } = await runRes.json()
+    if (runError) return NextResponse.json({ error: runError }, { status: 500 })
+
+    // Poll for result (max ~50s)
+    for (let i = 0; i < 25; i++) {
+      await new Promise((r) => setTimeout(r, 2000))
+
+      const statusRes = await fetch(`https://api.fashn.ai/v1/status/${id}`, {
+        headers: { "Authorization": `Bearer ${apiKey}` },
+      })
+      if (!statusRes.ok) continue
+
+      const { status, output, error: statusError } = await statusRes.json()
+
+      if (status === "completed" && output?.[0]) {
+        return NextResponse.json({ image: output[0] })
+      }
+      if (status === "failed") {
+        return NextResponse.json({ error: statusError || "Try-on generation failed" }, { status: 500 })
+      }
+    }
+
+    return NextResponse.json({ error: "Timed out waiting for result" }, { status: 504 })
   } catch (err: unknown) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const msg = (err as any)?.error?.message || (err as any)?.message || String(err)
+    const msg = (err as any)?.message || String(err)
     console.error("Try-on error:", msg)
     return NextResponse.json({ error: msg }, { status: 500 })
   }
