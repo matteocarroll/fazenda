@@ -1,8 +1,8 @@
 "use client"
 
 import { useState, useMemo, useEffect, useCallback } from "react"
-import Image from "next/image"
 import ProductCard from "@/components/ProductCard"
+import AuthButton from "@/components/AuthButton"
 import { CATEGORIES, type Product, type CollectionItem } from "@/lib/virtualstore"
 
 const STORAGE_KEY = "fazenda_collection"
@@ -22,26 +22,45 @@ export default function VirtualStore({ products }: { products: Product[] }) {
   const [showCollection, setShowCollection] = useState(false)
 
   useEffect(() => {
-    setCollection(loadCollection())
+    // Load from server if signed in, otherwise fall back to localStorage
+    fetch("/api/collection")
+      .then((r) => r.json())
+      .then((items) => {
+        if (Array.isArray(items) && items.length > 0) {
+          setCollection(items as CollectionItem[])
+        } else {
+          setCollection(loadCollection())
+        }
+      })
+      .catch(() => setCollection(loadCollection()))
+  }, [])
+
+  const syncToServer = useCallback((items: CollectionItem[]) => {
+    fetch("/api/collection", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(items),
+    }).catch(() => {})
   }, [])
 
   const saveItem = useCallback((item: CollectionItem) => {
     setCollection((prev) => {
-      const next = prev.some((c) => c.productId === item.productId && c.tryOnImage === item.tryOnImage)
-        ? prev
-        : [item, ...prev]
+      if (prev.some((c) => c.productId === item.productId && c.tryOnImage === item.tryOnImage)) return prev
+      const next = [item, ...prev]
       try { localStorage.setItem(STORAGE_KEY, JSON.stringify(next)) } catch {}
+      syncToServer(next)
       return next
     })
-  }, [])
+  }, [syncToServer])
 
   const removeItem = useCallback((productId: string, tryOnImage: string) => {
     setCollection((prev) => {
       const next = prev.filter((c) => !(c.productId === productId && c.tryOnImage === tryOnImage))
       try { localStorage.setItem(STORAGE_KEY, JSON.stringify(next)) } catch {}
+      syncToServer(next)
       return next
     })
-  }, [])
+  }, [syncToServer])
 
   const isSaved = useCallback(
     (productId: string, tryOnImage: string | null) =>
@@ -105,8 +124,9 @@ export default function VirtualStore({ products }: { products: Product[] }) {
             FAZENDA
           </span>
 
-          {/* Right: collection + brand filter */}
+          {/* Right: auth + collection + brand filter */}
           <div className="ml-auto flex items-center gap-4">
+            <AuthButton />
             {collection.length > 0 && (
               <button
                 type="button"
