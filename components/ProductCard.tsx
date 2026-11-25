@@ -20,6 +20,9 @@ export default function ProductCard({ product }: { product: Product }) {
   const [tryOnLoading, setTryOnLoading] = useState(false)
   const [tryOnError, setTryOnError] = useState<string | null>(null)
   const [tryOnSecs, setTryOnSecs] = useState(0)
+  const [tryOnModal, setTryOnModal] = useState(false)
+  const [dragging, setDragging] = useState(false)
+  const cameraInputRef = useRef<HTMLInputElement>(null)
   const { images } = product
   const count = images.length
 
@@ -58,8 +61,15 @@ export default function ProductCard({ product }: { product: Product }) {
 
   const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
-    if (file) handleTryOn(file)
+    if (file) { setTryOnModal(false); handleTryOn(file) }
     e.target.value = ""
+  }
+
+  const onDrop = (e: React.DragEvent) => {
+    e.preventDefault()
+    setDragging(false)
+    const file = e.dataTransfer.files?.[0]
+    if (file) { setTryOnModal(false); handleTryOn(file) }
   }
 
   const goTo = (i: number) => {
@@ -187,13 +197,10 @@ export default function ProductCard({ product }: { product: Product }) {
             </a>
             {count > 0 && (
               <>
-                <input
-                  ref={fileInputRef}
-                  type="file"
-                  accept="image/*"
-                  onChange={onFileChange}
-                  className="hidden"
-                />
+                {/* hidden file inputs */}
+                <input ref={fileInputRef} type="file" accept="image/*" onChange={onFileChange} className="hidden" />
+                <input ref={cameraInputRef} type="file" accept="image/*" capture="user" onChange={onFileChange} className="hidden" />
+
                 {tryOnResult ? (
                   <button
                     type="button"
@@ -215,7 +222,7 @@ export default function ProductCard({ product }: { product: Product }) {
                 ) : (
                   <button
                     type="button"
-                    onClick={() => fileInputRef.current?.click()}
+                    onClick={() => setTryOnModal(true)}
                     className="text-xs underline underline-offset-2 hover:opacity-70 transition-opacity"
                   >
                     Try on
@@ -307,6 +314,60 @@ export default function ProductCard({ product }: { product: Product }) {
             >
               ✕
             </button>
+          </div>
+        </div>
+      )}
+
+      {/* Try-on upload modal */}
+      {tryOnModal && (
+        <div
+          role="dialog"
+          aria-modal
+          aria-label="Upload photo for try-on"
+          onClick={() => setTryOnModal(false)}
+          className="fixed inset-0 z-50 flex items-end justify-center bg-black/60 sm:items-center"
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="w-full max-w-sm rounded-t-2xl bg-white p-6 shadow-xl sm:rounded-2xl"
+          >
+            <div className="mb-4 flex items-center justify-between">
+              <p className="text-sm font-medium text-[#5c3317]">Upload your photo</p>
+              <button
+                type="button"
+                onClick={() => setTryOnModal(false)}
+                className="text-xs opacity-40 hover:opacity-70"
+              >
+                ✕
+              </button>
+            </div>
+
+            {/* Drag & drop zone */}
+            <div
+              onDragOver={(e) => { e.preventDefault(); setDragging(true) }}
+              onDragLeave={() => setDragging(false)}
+              onDrop={onDrop}
+              onClick={() => fileInputRef.current?.click()}
+              className={`mb-3 flex cursor-pointer flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed py-8 transition-colors ${
+                dragging ? "border-[#5c3317] bg-[#f4f1ec]" : "border-[#5c3317]/20 hover:border-[#5c3317]/40"
+              }`}
+            >
+              <span className="text-2xl">🖼️</span>
+              <span className="text-xs text-[#5c3317]/60">Drag & drop or click to upload</span>
+            </div>
+
+            {/* Selfie / camera */}
+            <button
+              type="button"
+              onClick={() => cameraInputRef.current?.click()}
+              className="flex w-full items-center justify-center gap-2 rounded-xl border border-[#5c3317]/20 py-3 text-xs text-[#5c3317] hover:border-[#5c3317]/40 transition-colors"
+            >
+              <span>📸</span> Take a selfie
+            </button>
+
+            <p className="mt-3 text-center text-[0.6rem] text-[#5c3317]/40">
+              Full-body or upper-body photos work best
+            </p>
           </div>
         </div>
       )}
