@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server"
+import { put } from "@vercel/blob"
 
 export const runtime = "nodejs"
 export const maxDuration = 60
@@ -80,7 +81,21 @@ export async function POST(req: NextRequest) {
       const { status, output, error: statusError } = await statusRes.json()
 
       if (status === "completed" && output?.[0]) {
-        return NextResponse.json({ image: output[0] })
+        const fashnUrl: string = output[0]
+        // Upload to Vercel Blob for permanent storage
+        let imageUrl = fashnUrl
+        try {
+          const imgRes = await fetch(fashnUrl)
+          if (imgRes.ok) {
+            const blob = await imgRes.blob()
+            const filename = `tryons/${id}.jpg`
+            const { url } = await put(filename, blob, { access: "public", addRandomSuffix: false })
+            imageUrl = url
+          }
+        } catch {
+          // Fall back to Fashn URL if blob upload fails
+        }
+        return NextResponse.json({ image: imageUrl })
       }
       if (status === "failed") {
         const msg = statusError?.message || statusError || "Generation failed"
