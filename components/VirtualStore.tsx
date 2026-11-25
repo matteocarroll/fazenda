@@ -247,12 +247,12 @@ export default function VirtualStore({ products }: { products: Product[] }) {
             <div className="grid grid-cols-2 gap-3 p-3 sm:grid-cols-3 sm:gap-4 sm:p-6 lg:grid-cols-4">
               {collection.map((item) => (
                 <figure key={`${item.productId}-${item.savedAt}`} className="flex flex-col">
-                  <div className="relative aspect-square overflow-hidden bg-[#f5f5f5]">
+                  <div className="overflow-hidden bg-[#f5f5f5]">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                       src={item.tryOnImage}
                       alt={`${item.brand} ${item.name} try-on`}
-                      className="h-full w-full object-cover"
+                      className="w-full object-contain"
                     />
                   </div>
                   <figcaption className="py-2">
