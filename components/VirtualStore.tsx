@@ -8,7 +8,6 @@ export default function VirtualStore({ products }: { products: Product[] }) {
   const [category, setCategory] = useState("All")
   const [brandFilter, setBrandFilter] = useState("All")
 
-  // Only show tabs that have something in them.
   const tabs = useMemo(
     () => ["All", ...CATEGORIES.filter((c) => products.some((p) => p.category === c))],
     [products]
@@ -19,13 +18,11 @@ export default function VirtualStore({ products }: { products: Product[] }) {
     [category, products]
   )
 
-  // Brands follow the tab, so the list never offers an empty combination.
   const brands = useMemo(() => {
     const set = new Set(inCategory.map((p) => p.brand).filter(Boolean))
     return ["All", ...Array.from(set).sort()]
   }, [inCategory])
 
-  // Keep the brand across tabs when the new tab has it, otherwise drop it.
   const selectCategory = (next: string) => {
     setCategory(next)
     const stocked = next === "All" || products.some((p) => p.category === next && p.brand === brandFilter)
@@ -38,72 +35,64 @@ export default function VirtualStore({ products }: { products: Product[] }) {
   )
 
   return (
-    <main className="min-h-screen bg-white text-[#5c3317]">
-      <header className="mx-auto max-w-6xl px-4 pt-10 sm:px-8">
-        <h1
-          className="text-center"
-          style={{
-            fontFamily: '"Times New Roman", Times, serif',
-            fontSize: "clamp(1.25rem, 3vw, 1.75rem)",
-          }}
-        >
-          Fazenda Online Store
-        </h1>
-        <p className="mt-2 text-center text-xs opacity-70">For existing clients only.</p>
-      </header>
+    <main className="min-h-screen bg-white" style={{ fontFamily: "Helvetica, Arial, sans-serif", color: "#000" }}>
 
-      <div className="sticky top-0 z-10 mt-8 border-b border-[#5c3317]/10 bg-white/95 backdrop-blur">
-        <div className="mx-auto flex max-w-6xl items-center gap-4 px-4 sm:px-8">
-          {/* Category tabs */}
-          <nav
-            aria-label="Categories"
-            className="-mb-px flex flex-1 gap-6 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-          >
+      {/* Nav — Bode style: white, no border, centered wordmark, left nav links */}
+      <div className="sticky top-0 z-10 bg-white">
+        <div className="relative flex h-11 items-center px-4 sm:px-6">
+          {/* Left: category tabs */}
+          <nav aria-label="Categories" className="flex items-center gap-5 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
             {tabs.map((tab) => (
               <button
                 key={tab}
                 type="button"
                 onClick={() => selectCategory(tab)}
                 aria-current={category === tab}
-                className={`whitespace-nowrap border-b-2 py-3.5 text-sm transition-colors ${
-                  category === tab
-                    ? "border-[#5c3317] text-[#5c3317]"
-                    : "border-transparent text-[#5c3317]/50 hover:text-[#5c3317]"
-                }`}
+                className="whitespace-nowrap text-[13px] transition-opacity"
+                style={{ opacity: category === tab ? 1 : 0.4 }}
               >
                 {tab}
               </button>
             ))}
           </nav>
 
-          {/* Brand filter */}
-          <label className="flex shrink-0 items-center gap-2 text-xs">
-            <span className="hidden opacity-60 sm:inline">Brand</span>
+          {/* Center: wordmark */}
+          <span
+            className="pointer-events-none absolute left-1/2 -translate-x-1/2 text-sm tracking-widest"
+            style={{ fontFamily: "Helvetica, Arial, sans-serif", letterSpacing: "0.18em" }}
+          >
+            FAZENDA
+          </span>
+
+          {/* Right: brand filter */}
+          <div className="ml-auto">
             <select
               value={brandFilter}
               onChange={(e) => setBrandFilter(e.target.value)}
-              className="max-w-[9rem] rounded-full border border-[#5c3317]/20 bg-transparent px-3 py-1.5 text-xs text-[#5c3317] focus:border-[#5c3317] focus:outline-none sm:max-w-none"
+              className="bg-transparent text-[13px] focus:outline-none"
+              style={{ color: brandFilter === "All" ? "rgba(0,0,0,0.4)" : "#000" }}
             >
               {brands.map((b) => (
                 <option key={b} value={b}>
-                  {b === "All" ? "All brands" : b}
+                  {b === "All" ? "Brand" : b}
                 </option>
               ))}
             </select>
-          </label>
-
+          </div>
         </div>
+        <div className="h-px bg-black/10" />
       </div>
 
-      <section className="mx-auto max-w-6xl px-4 py-8 sm:px-8">
-        <p className="mb-6 text-xs opacity-60">
-          {filtered.length} {filtered.length === 1 ? "piece" : "pieces"}
-        </p>
-        <div className="grid grid-cols-2 gap-x-4 gap-y-10 sm:grid-cols-3 sm:gap-x-6 lg:grid-cols-4">
+      {/* Grid */}
+      <section className="px-4 py-6 sm:px-6">
+        <div className="grid grid-cols-2 gap-px bg-black/5 sm:grid-cols-3 lg:grid-cols-4">
           {filtered.map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}
         </div>
+        {filtered.length === 0 && (
+          <p className="py-20 text-center text-xs" style={{ color: "rgba(0,0,0,0.4)" }}>No products</p>
+        )}
       </section>
     </main>
   )

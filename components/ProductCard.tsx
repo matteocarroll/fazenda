@@ -110,12 +110,12 @@ export default function ProductCard({ product }: { product: Product }) {
 
   return (
     <>
-      <figure className="group flex flex-col">
-        <div className="relative overflow-hidden rounded-sm bg-[#f4f1ec]">
+      <figure className="group flex flex-col bg-white">
+        <div className="relative overflow-hidden bg-[#f5f5f5]">
           {count === 0 ? (
-            <div className="flex aspect-[4/5] w-full flex-col items-center justify-center gap-1.5 px-4 text-center text-[#5c3317]">
-              <span className="text-[0.625rem] uppercase tracking-[0.18em] opacity-60">{product.brand}</span>
-              <span className="text-sm leading-snug">{product.name}</span>
+            <div className="flex aspect-[4/5] w-full flex-col items-center justify-center gap-1 px-4 text-center">
+              <span className="text-[11px] opacity-40">{product.brand}</span>
+              <span className="text-[11px]">{product.name}</span>
             </div>
           ) : (
             <div
@@ -151,7 +151,7 @@ export default function ProductCard({ product }: { product: Product }) {
                 onClick={() => goTo(index - 1)}
                 disabled={index === 0}
                 aria-label="Previous image"
-                className="absolute left-1.5 top-1/2 hidden h-7 w-7 -translate-y-1/2 items-center justify-center rounded-full bg-white/80 text-[#5c3317] text-xs opacity-0 transition-opacity group-hover:opacity-100 disabled:!opacity-0 sm:flex"
+                className="absolute left-1.5 top-1/2 hidden h-7 w-7 -translate-y-1/2 items-center justify-center rounded-full bg-white/80 text-black text-xs opacity-0 transition-opacity group-hover:opacity-100 disabled:!opacity-0 sm:flex"
               >
                 &#8592;
               </button>
@@ -160,7 +160,7 @@ export default function ProductCard({ product }: { product: Product }) {
                 onClick={() => goTo(index + 1)}
                 disabled={index === count - 1}
                 aria-label="Next image"
-                className="absolute right-1.5 top-1/2 hidden h-7 w-7 -translate-y-1/2 items-center justify-center rounded-full bg-white/80 text-[#5c3317] text-xs opacity-0 transition-opacity group-hover:opacity-100 disabled:!opacity-0 sm:flex"
+                className="absolute right-1.5 top-1/2 hidden h-7 w-7 -translate-y-1/2 items-center justify-center rounded-full bg-white/80 text-black text-xs opacity-0 transition-opacity group-hover:opacity-100 disabled:!opacity-0 sm:flex"
               >
                 &#8594;
               </button>
@@ -172,7 +172,7 @@ export default function ProductCard({ product }: { product: Product }) {
                     onClick={() => goTo(i)}
                     aria-label={`Go to image ${i + 1}`}
                     aria-current={i === index}
-                    className={`pointer-events-auto h-1.5 w-1.5 rounded-full bg-[#5c3317] transition-opacity ${
+                    className={`pointer-events-auto h-1.5 w-1.5 rounded-full bg-black transition-opacity ${
                       i === index ? "opacity-90" : "opacity-25"
                     }`}
                   />
@@ -182,16 +182,20 @@ export default function ProductCard({ product }: { product: Product }) {
           )}
         </div>
 
-        <figcaption className="mt-3 flex flex-col gap-0.5 text-[#5c3317]">
-          <span className="text-[0.625rem] uppercase tracking-[0.18em] opacity-60">{product.brand}</span>
-          <span className="text-sm leading-snug">{product.name}</span>
-          {product.color && <span className="text-xs opacity-60">{product.color}</span>}
-          <div className="mt-1.5 flex flex-wrap items-center gap-3">
+        <figcaption className="px-0 py-2" style={{ fontFamily: "Helvetica, Arial, sans-serif", color: "#000" }}>
+          {/* Row 1: name left, brand right — Bode style */}
+          <div className="flex items-baseline justify-between gap-2">
+            <span className="text-[11px] leading-snug">
+              {product.name}{product.color ? ` — ${product.color}` : ""}
+            </span>
+            <span className="shrink-0 text-[11px] opacity-40">{product.brand}</span>
+          </div>
+          <div className="mt-1 flex flex-wrap items-center gap-3">
             <a
               href={href}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-xs underline underline-offset-2 hover:opacity-70 transition-opacity"
+              className="text-[11px] underline underline-offset-2 transition-opacity hover:opacity-50"
             >
               Ask on WhatsApp
             </a>
@@ -205,16 +209,16 @@ export default function ProductCard({ product }: { product: Product }) {
                   <button
                     type="button"
                     onClick={() => setLightbox(-1)}
-                    className="text-xs underline underline-offset-2 hover:opacity-70 transition-opacity"
+                    className="text-[11px] underline underline-offset-2 transition-opacity hover:opacity-50"
                   >
                     View try-on
                   </button>
                 ) : tryOnLoading ? (
                   <span className="flex flex-col gap-1">
-                    <span className="text-xs opacity-60">{tryOnSecs}s — generating…</span>
-                    <span className="block h-0.5 w-24 overflow-hidden rounded-full bg-[#5c3317]/10">
+                    <span className="text-[11px] opacity-50">{tryOnSecs}s — generating…</span>
+                    <span className="block h-px w-20 overflow-hidden bg-black/10">
                       <span
-                        className="block h-full rounded-full bg-[#5c3317]/40 transition-none"
+                        className="block h-full bg-black/40"
                         style={{ width: `${Math.min((tryOnSecs / 30) * 100, 95)}%`, transition: "width 1s linear" }}
                       />
                     </span>
@@ -223,13 +227,13 @@ export default function ProductCard({ product }: { product: Product }) {
                   <button
                     type="button"
                     onClick={() => setTryOnModal(true)}
-                    className="text-xs underline underline-offset-2 hover:opacity-70 transition-opacity"
+                    className="text-[11px] underline underline-offset-2 transition-opacity hover:opacity-50"
                   >
                     Try on
                   </button>
                 )}
                 {tryOnError && (
-                  <span className="text-[0.625rem] text-red-500">{tryOnError}</span>
+                  <span className="text-[10px] text-red-500">{tryOnError}</span>
                 )}
               </>
             )}
@@ -332,7 +336,7 @@ export default function ProductCard({ product }: { product: Product }) {
             className="w-full max-w-sm rounded-t-2xl bg-white p-6 shadow-xl sm:rounded-2xl"
           >
             <div className="mb-4 flex items-center justify-between">
-              <p className="text-sm font-medium text-[#5c3317]">Upload your photo</p>
+              <p className="text-[13px] font-medium">Upload your photo</p>
               <button
                 type="button"
                 onClick={() => setTryOnModal(false)}
@@ -349,23 +353,23 @@ export default function ProductCard({ product }: { product: Product }) {
               onDrop={onDrop}
               onClick={() => fileInputRef.current?.click()}
               className={`mb-3 flex cursor-pointer flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed py-8 transition-colors ${
-                dragging ? "border-[#5c3317] bg-[#f4f1ec]" : "border-[#5c3317]/20 hover:border-[#5c3317]/40"
+                dragging ? "border-black bg-black/5" : "border-black/20 hover:border-black/40"
               }`}
             >
               <span className="text-2xl">🖼️</span>
-              <span className="text-xs text-[#5c3317]/60">Drag & drop or click to upload</span>
+              <span className="text-[11px] opacity-50">Drag & drop or click to upload</span>
             </div>
 
             {/* Selfie / camera */}
             <button
               type="button"
               onClick={() => cameraInputRef.current?.click()}
-              className="flex w-full items-center justify-center gap-2 rounded-xl border border-[#5c3317]/20 py-3 text-xs text-[#5c3317] hover:border-[#5c3317]/40 transition-colors"
+              className="flex w-full items-center justify-center gap-2 rounded-xl border border-black/20 py-3 text-[11px] hover:border-black/40 transition-colors"
             >
               <span>📸</span> Take a selfie
             </button>
 
-            <p className="mt-3 text-center text-[0.6rem] text-[#5c3317]/40">
+            <p className="mt-3 text-center text-[0.6rem] opacity-40">
               Full-body or upper-body photos work best
             </p>
           </div>
