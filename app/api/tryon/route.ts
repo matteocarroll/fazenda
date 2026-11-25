@@ -22,11 +22,18 @@ export async function POST(req: NextRequest) {
   try {
     const openai = new OpenAI({ apiKey })
 
-    const userFile = await toFile(
-      new Blob([await userPhoto.arrayBuffer()], { type: userPhoto.type || "image/jpeg" }),
-      "person.jpg",
-      { type: userPhoto.type || "image/jpeg" }
-    )
+    // Convert HEIC/HEIF to JPEG (iPhone default format not supported by OpenAI)
+    const userBuffer = await userPhoto.arrayBuffer()
+    let userBlob: Blob
+    const mime = userPhoto.type || ""
+    if (mime.includes("heic") || mime.includes("heif") || userPhoto.name.match(/\.heic$/i)) {
+      const { default: sharp } = await import("sharp")
+      const jpegBuf = await sharp(Buffer.from(userBuffer)).jpeg({ quality: 90 }).toBuffer()
+      userBlob = new Blob([new Uint8Array(jpegBuf)], { type: "image/jpeg" })
+    } else {
+      userBlob = new Blob([userBuffer], { type: mime || "image/jpeg" })
+    }
+    const userFile = await toFile(userBlob, "person.jpg", { type: "image/jpeg" })
 
     // Fetch product image
     const productRes = await fetch(productImageUrl)
