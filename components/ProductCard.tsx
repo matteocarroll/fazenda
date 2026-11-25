@@ -1,7 +1,7 @@
 "use client"
 
 import Image, { type ImageLoader } from "next/image"
-import { useRef, useState, useEffect, useCallback } from "react"
+import { useRef, useState, useEffect, useCallback, type ChangeEvent } from "react"
 import type { Product } from "@/lib/virtualstore"
 
 // Shopify's CDN resizes on its own, so skip Next's optimiser and ask it for the width.
@@ -11,8 +11,9 @@ const shopifyLoader: ImageLoader = ({ src, width }) =>
 
 const WHATSAPP = "19298408626"
 
-export default function ProductCard({ product, tryOnPhoto }: { product: Product; tryOnPhoto?: string | null }) {
+export default function ProductCard({ product }: { product: Product }) {
   const scroller = useRef<HTMLDivElement>(null)
+  const fileInputRef = useRef<HTMLInputElement>(null)
   const [index, setIndex] = useState(0)
   const [lightbox, setLightbox] = useState<number | null>(null)
   const [tryOnResult, setTryOnResult] = useState<string | null>(null)
@@ -21,18 +22,14 @@ export default function ProductCard({ product, tryOnPhoto }: { product: Product;
   const { images } = product
   const count = images.length
 
-  const handleTryOn = async () => {
-    if (!tryOnPhoto || images.length === 0) return
+  const handleTryOn = async (file: File) => {
+    if (images.length === 0) return
     setTryOnLoading(true)
     setTryOnError(null)
+    setTryOnResult(null)
     try {
-      // Convert blob URL to file
-      const photoRes = await fetch(tryOnPhoto)
-      const photoBlob = await photoRes.blob()
-      const photoFile = new File([photoBlob], "photo.jpg", { type: photoBlob.type || "image/jpeg" })
-
       const form = new FormData()
-      form.append("userPhoto", photoFile)
+      form.append("userPhoto", file)
       form.append("productImageUrl", images[0])
       const desc = [product.brand, product.name, product.color].filter(Boolean).join(" ")
       form.append("productDescription", desc)
@@ -44,7 +41,7 @@ export default function ProductCard({ product, tryOnPhoto }: { product: Product;
       }
       const data = await res.json()
       setTryOnResult(data.image)
-      setLightbox(-1) // special index for try-on result
+      setLightbox(-1)
     } catch (e) {
       setTryOnError(e instanceof Error ? e.message : "Something went wrong")
     } finally {
@@ -52,11 +49,11 @@ export default function ProductCard({ product, tryOnPhoto }: { product: Product;
     }
   }
 
-  // Reset try-on when photo changes
-  useEffect(() => {
-    setTryOnResult(null)
-    setTryOnError(null)
-  }, [tryOnPhoto])
+  const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (file) handleTryOn(file)
+    e.target.value = ""
+  }
 
   const goTo = (i: number) => {
     const el = scroller.current
@@ -181,8 +178,15 @@ export default function ProductCard({ product, tryOnPhoto }: { product: Product;
             >
               Ask on WhatsApp
             </a>
-            {tryOnPhoto && count > 0 && (
+            {count > 0 && (
               <>
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/*"
+                  onChange={onFileChange}
+                  className="hidden"
+                />
                 {tryOnResult ? (
                   <button
                     type="button"
@@ -194,7 +198,7 @@ export default function ProductCard({ product, tryOnPhoto }: { product: Product;
                 ) : (
                   <button
                     type="button"
-                    onClick={handleTryOn}
+                    onClick={() => fileInputRef.current?.click()}
                     disabled={tryOnLoading}
                     className="text-xs underline underline-offset-2 hover:opacity-70 transition-opacity disabled:opacity-40"
                   >

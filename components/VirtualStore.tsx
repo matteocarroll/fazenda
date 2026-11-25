@@ -1,26 +1,12 @@
 "use client"
 
-import { useState, useMemo, useRef } from "react"
+import { useState, useMemo } from "react"
 import ProductCard from "@/components/ProductCard"
 import { CATEGORIES, type Product } from "@/lib/virtualstore"
 
 export default function VirtualStore({ products }: { products: Product[] }) {
   const [category, setCategory] = useState("All")
   const [brandFilter, setBrandFilter] = useState("All")
-  const [tryOnPhoto, setTryOnPhoto] = useState<string | null>(null)
-  const fileInputRef = useRef<HTMLInputElement>(null)
-
-  const handlePhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
-    if (!file) return
-    const url = URL.createObjectURL(file)
-    setTryOnPhoto(url)
-  }
-
-  const clearPhoto = () => {
-    setTryOnPhoto(null)
-    if (fileInputRef.current) fileInputRef.current.value = ""
-  }
 
   // Only show tabs that have something in them.
   const tabs = useMemo(
@@ -106,38 +92,6 @@ export default function VirtualStore({ products }: { products: Product[] }) {
             </select>
           </label>
 
-          {/* Try-on upload */}
-          <div className="flex shrink-0 items-center gap-2">
-            <input
-              ref={fileInputRef}
-              type="file"
-              accept="image/*"
-              onChange={handlePhotoUpload}
-              className="hidden"
-              id="tryon-upload"
-            />
-            {tryOnPhoto ? (
-              <div className="flex items-center gap-1.5">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={tryOnPhoto} alt="Your photo" className="h-7 w-7 rounded-full object-cover ring-1 ring-[#5c3317]/30" />
-                <button
-                  type="button"
-                  onClick={clearPhoto}
-                  className="text-xs opacity-50 hover:opacity-100 transition-opacity"
-                  aria-label="Remove photo"
-                >
-                  ✕
-                </button>
-              </div>
-            ) : (
-              <label
-                htmlFor="tryon-upload"
-                className="cursor-pointer whitespace-nowrap rounded-full border border-[#5c3317]/30 px-3 py-1.5 text-xs text-[#5c3317]/70 hover:border-[#5c3317] hover:text-[#5c3317] transition-colors"
-              >
-                Try on
-              </label>
-            )}
-          </div>
         </div>
       </div>
 
@@ -147,7 +101,7 @@ export default function VirtualStore({ products }: { products: Product[] }) {
         </p>
         <div className="grid grid-cols-2 gap-x-4 gap-y-10 sm:grid-cols-3 sm:gap-x-6 lg:grid-cols-4">
           {filtered.map((product) => (
-            <ProductCard key={product.id} product={product} tryOnPhoto={tryOnPhoto} />
+            <ProductCard key={product.id} product={product} />
           ))}
         </div>
       </section>
