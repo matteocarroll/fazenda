@@ -11,12 +11,52 @@ const shopifyLoader: ImageLoader = ({ src, width }) =>
 
 const WHATSAPP = "19298408626"
 
-export default function ProductCard({ product }: { product: Product }) {
+export default function ProductCard({ product, tryOnPhoto }: { product: Product; tryOnPhoto?: string | null }) {
   const scroller = useRef<HTMLDivElement>(null)
   const [index, setIndex] = useState(0)
   const [lightbox, setLightbox] = useState<number | null>(null)
+  const [tryOnResult, setTryOnResult] = useState<string | null>(null)
+  const [tryOnLoading, setTryOnLoading] = useState(false)
+  const [tryOnError, setTryOnError] = useState<string | null>(null)
   const { images } = product
   const count = images.length
+
+  const handleTryOn = async () => {
+    if (!tryOnPhoto || images.length === 0) return
+    setTryOnLoading(true)
+    setTryOnError(null)
+    try {
+      // Convert blob URL to file
+      const photoRes = await fetch(tryOnPhoto)
+      const photoBlob = await photoRes.blob()
+      const photoFile = new File([photoBlob], "photo.jpg", { type: photoBlob.type || "image/jpeg" })
+
+      const form = new FormData()
+      form.append("userPhoto", photoFile)
+      form.append("productImageUrl", images[0])
+      const desc = [product.brand, product.name, product.color].filter(Boolean).join(" ")
+      form.append("productDescription", desc)
+
+      const res = await fetch("/api/tryon", { method: "POST", body: form })
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}))
+        throw new Error(err.error || "Try-on failed")
+      }
+      const data = await res.json()
+      setTryOnResult(data.image)
+      setLightbox(-1) // special index for try-on result
+    } catch (e) {
+      setTryOnError(e instanceof Error ? e.message : "Something went wrong")
+    } finally {
+      setTryOnLoading(false)
+    }
+  }
+
+  // Reset try-on when photo changes
+  useEffect(() => {
+    setTryOnResult(null)
+    setTryOnError(null)
+  }, [tryOnPhoto])
 
   const goTo = (i: number) => {
     const el = scroller.current
@@ -32,7 +72,7 @@ export default function ProductCard({ product }: { product: Product }) {
   }
 
   const lbPrev = useCallback(() => setLightbox((i) => (i !== null && i > 0 ? i - 1 : i)), [])
-  const lbNext = useCallback(() => setLightbox((i) => (i !== null && i < count - 1 ? i + 1 : i)), [count])
+  const lbNext = useCallback(() => setLightbox((i) => (i !== null && i >= 0 && i < count - 1 ? i + 1 : i)), [count])
   const lbClose = useCallback(() => setLightbox(null), [])
 
   useEffect(() => {
@@ -132,14 +172,41 @@ export default function ProductCard({ product }: { product: Product }) {
           <span className="text-[0.625rem] uppercase tracking-[0.18em] opacity-60">{product.brand}</span>
           <span className="text-sm leading-snug">{product.name}</span>
           {product.color && <span className="text-xs opacity-60">{product.color}</span>}
-          <a
-            href={href}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-1.5 self-start text-xs underline underline-offset-2 hover:opacity-70 transition-opacity"
-          >
-            Ask on WhatsApp
-          </a>
+          <div className="mt-1.5 flex flex-wrap items-center gap-3">
+            <a
+              href={href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xs underline underline-offset-2 hover:opacity-70 transition-opacity"
+            >
+              Ask on WhatsApp
+            </a>
+            {tryOnPhoto && count > 0 && (
+              <>
+                {tryOnResult ? (
+                  <button
+                    type="button"
+                    onClick={() => setLightbox(-1)}
+                    className="text-xs underline underline-offset-2 hover:opacity-70 transition-opacity"
+                  >
+                    View try-on
+                  </button>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={handleTryOn}
+                    disabled={tryOnLoading}
+                    className="text-xs underline underline-offset-2 hover:opacity-70 transition-opacity disabled:opacity-40"
+                  >
+                    {tryOnLoading ? "Generating…" : "Try on"}
+                  </button>
+                )}
+                {tryOnError && (
+                  <span className="text-[0.625rem] text-red-500">{tryOnError}</span>
+                )}
+              </>
+            )}
+          </div>
         </figcaption>
       </figure>
 
@@ -156,17 +223,60 @@ export default function ProductCard({ product }: { product: Product }) {
             onClick={(e) => e.stopPropagation()}
             className="relative flex max-h-screen max-w-3xl w-full items-center justify-center p-4"
           >
-            <div className="relative w-full" style={{ aspectRatio: "4/5", maxHeight: "90vh" }}>
-              <Image
-                loader={images[lightbox].startsWith("https://") ? shopifyLoader : undefined}
-                src={images[lightbox]}
-                alt={`${label} — image ${lightbox + 1} of ${count}`}
-                fill
-                sizes="90vw"
-                className="object-contain"
-                priority
-              />
-            </div>
+            {lightbox === -1 && tryOnResult ? (
+              /* Try-on result */
+              <>
+                <div className="relative w-full" style={{ aspectRatio: "1/1", maxHeight: "90vh" }}>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={tryOnResult} alt={`Try-on: ${label}`} className="h-full w-full object-contain" />
+                </div>
+                <span className="absolute bottom-6 left-1/2 -translate-x-1/2 text-white/60 text-xs">
+                  AI try-on · results may vary
+                </span>
+              </>
+            ) : lightbox >= 0 ? (
+              /* Regular image */
+              <>
+                <div className="relative w-full" style={{ aspectRatio: "4/5", maxHeight: "90vh" }}>
+                  <Image
+                    loader={images[lightbox].startsWith("https://") ? shopifyLoader : undefined}
+                    src={images[lightbox]}
+                    alt={`${label} — image ${lightbox + 1} of ${count}`}
+                    fill
+                    sizes="90vw"
+                    className="object-contain"
+                    priority
+                  />
+                </div>
+                {/* Prev */}
+                {lightbox > 0 && (
+                  <button
+                    type="button"
+                    onClick={lbPrev}
+                    aria-label="Previous"
+                    className="absolute left-4 top-1/2 -translate-y-1/2 flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors"
+                  >
+                    ←
+                  </button>
+                )}
+                {/* Next */}
+                {lightbox < count - 1 && (
+                  <button
+                    type="button"
+                    onClick={lbNext}
+                    aria-label="Next"
+                    className="absolute right-4 top-1/2 -translate-y-1/2 flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors"
+                  >
+                    →
+                  </button>
+                )}
+                {count > 1 && (
+                  <span className="absolute bottom-6 left-1/2 -translate-x-1/2 text-white/60 text-xs">
+                    {lightbox + 1} / {count}
+                  </span>
+                )}
+              </>
+            ) : null}
 
             {/* Close */}
             <button
@@ -177,37 +287,6 @@ export default function ProductCard({ product }: { product: Product }) {
             >
               ✕
             </button>
-
-            {/* Prev */}
-            {lightbox > 0 && (
-              <button
-                type="button"
-                onClick={lbPrev}
-                aria-label="Previous"
-                className="absolute left-4 top-1/2 -translate-y-1/2 flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors"
-              >
-                ←
-              </button>
-            )}
-
-            {/* Next */}
-            {lightbox < count - 1 && (
-              <button
-                type="button"
-                onClick={lbNext}
-                aria-label="Next"
-                className="absolute right-4 top-1/2 -translate-y-1/2 flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors"
-              >
-                →
-              </button>
-            )}
-
-            {/* Counter */}
-            {count > 1 && (
-              <span className="absolute bottom-6 left-1/2 -translate-x-1/2 text-white/60 text-xs">
-                {lightbox + 1} / {count}
-              </span>
-            )}
           </div>
         </div>
       )}

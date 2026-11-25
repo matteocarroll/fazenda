@@ -38,6 +38,15 @@ export default function Home() {
           </a>
         </p>
         <p className="text-[#5c3317] text-xs">
+          For private event inquiry, please{" "}
+          <a
+            href="mailto:support@fazenda.com?subject=Private%20Event%20Inquiry&body=Hi%20-%20I%20am%20interested%20in%20learning%20more%20about%20private%20events%20at%20Fazenda."
+            className="underline hover:opacity-70 transition-opacity"
+          >
+            email here
+          </a>
+        </p>
+        <p className="text-[#5c3317] text-xs">
           To schedule an appointment, please use{" "}
           <a
             href="https://calendar.notion.com/meet/matteocarroll/fazenda"
