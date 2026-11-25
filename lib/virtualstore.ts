@@ -34,6 +34,16 @@ export type Product = {
   images: string[]
 }
 
+export type CollectionItem = {
+  productId: string
+  brand: string
+  name: string
+  color: string
+  productImage: string
+  tryOnImage: string
+  savedAt: number
+}
+
 // Shopify has no product types set, so the category comes from the title.
 // Order matters: "knit tie" is an accessory, "polo shirt" is a top, and
 // "overshirt" is outerwear rather than a shirt.

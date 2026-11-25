@@ -2,7 +2,7 @@
 
 import Image, { type ImageLoader } from "next/image"
 import { useRef, useState, useEffect, useCallback, type ChangeEvent } from "react"
-import type { Product } from "@/lib/virtualstore"
+import type { Product, CollectionItem } from "@/lib/virtualstore"
 
 // Shopify's CDN resizes on its own, so skip Next's optimiser and ask it for the width.
 // Our own photos in /public still go through Next.
@@ -11,7 +11,15 @@ const shopifyLoader: ImageLoader = ({ src, width }) =>
 
 const WHATSAPP = "19298408626"
 
-export default function ProductCard({ product }: { product: Product }) {
+export default function ProductCard({
+  product,
+  checkSaved,
+  onSave,
+}: {
+  product: Product
+  checkSaved: (tryOnImage: string) => boolean
+  onSave: (item: CollectionItem) => void
+}) {
   const scroller = useRef<HTMLDivElement>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
   const [index, setIndex] = useState(0)
@@ -261,9 +269,26 @@ export default function ProductCard({ product }: { product: Product }) {
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src={tryOnResult} alt={`Try-on: ${label}`} className="h-full w-full object-contain" />
                 </div>
-                <span className="absolute bottom-6 left-1/2 -translate-x-1/2 text-white/60 text-xs">
-                  AI try-on · results may vary
-                </span>
+                <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-4">
+                  <span className="text-white/40 text-xs">AI try-on · results may vary</span>
+                  <button
+                    type="button"
+                    onClick={() =>
+                      onSave({
+                        productId: product.id,
+                        brand: product.brand,
+                        name: product.name,
+                        color: product.color,
+                        productImage: images[0] ?? "",
+                        tryOnImage: tryOnResult,
+                        savedAt: Date.now(),
+                      })
+                    }
+                    className="rounded-full bg-white px-4 py-1.5 text-[11px] font-medium text-black transition-opacity hover:opacity-70"
+                  >
+                    {checkSaved(tryOnResult) ? "Saved ✓" : "Save to collection"}
+                  </button>
+                </div>
               </>
             ) : lightbox >= 0 ? (
               /* Regular image */
