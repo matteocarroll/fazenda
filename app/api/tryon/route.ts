@@ -51,7 +51,6 @@ export async function POST(req: NextRequest) {
       prompt,
       n: 1,
       size: "1024x1024",
-      response_format: "b64_json",
     })
 
     const imageData = response.data?.[0]
