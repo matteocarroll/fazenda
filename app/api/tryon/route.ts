@@ -22,10 +22,10 @@ export async function POST(req: NextRequest) {
   try {
     const openai = new OpenAI({ apiKey })
 
-    // Convert HEIC/HEIF to JPEG (iPhone default format not supported by OpenAI)
+    // Convert user photo to JPEG (handles HEIC from iPhone)
     const userBuffer = await userPhoto.arrayBuffer()
-    let userBlob: Blob
     const mime = userPhoto.type || ""
+    let userBlob: Blob
     if (mime.includes("heic") || mime.includes("heif") || userPhoto.name.match(/\.heic$/i)) {
       const { default: sharp } = await import("sharp")
       const jpegBuf = await sharp(Buffer.from(userBuffer)).jpeg({ quality: 90 }).toBuffer()
@@ -33,32 +33,29 @@ export async function POST(req: NextRequest) {
     } else {
       userBlob = new Blob([userBuffer], { type: mime || "image/jpeg" })
     }
-    const userFile = await toFile(userBlob, "person.jpg", { type: "image/jpeg" })
 
-    // Fetch product image
-    const productRes = await fetch(productImageUrl)
-    if (!productRes.ok) {
-      return NextResponse.json({ error: "Could not fetch product image" }, { status: 400 })
-    }
-    const productBlob = await productRes.blob()
-    const productFile = await toFile(productBlob, "product.jpg", { type: "image/jpeg" })
+    // Convert to square 1024x1024 PNG with alpha for DALL-E edit
+    const { default: sharp } = await import("sharp")
+    const squarePng = await sharp(Buffer.from(await userBlob.arrayBuffer()))
+      .resize(1024, 1024, { fit: "cover" })
+      .png()
+      .toBuffer()
+    const squareFile = await toFile(new Blob([new Uint8Array(squarePng)], { type: "image/png" }), "person.png", { type: "image/png" })
 
-    const prompt = `You are given a photo of a person and a product garment image. Generate a photorealistic image showing that exact person wearing the garment. The garment is: ${productDescription || "the clothing item shown"}. Keep the person's face, skin tone, hair, and body proportions exactly the same. Only change the clothing.`
+    const desc = productDescription || "the garment"
+    const prompt = `Photorealistic image of this person wearing ${desc}. Preserve the person's face, skin tone, hair, and body. Only change the outfit.`
 
-    // Try multi-image edit (gpt-image-1 supports array of images)
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const response = await (openai.images.edit as any)({
-      model: "gpt-image-1",
-      image: [userFile, productFile],
+    const response = await openai.images.edit({
+      model: "dall-e-2",
+      image: squareFile,
       prompt,
       n: 1,
       size: "1024x1024",
+      response_format: "b64_json",
     })
 
     const imageData = response.data?.[0]
-    if (!imageData) {
-      return NextResponse.json({ error: "No image returned" }, { status: 500 })
-    }
+    if (!imageData) return NextResponse.json({ error: "No image returned" }, { status: 500 })
 
     if (imageData.b64_json) {
       return NextResponse.json({ image: `data:image/png;base64,${imageData.b64_json}` })
@@ -69,11 +66,9 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ error: "Unexpected response format" }, { status: 500 })
   } catch (err: unknown) {
-    const msg = err instanceof Error ? err.message : String(err)
-    // Also try to extract OpenAI API error details
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const apiErr = (err as any)?.error?.message || (err as any)?.message || msg
-    console.error("Try-on error:", apiErr)
-    return NextResponse.json({ error: apiErr }, { status: 500 })
+    const msg = (err as any)?.error?.message || (err as any)?.message || String(err)
+    console.error("Try-on error:", msg)
+    return NextResponse.json({ error: msg }, { status: 500 })
   }
 }
