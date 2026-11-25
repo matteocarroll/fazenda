@@ -51,12 +51,10 @@ export async function POST(req: NextRequest) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model_name: "tryon-v1.6",
+        model_name: "tryon-max",
         inputs: {
           model_image: modelImage,
-          garment_image: garmentImage,
-          category, // "auto" | "tops" | "bottoms" | "one-pieces"
-          mode: "balanced",
+          product_image: garmentImage, // tryon-max uses product_image
         },
       }),
     })
