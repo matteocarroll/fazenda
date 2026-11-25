@@ -2,6 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
+/* iOS safe area for bottom of screen (notch / home indicator) */
+.pb-safe { padding-bottom: max(1.5rem, env(safe-area-inset-bottom)); }
+
 body {
   font-family: "Times New Roman", Times, serif;
 }

@@ -22,7 +22,6 @@ export default function VirtualStore({ products }: { products: Product[] }) {
   const [showCollection, setShowCollection] = useState(false)
 
   useEffect(() => {
-    // Load from server if signed in, otherwise fall back to localStorage
     fetch("/api/collection")
       .then((r) => r.json())
       .then((items) => {
@@ -97,10 +96,64 @@ export default function VirtualStore({ products }: { products: Product[] }) {
   return (
     <main className="min-h-screen bg-white" style={{ fontFamily: "Helvetica, Arial, sans-serif", color: "#000" }}>
 
-      {/* Nav */}
+      {/* Nav — two rows on mobile, one row on desktop */}
       <div className="sticky top-0 z-10 bg-white">
-        <div className="relative flex h-11 items-center px-4 sm:px-6">
-          {/* Left: category tabs */}
+
+        {/* Mobile top row: wordmark + auth */}
+        <div className="relative flex h-11 items-center px-4 sm:hidden">
+          <span
+            className="pointer-events-none absolute left-1/2 -translate-x-1/2 text-sm"
+            style={{ letterSpacing: "0.18em" }}
+          >
+            FAZENDA
+          </span>
+          <div className="ml-auto flex items-center gap-3">
+            {collection.length > 0 && (
+              <button
+                type="button"
+                onClick={() => setShowCollection(true)}
+                className="text-[13px] transition-opacity active:opacity-50"
+              >
+                ({collection.length})
+              </button>
+            )}
+            <AuthButton />
+          </div>
+        </div>
+
+        {/* Mobile second row: category tabs + brand filter */}
+        <div className="flex h-10 items-center gap-4 px-4 sm:hidden">
+          <nav
+            aria-label="Categories"
+            className="flex min-w-0 flex-1 items-center gap-4 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+          >
+            {tabs.map((tab) => (
+              <button
+                key={tab}
+                type="button"
+                onClick={() => selectCategory(tab)}
+                aria-current={category === tab}
+                className="whitespace-nowrap text-[12px] transition-opacity"
+                style={{ opacity: category === tab ? 1 : 0.4 }}
+              >
+                {tab}
+              </button>
+            ))}
+          </nav>
+          <select
+            value={brandFilter}
+            onChange={(e) => setBrandFilter(e.target.value)}
+            className="shrink-0 bg-transparent text-[12px] focus:outline-none"
+            style={{ color: brandFilter === "All" ? "rgba(0,0,0,0.4)" : "#000" }}
+          >
+            {brands.map((b) => (
+              <option key={b} value={b}>{b === "All" ? "Brand" : b}</option>
+            ))}
+          </select>
+        </div>
+
+        {/* Desktop single row */}
+        <div className="relative hidden h-11 items-center px-6 sm:flex">
           <nav aria-label="Categories" className="flex items-center gap-5 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
             {tabs.map((tab) => (
               <button
@@ -116,15 +169,13 @@ export default function VirtualStore({ products }: { products: Product[] }) {
             ))}
           </nav>
 
-          {/* Center: wordmark */}
           <span
-            className="pointer-events-none absolute left-1/2 -translate-x-1/2 text-sm tracking-widest"
-            style={{ fontFamily: "Helvetica, Arial, sans-serif", letterSpacing: "0.18em" }}
+            className="pointer-events-none absolute left-1/2 -translate-x-1/2 text-sm"
+            style={{ letterSpacing: "0.18em" }}
           >
             FAZENDA
           </span>
 
-          {/* Right: auth + collection + brand filter */}
           <div className="ml-auto flex items-center gap-4">
             <AuthButton />
             {collection.length > 0 && (
@@ -143,19 +194,18 @@ export default function VirtualStore({ products }: { products: Product[] }) {
               style={{ color: brandFilter === "All" ? "rgba(0,0,0,0.4)" : "#000" }}
             >
               {brands.map((b) => (
-                <option key={b} value={b}>
-                  {b === "All" ? "Brand" : b}
-                </option>
+                <option key={b} value={b}>{b === "All" ? "Brand" : b}</option>
               ))}
             </select>
           </div>
         </div>
+
         <div className="h-px bg-black/10" />
       </div>
 
       {/* Grid */}
-      <section className="px-4 py-6 sm:px-6">
-        <div className="grid grid-cols-3 gap-4 sm:grid-cols-4 lg:grid-cols-5">
+      <section className="px-3 py-4 sm:px-6 sm:py-6">
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-4 xl:grid-cols-5">
           {filtered.map((product) => (
             <ProductCard
               key={product.id}
@@ -166,7 +216,7 @@ export default function VirtualStore({ products }: { products: Product[] }) {
           ))}
         </div>
         {filtered.length === 0 && (
-          <p className="py-20 text-center text-xs" style={{ color: "rgba(0,0,0,0.4)" }}>No products</p>
+          <p className="py-20 text-center text-xs opacity-40">No products</p>
         )}
       </section>
 
@@ -180,14 +230,13 @@ export default function VirtualStore({ products }: { products: Product[] }) {
           className="fixed inset-0 z-50 overflow-y-auto bg-white"
         >
           <div onClick={(e) => e.stopPropagation()} className="min-h-full">
-            {/* Header */}
             <div className="sticky top-0 z-10 bg-white">
               <div className="relative flex h-11 items-center px-4 sm:px-6">
                 <span className="text-[13px]">Collection ({collection.length})</span>
                 <button
                   type="button"
                   onClick={() => setShowCollection(false)}
-                  className="absolute right-4 text-[13px] opacity-40 hover:opacity-70 transition-opacity"
+                  className="absolute right-4 text-[13px] opacity-40 active:opacity-70"
                 >
                   Close
                 </button>
@@ -195,10 +244,9 @@ export default function VirtualStore({ products }: { products: Product[] }) {
               <div className="h-px bg-black/10" />
             </div>
 
-            {/* Grid */}
-            <div className="grid grid-cols-2 gap-4 p-4 sm:grid-cols-3 sm:p-6 lg:grid-cols-4">
+            <div className="grid grid-cols-2 gap-3 p-3 sm:grid-cols-3 sm:gap-4 sm:p-6 lg:grid-cols-4">
               {collection.map((item) => (
-                <figure key={`${item.productId}-${item.savedAt}`} className="group flex flex-col">
+                <figure key={`${item.productId}-${item.savedAt}`} className="flex flex-col">
                   <div className="relative aspect-square overflow-hidden bg-[#f5f5f5]">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
@@ -208,8 +256,8 @@ export default function VirtualStore({ products }: { products: Product[] }) {
                     />
                   </div>
                   <figcaption className="py-2">
-                    <div className="flex items-baseline justify-between gap-2">
-                      <span className="text-[11px] leading-snug">
+                    <div className="flex items-baseline justify-between gap-1">
+                      <span className="min-w-0 truncate text-[11px] leading-snug">
                         {item.name}{item.color ? ` — ${item.color}` : ""}
                       </span>
                       <span className="shrink-0 text-[11px] opacity-40">{item.brand}</span>
@@ -217,7 +265,7 @@ export default function VirtualStore({ products }: { products: Product[] }) {
                     <button
                       type="button"
                       onClick={() => removeItem(item.productId, item.tryOnImage)}
-                      className="mt-1 text-[10px] opacity-30 hover:opacity-60 transition-opacity underline underline-offset-2"
+                      className="mt-1 text-[10px] opacity-30 underline underline-offset-2 active:opacity-60"
                     >
                       Remove
                     </button>

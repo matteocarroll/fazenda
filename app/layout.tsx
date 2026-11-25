@@ -1,4 +1,4 @@
-import type { Metadata } from "next"
+import type { Metadata, Viewport } from "next"
 import { GeistSans } from "geist/font/sans"
 import { GeistMono } from "geist/font/mono"
 import { Analytics } from "@vercel/analytics/react"
@@ -9,6 +9,12 @@ import "./globals.css"
 
 const DESCRIPTION =
   "A multibrand menswear store and coffee shop at 177 Mott Street, New York. Barena, Cale, Kota Gushiken, Misci, Valstar, Blue Blue Japan and more."
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+}
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.fazenda.com"),

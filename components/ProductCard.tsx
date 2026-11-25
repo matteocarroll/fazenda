@@ -191,25 +191,25 @@ export default function ProductCard({
         </div>
 
         <figcaption className="px-0 py-2" style={{ fontFamily: "Helvetica, Arial, sans-serif", color: "#000" }}>
-          {/* Row 1: name left, brand right — Bode style */}
-          <div className="flex items-baseline justify-between gap-2">
-            <span className="text-[11px] leading-snug">
+          {/* Row 1: name left, brand right — truncate on tiny cards */}
+          <div className="flex items-baseline justify-between gap-1">
+            <span className="min-w-0 truncate text-[11px] leading-snug">
               {product.name}{product.color ? ` — ${product.color}` : ""}
             </span>
-            <span className="shrink-0 text-[11px] opacity-40">{product.brand}</span>
+            <span className="ml-1 shrink-0 text-[10px] opacity-40">{product.brand}</span>
           </div>
-          <div className="mt-1 flex flex-wrap items-center gap-3">
+          {/* Row 2: action links — each has a generous tap target */}
+          <div className="mt-0.5 flex flex-wrap items-center gap-x-3 gap-y-0">
             <a
               href={href}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-[11px] underline underline-offset-2 transition-opacity hover:opacity-50"
+              className="py-1.5 text-[11px] underline underline-offset-2 active:opacity-50 sm:py-1 sm:hover:opacity-50"
             >
-              Ask on WhatsApp
+              WhatsApp
             </a>
             {count > 0 && (
               <>
-                {/* hidden file inputs */}
                 <input ref={fileInputRef} type="file" accept="image/*" onChange={onFileChange} className="hidden" />
                 <input ref={cameraInputRef} type="file" accept="image/*" capture="user" onChange={onFileChange} className="hidden" />
 
@@ -217,14 +217,14 @@ export default function ProductCard({
                   <button
                     type="button"
                     onClick={() => setLightbox(-1)}
-                    className="text-[11px] underline underline-offset-2 transition-opacity hover:opacity-50"
+                    className="py-1.5 text-[11px] underline underline-offset-2 active:opacity-50 sm:py-1 sm:hover:opacity-50"
                   >
                     View try-on
                   </button>
                 ) : tryOnLoading ? (
-                  <span className="flex flex-col gap-1">
+                  <span className="flex flex-col gap-1 py-1">
                     <span className="text-[11px] opacity-50">{tryOnSecs}s — generating…</span>
-                    <span className="block h-px w-20 overflow-hidden bg-black/10">
+                    <span className="block h-px w-16 overflow-hidden bg-black/10">
                       <span
                         className="block h-full bg-black/40"
                         style={{ width: `${Math.min((tryOnSecs / 30) * 100, 95)}%`, transition: "width 1s linear" }}
@@ -235,7 +235,7 @@ export default function ProductCard({
                   <button
                     type="button"
                     onClick={() => setTryOnModal(true)}
-                    className="text-[11px] underline underline-offset-2 transition-opacity hover:opacity-50"
+                    className="py-1.5 text-[11px] underline underline-offset-2 active:opacity-50 sm:py-1 sm:hover:opacity-50"
                   >
                     Try on
                   </button>
@@ -265,12 +265,12 @@ export default function ProductCard({
             {lightbox === -1 && tryOnResult ? (
               /* Try-on result */
               <>
-                <div className="relative w-full" style={{ aspectRatio: "1/1", maxHeight: "90vh" }}>
+                <div className="relative w-full" style={{ aspectRatio: "1/1", maxHeight: "80vh" }}>
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src={tryOnResult} alt={`Try-on: ${label}`} className="h-full w-full object-contain" />
                 </div>
-                <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-4">
-                  <span className="text-white/40 text-xs">AI try-on · results may vary</span>
+                <div className="absolute bottom-0 left-0 right-0 flex items-center justify-between gap-3 px-4 pb-safe pb-6">
+                  <span className="text-white/40 text-[11px]">AI try-on · results may vary</span>
                   <button
                     type="button"
                     onClick={() =>
@@ -284,9 +284,9 @@ export default function ProductCard({
                         savedAt: Date.now(),
                       })
                     }
-                    className="rounded-full bg-white px-4 py-1.5 text-[11px] font-medium text-black transition-opacity hover:opacity-70"
+                    className="shrink-0 rounded-full bg-white px-4 py-2 text-[11px] font-medium text-black active:opacity-70 sm:hover:opacity-70"
                   >
-                    {checkSaved(tryOnResult) ? "Saved ✓" : "Save to collection"}
+                    {checkSaved(tryOnResult) ? "Saved ✓" : "Save"}
                   </button>
                 </div>
               </>
