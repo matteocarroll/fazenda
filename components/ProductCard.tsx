@@ -19,6 +19,7 @@ export default function ProductCard({ product }: { product: Product }) {
   const [tryOnResult, setTryOnResult] = useState<string | null>(null)
   const [tryOnLoading, setTryOnLoading] = useState(false)
   const [tryOnError, setTryOnError] = useState<string | null>(null)
+  const [tryOnSecs, setTryOnSecs] = useState(0)
   const { images } = product
   const count = images.length
 
@@ -27,6 +28,8 @@ export default function ProductCard({ product }: { product: Product }) {
     setTryOnLoading(true)
     setTryOnError(null)
     setTryOnResult(null)
+    setTryOnSecs(0)
+    const timer = setInterval(() => setTryOnSecs((s) => s + 1), 1000)
     try {
       // Map product category to Fashn.ai category
       const fashnCategory =
@@ -48,6 +51,7 @@ export default function ProductCard({ product }: { product: Product }) {
     } catch (e) {
       setTryOnError(e instanceof Error ? e.message : "Something went wrong")
     } finally {
+      clearInterval(timer)
       setTryOnLoading(false)
     }
   }
@@ -198,14 +202,23 @@ export default function ProductCard({ product }: { product: Product }) {
                   >
                     View try-on
                   </button>
+                ) : tryOnLoading ? (
+                  <span className="flex flex-col gap-1">
+                    <span className="text-xs opacity-60">{tryOnSecs}s — generating…</span>
+                    <span className="block h-0.5 w-24 overflow-hidden rounded-full bg-[#5c3317]/10">
+                      <span
+                        className="block h-full rounded-full bg-[#5c3317]/40 transition-none"
+                        style={{ width: `${Math.min((tryOnSecs / 30) * 100, 95)}%`, transition: "width 1s linear" }}
+                      />
+                    </span>
+                  </span>
                 ) : (
                   <button
                     type="button"
                     onClick={() => fileInputRef.current?.click()}
-                    disabled={tryOnLoading}
-                    className="text-xs underline underline-offset-2 hover:opacity-70 transition-opacity disabled:opacity-40"
+                    className="text-xs underline underline-offset-2 hover:opacity-70 transition-opacity"
                   >
-                    {tryOnLoading ? "Generating…" : "Try on"}
+                    Try on
                   </button>
                 )}
                 {tryOnError && (
