@@ -30,7 +30,44 @@ export default function ProductCard({
   const [tryOnSecs, setTryOnSecs] = useState(0)
   const [tryOnModal, setTryOnModal] = useState(false)
   const [dragging, setDragging] = useState(false)
+  const [webcamActive, setWebcamActive] = useState(false)
+  const [webcamStream, setWebcamStream] = useState<MediaStream | null>(null)
+  const videoRef = useRef<HTMLVideoElement>(null)
+  const canvasRef = useRef<HTMLCanvasElement>(null)
   const cameraInputRef = useRef<HTMLInputElement>(null)
+
+  const startWebcam = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" }, audio: false })
+      setWebcamStream(stream)
+      setWebcamActive(true)
+      setTimeout(() => { if (videoRef.current) videoRef.current.srcObject = stream }, 100)
+    } catch {
+      cameraInputRef.current?.click()
+    }
+  }
+
+  const captureWebcam = () => {
+    const video = videoRef.current
+    const canvas = canvasRef.current
+    if (!video || !canvas) return
+    canvas.width = video.videoWidth
+    canvas.height = video.videoHeight
+    canvas.getContext("2d")?.drawImage(video, 0, 0)
+    canvas.toBlob((blob) => {
+      if (!blob) return
+      const file = new File([blob], "selfie.jpg", { type: "image/jpeg" })
+      stopWebcam()
+      setTryOnModal(false)
+      handleTryOn(file)
+    }, "image/jpeg", 0.9)
+  }
+
+  const stopWebcam = () => {
+    webcamStream?.getTracks().forEach(t => t.stop())
+    setWebcamStream(null)
+    setWebcamActive(false)
+  }
   const { images } = product
   const count = images.length
 
@@ -353,50 +390,82 @@ export default function ProductCard({
           role="dialog"
           aria-modal
           aria-label="Upload photo for try-on"
-          onClick={() => setTryOnModal(false)}
-          className="fixed inset-0 z-50 flex items-end justify-center bg-black/60 sm:items-center"
+          onClick={() => { stopWebcam(); setTryOnModal(false) }}
+          className="fixed inset-0 z-50 flex items-end justify-center bg-black/70 sm:items-center"
+          style={{ fontFamily: "Helvetica, Arial, sans-serif" }}
         >
           <div
             onClick={(e) => e.stopPropagation()}
-            className="w-full max-w-sm rounded-t-2xl bg-white p-6 shadow-xl sm:rounded-2xl"
+            className="w-full max-w-xs bg-white sm:rounded-none"
           >
-            <div className="mb-4 flex items-center justify-between">
-              <p className="text-[13px] font-medium">Upload your photo</p>
-              <button
-                type="button"
-                onClick={() => setTryOnModal(false)}
-                className="text-xs opacity-40 hover:opacity-70"
-              >
-                ✕
-              </button>
-            </div>
+            {webcamActive ? (
+              /* Webcam view */
+              <div className="relative">
+                {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
+                <video ref={videoRef} autoPlay playsInline className="w-full" style={{ transform: "scaleX(-1)" }} />
+                <canvas ref={canvasRef} className="hidden" />
+                <div className="flex border-t border-black/10">
+                  <button
+                    type="button"
+                    onClick={stopWebcam}
+                    className="flex-1 py-4 text-[11px] opacity-40 hover:opacity-70 transition-opacity"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="button"
+                    onClick={captureWebcam}
+                    className="flex-1 border-l border-black/10 py-4 text-[11px] hover:opacity-50 transition-opacity"
+                  >
+                    Capture
+                  </button>
+                </div>
+              </div>
+            ) : (
+              /* Upload options */
+              <>
+                <div className="flex items-center justify-between border-b border-black/10 px-5 py-4">
+                  <span className="text-[11px] tracking-widest uppercase">Try on</span>
+                  <button
+                    type="button"
+                    onClick={() => setTryOnModal(false)}
+                    className="text-[11px] opacity-30 hover:opacity-60 transition-opacity"
+                  >
+                    ✕
+                  </button>
+                </div>
 
-            {/* Drag & drop zone */}
-            <div
-              onDragOver={(e) => { e.preventDefault(); setDragging(true) }}
-              onDragLeave={() => setDragging(false)}
-              onDrop={onDrop}
-              onClick={() => fileInputRef.current?.click()}
-              className={`mb-3 flex cursor-pointer flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed py-8 transition-colors ${
-                dragging ? "border-black bg-black/5" : "border-black/20 hover:border-black/40"
-              }`}
-            >
-              <span className="text-2xl">🖼️</span>
-              <span className="text-[11px] opacity-50">Drag & drop or click to upload</span>
-            </div>
+                {/* Upload zone */}
+                <div
+                  onDragOver={(e) => { e.preventDefault(); setDragging(true) }}
+                  onDragLeave={() => setDragging(false)}
+                  onDrop={onDrop}
+                  onClick={() => fileInputRef.current?.click()}
+                  className={`mx-5 my-5 flex cursor-pointer flex-col items-center justify-center gap-3 border py-10 transition-colors ${
+                    dragging ? "border-black bg-black/5" : "border-black/20 hover:border-black/60"
+                  }`}
+                >
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" className="opacity-30">
+                    <path d="M10 2v12M4 8l6-6 6 6" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M2 16h16" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/>
+                  </svg>
+                  <span className="text-[11px] opacity-40">Upload photo</span>
+                </div>
 
-            {/* Selfie / camera */}
-            <button
-              type="button"
-              onClick={() => cameraInputRef.current?.click()}
-              className="flex w-full items-center justify-center gap-2 rounded-xl border border-black/20 py-3 text-[11px] hover:border-black/40 transition-colors"
-            >
-              <span>📸</span> Take a selfie
-            </button>
+                {/* Camera */}
+                <button
+                  type="button"
+                  onClick={startWebcam}
+                  className="flex w-full items-center justify-center gap-2 border-t border-black/10 py-4 text-[11px] opacity-50 hover:opacity-100 transition-opacity"
+                >
+                  Use camera
+                </button>
 
-            <p className="mt-3 text-center text-[0.6rem] opacity-40">
-              Full-body or upper-body photos work best
-            </p>
+                <p className="pb-5 pt-2 text-center text-[10px] opacity-20">
+                  Full-body or upper-body photos work best
+                </p>
+              </>
+            )}
           </div>
         </div>
       )}
